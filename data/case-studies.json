@@ -2,88 +2,130 @@
   {
     "slug": "invoiceready",
     "title": "InvoiceReady",
-    "tagline": "A bilingual compliance tool for the UAE e-invoicing mandate, designed and shipped end to end.",
-    "role": "Sole designer, engineer and operator",
-    "period": "Aug 2026 – present",
-    "status": "Live",
-    "problem": "The UAE begins phasing in mandatory e-invoicing from 2026. Businesses must pick an accredited service provider and prove their invoices validate — but the provider market is opaque, and nothing existed to check an invoice before submitting it.",
-    "approach": [
-      "Researched all 44 accredited providers from primary sources only. Any field without a public source is published as “not disclosed” rather than guessed — a rule enforced in the build, which fails the whole run on a missing field.",
-      "Built a UBL/XML invoice validator that runs entirely in the browser. Nothing is uploaded, so a finance team can check a real invoice without a data-handling conversation.",
-      "Wrote a static site generator in plain Python. No Node toolchain, no dependencies — the whole site builds on a phone in seconds."
+    "period": "2026 — present",
+    "media": "browser",
+    "figures": [
+      { "value": "102", "accent": false, "en": "pages, Arabic-first with an English mirror", "ar": "صفحة، عربية أولاً مع مرآة إنجليزية" },
+      { "value": "269", "accent": false, "en": "structured-data blocks", "ar": "كتلة بيانات منظَّمة" },
+      { "value": "24",  "accent": false, "en": "validation checks per invoice", "ar": "فحصاً لكل فاتورة" },
+      { "value": "$0",  "accent": true,  "en": "monthly infrastructure cost", "ar": "تكلفة البنية شهرياً" },
+      { "value": "0",   "accent": false, "en": "bounces across the provider outreach", "ar": "ارتداد في مراسلة المزوّدين" }
     ],
-    "evidence": [
-      { "figure": "102", "label": "pages, Arabic-first with an English mirror" },
-      { "figure": "269", "label": "JSON-LD structured-data blocks" },
-      { "figure": "24", "label": "validation checks, PASS / WARN / FAIL" },
-      { "figure": "$0", "label": "monthly infrastructure cost" },
-      { "figure": "44/44", "label": "providers contacted, zero bounces or complaints" }
-    ],
-    "stack": ["Python", "S3 + CloudFront (OAC)", "ACM", "Route 53", "API Gateway", "Lambda", "DynamoDB", "SES", "Schema.org", "IndexedDB"],
-    "detail": [
-      { "h": "Architecture", "p": "Static site on S3 behind CloudFront with Origin Access Control — the bucket is fully closed to the public and reachable only through the distribution. Forms hit API Gateway → Lambda → DynamoDB, with SES sending bilingual transactional mail. HTTP/2 and HTTP/3, TLS 1.2 minimum, forced HTTPS." },
-      { "h": "Deliverability", "p": "SPF, DKIM and DMARC with aggregate reporting, plus SES production access. A 44-recipient outreach campaign ran across four batches with zero bounces and zero complaints." },
-      { "h": "Bilingual engineering", "p": "Arabic-first RTL using logical CSS properties throughout. Two i18n mechanisms, applied deliberately: article pairs have real /en/ URLs and carry hreflang; tool pages toggle language on a single URL and correctly carry none." },
-      { "h": "Deployment", "p": "One command builds, publishes, invalidates the CDN and verifies the live response by content — not by HTTP status, which a stale cache will happily return. A page-count floor aborts the run before any destructive sync if a build came out short." }
-    ],
-    "caveat": "Technical credibility, not commercial: the site is live and complete, but has not yet converted leads. It is shown here as evidence of what I build and ship, not as a business result.",
-    "links": [{ "label": "invoiceready.ae", "href": "https://invoiceready.ae" }]
+    "stack": ["Python", "Amazon S3", "CloudFront", "ACM", "Lambda", "DynamoDB", "SES", "Schema.org", "IndexedDB"],
+    "en": {
+      "kicker": "Compliance platform",
+      "status": "Live",
+      "role": "Design, engineering, operations",
+      "link": { "label": "invoiceready.ae", "href": "https://invoiceready.ae" },
+      "tagline": "A bilingual platform for the United Arab Emirates e-invoicing mandate, designed, built and operated end to end.",
+      "summary": "A bilingual platform for the UAE e-invoicing mandate, combining a researched directory of accredited providers with a browser-based invoice validator that keeps client data on the client.",
+      "problem": "The United Arab Emirates begins phasing in mandatory e-invoicing from 2026. Businesses must appoint an accredited service provider and demonstrate that their invoices validate against the required format. The provider market is opaque, published information is inconsistent, and no independent way existed to check an invoice before submitting it.",
+      "approach": [
+        "All accredited providers were researched from primary sources only. Any field without a public source is published as “not disclosed” rather than estimated, and the build fails outright on a missing field.",
+        "The invoice validator runs entirely in the browser. No document is uploaded, which removes the data-handling conversation that would otherwise block a finance team from trying it.",
+        "The site is generated by a dependency-free Python build and served as static files, which is why a platform of this size costs nothing per month to run."
+      ],
+      "caveat": "The platform is complete and live, but has not yet converted commercial leads. It is presented here as evidence of engineering and delivery, not as a business result."
+    },
+    "ar": {
+      "kicker": "منصة امتثال",
+      "status": "منشور",
+      "role": "تصميم وهندسة وتشغيل",
+      "link": { "label": "invoiceready.ae", "href": "https://invoiceready.ae" },
+      "tagline": "منصة ثنائية اللغة لإلزام الفوترة الإلكترونية في دولة الإمارات، صُمّمت وبُنيت وتُشغَّل بالكامل.",
+      "summary": "منصة ثنائية اللغة لإلزام الفوترة الإلكترونية في الإمارات، تجمع دليلاً مبحوثاً للمزوّدين المعتمدين مع فاحص فواتير يعمل داخل المتصفح ويُبقي بيانات العميل عند العميل.",
+      "problem": "تبدأ دولة الإمارات العربية المتحدة بتطبيق الفوترة الإلكترونية الإلزامية تدريجياً من 2026. على المنشآت تعيين مزوّد خدمة معتمد وإثبات أن فواتيرها تجتاز الصيغة المطلوبة. سوق المزوّدين غير شفاف، والمعلومات المنشورة متضاربة، ولم تكن هناك وسيلة مستقلة لفحص فاتورة قبل إرسالها.",
+      "approach": [
+        "بُحث عن كل المزوّدين المعتمدين من مصادر أولية فقط. أي حقل بلا مصدر عام يُنشر «غير معلن» بدل التقدير، والبناء يفشل كلياً عند أي حقل ناقص.",
+        "فاحص الفواتير يعمل بالكامل داخل المتصفح. لا يُرفع أي مستند، ما يزيل نقاش معالجة البيانات الذي يمنع فرق المالية من التجربة.",
+        "يُولَّد الموقع ببناء بايثون بلا اعتماديات ويُخدَم كملفات ثابتة، ولهذا لا تكلّف منصة بهذا الحجم شيئاً شهرياً."
+      ],
+      "caveat": "المنصة مكتملة ومنشورة، لكنها لم تحوّل عملاء تجاريين بعد. تُعرض هنا كدليل على الهندسة والتسليم، لا كنتيجة تجارية."
+    }
   },
   {
     "slug": "khutwa",
     "title": "Khutwa",
-    "tagline": "An Android step counter built around an accuracy invariant that is checked, not assumed.",
-    "role": "Sole engineer",
-    "period": "Aug – Sep 2026",
-    "status": "Complete, pending store release",
-    "problem": "Step counters disagree with each other and with themselves — totals drift when the app is killed, and daily history stops reconciling with the live counter. Most apps hide this. The interesting problem is making the discrepancy impossible rather than invisible.",
-    "approach": [
-      "Two sensors with clearly separated jobs: the hardware step counter is the sole authority on how many steps happened and survives process death; the step detector supplies timestamps for cadence, which drives walk / brisk / run classification.",
-      "Held one invariant: stored daily totals must sum to exactly the live counter. Verified on-device three times with a delta of zero, and exposed as a diagnostics button so the check can be re-run by anyone, any time.",
-      "Set the default goal at 7,000 steps, following a 2025 Lancet Public Health meta-analysis. Onboarding explains that 10,000 came from a 1965 Japanese pedometer campaign, not from evidence."
+    "period": "2026",
+    "media": "line",
+    "figures": [
+      { "value": "7,600", "accent": false, "en": "lines of Kotlin across 42 files", "ar": "سطر Kotlin في 42 ملفاً" },
+      { "value": "0", "accent": true, "en": "delta between stored history and the live counter", "ar": "فرق بين السجل المخزَّن والعدّاد الحي" },
+      { "value": "6", "accent": false, "en": "Jetpack Compose screens", "ar": "شاشة بـJetpack Compose" },
+      { "value": "0", "accent": false, "en": "ads, analytics or telemetry", "ar": "إعلانات أو تتبّع أو تحليلات" }
     ],
-    "evidence": [
-      { "figure": "7,600", "label": "lines of Kotlin across 42 files" },
-      { "figure": "0", "label": "delta between stored history and live counter" },
-      { "figure": "6", "label": "Jetpack Compose screens" },
-      { "figure": "1", "label": "file that opens a network socket — map tiles" },
-      { "figure": "0", "label": "ads, analytics or telemetry" }
-    ],
-    "stack": ["Kotlin", "Jetpack Compose", "Room", "SensorManager", "AlarmManager", "Foreground Services", "TTS", "App Widgets"],
-    "detail": [
-      { "h": "Sensor engine", "p": "TYPE_STEP_COUNTER is polled on 25-minute AlarmManager checkpoints and treated as the only source of truth for totals, so a killed process loses nothing. TYPE_STEP_DETECTOR batches in hardware on a 60-second window to supply the timing data that totals alone cannot give." },
-      { "h": "Derived metrics", "p": "Minute buckets and bouts, peak-30 cadence, barometer-based gradient, ACSM VO2 calorie equations, and a stride-length model refit per user by least squares against cadence." },
-      { "h": "Privacy posture", "p": "No ads, no analytics, no telemetry. Root access is optional everywhere it is used. Exactly one file in the codebase opens a network socket, and it fetches map tiles." },
-      { "h": "Testing", "p": "Unit tests cover the bout-detection and cadence logic — the two places where a silent error would corrupt history without ever surfacing to the user." }
-    ],
-    "caveat": "Currently a debug-signed build with Arabic-only strings. Release signing and store listing are the remaining work, not new engineering.",
-    "links": [{ "label": "github.com/MrDMX7/khutwa", "href": "https://github.com/MrDMX7/khutwa" }]
+    "stack": ["Kotlin", "Jetpack Compose", "Room", "SensorManager", "AlarmManager", "Foreground Services"],
+    "en": {
+      "kicker": "Mobile",
+      "status": "Complete",
+      "role": "Engineering",
+      "link": { "label": "github.com/MrDMX7/khutwa", "href": "https://github.com/MrDMX7/khutwa" },
+      "tagline": "A native Android activity tracker built around sensor accuracy and complete data privacy.",
+      "summary": "A native Android activity tracker built around sensor accuracy and complete data privacy.",
+      "problem": "Step counters disagree with each other and with themselves. Totals drift when the application is killed, and daily history stops reconciling with the live sensor. Most applications hide the discrepancy rather than resolve it.",
+      "approach": [
+        "Two sensors with separated responsibilities: the hardware counter is the sole authority on totals and survives process death, while the detector supplies the timing data that drives cadence and activity classification.",
+        "One invariant is held and checked: stored daily totals must sum to exactly the live counter. It is verified on device and exposed as a diagnostic anyone can re-run.",
+        "No advertising, no analytics, no telemetry. Exactly one file in the codebase opens a network socket, and it fetches map tiles."
+      ],
+      "caveat": "Currently a debug-signed build with Arabic-only strings. Release signing and store listing remain outstanding — packaging work, not new engineering."
+    },
+    "ar": {
+      "kicker": "تطبيقات الجوال",
+      "status": "مكتمل",
+      "role": "هندسة",
+      "link": { "label": "github.com/MrDMX7/khutwa", "href": "https://github.com/MrDMX7/khutwa" },
+      "tagline": "تطبيق أندرويد أصلي لتتبّع النشاط، مبني حول دقّة الحسّاسات وخصوصية كاملة للبيانات.",
+      "summary": "تطبيق أندرويد أصلي لتتبّع النشاط، مبني حول دقّة الحسّاسات وخصوصية كاملة للبيانات.",
+      "problem": "عدّادات الخطوات تتضارب فيما بينها ومع نفسها. تنحرف المجاميع عند إنهاء التطبيق، ويتوقّف السجل اليومي عن مطابقة الحسّاس الحي. أغلب التطبيقات تخفي الفارق بدل أن تحلّه.",
+      "approach": [
+        "حسّاسان بمسؤوليتين منفصلتين: العدّاد العتادي هو المرجع الوحيد للمجاميع وينجو من إنهاء العملية، والكاشف يوفّر بيانات التوقيت التي تقود الإيقاع وتصنيف النشاط.",
+        "ثابتة واحدة تُحفظ وتُفحص: مجموع السجل اليومي يجب أن يساوي العدّاد الحي تماماً. تُتحقَّق على الجهاز وتُعرض كأداة تشخيص يمكن لأي أحد إعادة تشغيلها.",
+        "بلا إعلانات ولا تحليلات ولا تتبّع. ملف واحد فقط في المشروع يفتح اتصالاً شبكياً، ووظيفته جلب بلاطات الخرائط."
+      ],
+      "caveat": "النسخة الحالية موقَّعة للتطوير ونصوصها عربية فقط. توقيع الإصدار وقائمة المتجر ما زالا معلّقين — عمل تغليف لا هندسة جديدة."
+    }
   },
   {
-    "slug": "quant-research-method",
-    "title": "Quantitative research method",
-    "tagline": "A year of systematic strategy research, and what it takes to let the data say no.",
-    "role": "Sole researcher and engineer",
+    "slug": "quantitative-method",
+    "title": "Quantitative method",
     "period": "2026",
-    "status": "Ongoing",
-    "problem": "Backtests are easy to make profitable and hard to trust. Almost every failure mode in systematic trading is a way of fooling yourself: fitting noise, testing until something passes, or grading a result against the wrong benchmark. The engineering problem is building a process that can return a negative answer and be believed.",
-    "approach": [
-      "Pre-register each hypothesis before testing it, so a result cannot be reinterpreted after the fact. Nine consecutive hypotheses have been recorded and falsified.",
-      "Validate out-of-sample: walk-forward across time, plus a cross-sectional holdout of instruments never used in development.",
-      "Run an empirical null control — the same pipeline against data with no signal in it — to establish what a false positive looks like before trusting a true one.",
-      "Write findings down, including the ones that invalidate earlier work: a misleading t-statistic in my own dashboard, and a validated result that turned out to have been graded against the wrong venue."
+    "media": "scatter",
+    "figures": [
+      { "value": "9", "accent": true, "en": "hypotheses pre-registered, every one falsified", "ar": "فرضية مسجَّلة مسبقاً، كلها دُحضت" },
+      { "value": "3", "accent": false, "en": "independent out-of-sample checks", "ar": "فحوص مستقلة خارج العيّنة" },
+      { "value": "1", "accent": false, "en": "written policy governing what may run", "ar": "سياسة مكتوبة تحكم ما يُشغَّل" }
     ],
-    "evidence": [
-      { "figure": "9", "label": "pre-registered hypotheses, all falsified and documented" },
-      { "figure": "3", "label": "independent out-of-sample checks before any result is kept" },
-      { "figure": "1", "label": "written policy file governing what may be deployed" }
-    ],
-    "stack": ["Python", "pandas", "NumPy", "SQLite", "EC2", "S3", "systemd", "REST + WebSocket market data"],
-    "detail": [
-      { "h": "Governance", "p": "A policy file defines what may run and under what conditions, backed by a kill switch and automated off-host backups. The constraints are written down before they are needed, not after something goes wrong." },
-      { "h": "Why the negatives matter", "p": "The useful output of this work is a documented map of what does not work and why — including corrections to my own earlier conclusions. A method that has never produced a negative result has not been tested; it has been fitted." }
-    ],
-    "caveat": "Presented as methodology only. No performance figures are shown, and none should be inferred — a research process is a transferable skill, a trading record is not a portfolio piece.",
-    "links": []
+    "stack": ["Python", "pandas", "NumPy", "SQLite", "Amazon EC2", "systemd"],
+    "en": {
+      "kicker": "Research",
+      "status": "Ongoing",
+      "role": "Research and engineering",
+      "link": null,
+      "tagline": "A validation process designed so that results can be trusted when they are negative.",
+      "summary": "A validation process designed so results can be trusted when they are negative.",
+      "problem": "Analytical results are easy to make look convincing and hard to trust. Most failure modes are ways of fooling yourself: fitting noise, testing until something passes, or measuring against the wrong benchmark. The engineering problem is a process that can return a negative answer and be believed.",
+      "approach": [
+        "Each hypothesis is registered in writing before it is tested, so a result cannot be reinterpreted afterwards. Nine consecutive hypotheses have been recorded and falsified.",
+        "Validation runs out of sample in three independent ways, including a holdout of instruments never used during development.",
+        "An empirical null control establishes what a false positive looks like in this pipeline before any true positive is trusted."
+      ],
+      "caveat": "Presented as methodology only. No performance figures are shown and none should be inferred — a research process transfers between domains, a track record does not."
+    },
+    "ar": {
+      "kicker": "بحث",
+      "status": "مستمر",
+      "role": "بحث وهندسة",
+      "link": null,
+      "tagline": "عملية تحقّق مصمّمة ليكون بالإمكان الوثوق بالنتيجة حين تكون سلبية.",
+      "summary": "عملية تحقّق مصمّمة ليكون بالإمكان الوثوق بالنتيجة حين تكون سلبية.",
+      "problem": "من السهل جعل النتائج التحليلية تبدو مقنعة، ومن الصعب الوثوق بها. أغلب أنماط الفشل طرق لخداع النفس: ملاءمة الضجيج، أو الاختبار حتى ينجح شيء، أو القياس مقابل مرجع خاطئ. المسألة الهندسية هي بناء عملية تستطيع أن تعطي إجابة سلبية ويُوثق بها.",
+      "approach": [
+        "تُسجَّل كل فرضية كتابةً قبل اختبارها، فلا يمكن إعادة تفسير النتيجة لاحقاً. سُجّلت تسع فرضيات متتالية ودُحضت جميعها.",
+        "يجري التحقّق خارج العيّنة بثلاث طرق مستقلة، منها عيّنة محجوزة لم تُستخدم إطلاقاً أثناء التطوير.",
+        "ضابط عدم تجريبي يحدّد شكل النتيجة الإيجابية الكاذبة في هذا الخط قبل الوثوق بأي نتيجة إيجابية حقيقية."
+      ],
+      "caveat": "تُعرض كمنهجية فقط. لا تُعرض أرقام أداء ولا ينبغي استنتاجها — عملية البحث تنتقل بين المجالات، أما السجل فلا."
+    }
   }
 ]

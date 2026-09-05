@@ -1,0 +1,42 @@
+[
+  {
+    "en": {
+      "title": "Scope before code",
+      "body": "Every engagement opens with a written scope and a fixed list of deliverables. Changes are priced, not absorbed silently."
+    },
+    "ar": {
+      "title": "النطاق قبل الكود",
+      "body": "كل تعاقد يبدأ بنطاق مكتوب وقائمة مخرجات محدّدة. التغييرات تُسعّر ولا تُستوعب بصمت."
+    }
+  },
+  {
+    "en": {
+      "title": "Delivery you can verify",
+      "body": "Systems ship with the checks that demonstrate they work — runnable by your team, not only by mine."
+    },
+    "ar": {
+      "title": "تسليم قابل للتحقّق",
+      "body": "تُسلَّم الأنظمة ومعها الفحوص التي تثبت أنها تعمل — قابلة للتشغيل من فريقك لا مني وحدي."
+    }
+  },
+  {
+    "en": {
+      "title": "Operations included",
+      "body": "Deployment, monitoring and the first operating period form part of delivery rather than a separate contract."
+    },
+    "ar": {
+      "title": "التشغيل ضمن التسليم",
+      "body": "النشر والمراقبة وفترة التشغيل الأولى جزء من التسليم، لا عقد منفصل."
+    }
+  },
+  {
+    "en": {
+      "title": "Documented limits",
+      "body": "Handover states what the system does, what it costs to run, and where its known limits are. Nothing material is left implied."
+    },
+    "ar": {
+      "title": "حدود موثّقة",
+      "body": "يوضّح التسليم ما يفعله النظام، وكم يكلّف تشغيله، وأين حدوده المعروفة. لا شيء جوهري يُترك ضمنياً."
+    }
+  }
+]

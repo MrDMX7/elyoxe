@@ -1,136 +1,126 @@
 /* Elyox — design tokens
  *
- * Celeste and white, after the reference the brand was chosen against.
- * Rules this system holds to, so pages stay consistent without policing:
- *   · one accent colour, used sparingly — it stops meaning anything if it is everywhere
- *   · rules and spacing carry structure, not boxes and shadows
- *   · radius 2px, never more; no gradients; no emoji in the interface
- *   · logical properties throughout, so the Arabic mirror needs no overrides
+ * Rules this system holds to, all of them decisions the client made explicitly:
+ *   · type stays LIGHT. Jost 200-400 only. The wordmark is a thin geometric
+ *     sans; heavy weights were rejected outright as reading "متين".
+ *   · burgundy is ink and accent, never a saturated field. No dark cards,
+ *     no dark footer — those were rejected too.
+ *   · depth comes from layering and shadow, not from colour blocks.
+ *   · radius is generous but consistent; no gradients as decoration.
+ *   · logical properties throughout, so the Arabic RTL mirror needs no overrides.
  */
 
 :root {
   /* ground */
-  --ground:      #FBFCFD;
-  --ground-2:    #F3F7FA;
-  --ground-3:    #E9F0F7;
+  --ground:      #FCFAF9;
+  --ground-2:    #FBF3F5;
+  --ground-3:    #F8F1F3;
+  --surface:     #FFFFFF;
 
   /* ink */
-  --ink:         #0E1620;
-  --ink-2:       #33414F;
-  --muted:       #6B7C8C;
-  --muted-soft:  #93A2B0;
+  --ink:         #241A1F;
+  --ink-2:       #5C4E55;
+  --muted:       #6B5A62;
+  --muted-2:     #7C6B73;
+  --faint:       #A6828F;
+  --faintest:    #C4A2AE;
 
-  /* accent — celeste */
-  --sky:         #7CB9E8;
-  --sky-deep:    #2E6FA8;   /* passes contrast on --ground for text and links */
-  --sky-wash:    #EAF3FB;
-  --sky-line:    #B9D8F0;
+  /* burgundy — accent and deep, never a field */
+  --wine:        #8E2547;
+  --wine-deep:   #5E2138;
+  --wine-darkest:#4A1226;
+  --wine-tint:   #FBF3F5;
+  --wine-line:   #E3CFD6;
 
   /* structure */
-  --rule:        #DCE6EF;
-  --rule-soft:   #EDF2F7;
-  --radius:      2px;
+  --rule:        #EFE2E6;
+  --rule-soft:   #F2E7EA;
+  --rule-faint:  #F0E2E6;
 
   /* type */
-  --display:  "Space Grotesk", "IBM Plex Sans Arabic", system-ui, sans-serif;
-  --body:     "Inter", "IBM Plex Sans Arabic", system-ui, sans-serif;
-  --mono:     "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --display: "Jost", "Century Gothic", system-ui, sans-serif;
+  --body:    "Manrope", system-ui, -apple-system, sans-serif;
+  --arabic:  "Tajawal", system-ui, sans-serif;
 
-  --fs-display: clamp(2.4rem, 1.4rem + 3.6vw, 4.2rem);
-  --fs-h1:      clamp(1.9rem, 1.3rem + 2.2vw, 3rem);
-  --fs-h2:      clamp(1.3rem, 1.1rem + 0.8vw, 1.7rem);
-  --fs-h3:      1.05rem;
-  --fs-body:    1rem;
-  --fs-small:   0.875rem;
-  --fs-micro:   0.75rem;
+  --fs-hero:   clamp(2.6rem, 1.5rem + 3.6vw, 4.875rem);
+  --fs-h1:     clamp(2.2rem, 1.5rem + 2.4vw, 4.75rem);
+  --fs-h2:     clamp(1.85rem, 1.4rem + 1.4vw, 2.875rem);
+  --fs-h3:     clamp(1.15rem, 1.05rem + 0.4vw, 1.375rem);
+  --fs-body:   1rem;
+  --fs-small:  0.875rem;
+  --fs-micro:  0.719rem;
 
-  --lh-head: 1.12;
-  --lh-body: 1.65;
-  --tr-display: -0.022em;
-  --tr-label:   0.14em;
+  --lh-display: 1.04;
+  --lh-body:    1.85;
+  --tr-display: -0.02em;
+  --tr-label:   0.26em;
 
-  /* motion */
-  --dur:  180ms;
+  /* depth — three tiers, used deliberately */
+  --lift-1: 0 1px 2px rgba(94,33,56,.04), 0 10px 24px -10px rgba(94,33,56,.13);
+  --lift-2: 0 2px 4px rgba(94,33,56,.05), 0 20px 44px -16px rgba(94,33,56,.18);
+
+  --radius:    20px;
+  --radius-lg: 26px;
+  --radius-pill: 100px;
+
+  --dur:  200ms;
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 
-  /* layout */
-  --measure: 68ch;
-  --gutter:  clamp(1.25rem, 0.6rem + 2.6vw, 3.5rem);
-  --wide:    1140px;
-
-  color-scheme: light dark;
+  --gutter: clamp(1.25rem, 0.5rem + 3vw, 3.875rem);
+  --wide:   1440px;
+  --measure: 46ch;
 }
 
-/* Dark is a real mode, not an inversion: the celeste stays the accent and the
-   ground goes to a blue-black that the same accent still reads against. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --ground:     #0B1119;
-    --ground-2:   #111A24;
-    --ground-3:   #18232F;
-    --ink:        #EAF1F8;
-    --ink-2:      #B7C6D4;
-    --muted:      #8496A6;
-    --muted-soft: #63748333;
-    --sky-deep:   #8CC5F0;
-    --sky-wash:   #12202D;
-    --sky-line:   #23394C;
-    --rule:       #1E2C3A;
-    --rule-soft:  #172330;
-  }
+/* Arabic pages get their own leading: Arabic needs more than Latin at the
+   same size, and one shared value makes one of the two look wrong. */
+[dir="rtl"] {
+  --body: "Tajawal", system-ui, sans-serif;
+  --lh-body: 2;
 }
 
-:root[data-theme="dark"] {
-  --ground:     #0B1119;
-  --ground-2:   #111A24;
-  --ground-3:   #18232F;
-  --ink:        #EAF1F8;
-  --ink-2:      #B7C6D4;
-  --muted:      #8496A6;
-  --sky-deep:   #8CC5F0;
-  --sky-wash:   #12202D;
-  --sky-line:   #23394C;
-  --rule:       #1E2C3A;
-  --rule-soft:  #172330;
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--body);
+  font-weight: 300;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
-/* primitives ------------------------------------------------------------- */
+h1, h2, h3 { font-family: var(--display); font-weight: 200; margin: 0; line-height: var(--lh-display); }
+h1 { font-size: var(--fs-h1); letter-spacing: var(--tr-display); }
+h2 { font-size: var(--fs-h2); letter-spacing: -0.015em; }
+h3 { font-size: var(--fs-h3); font-weight: 400; line-height: 1.3; }
+[dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3 { font-family: var(--arabic); line-height: 1.3; letter-spacing: 0; }
 
-.mono  { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+p { margin: 0 0 1em; max-inline-size: var(--measure); }
+a { color: var(--wine); text-decoration: none; transition: color var(--dur) var(--ease); }
+a:hover { color: var(--wine-deep); }
+ul { margin: 0; padding: 0; list-style: none; }
+img, svg { max-inline-size: 100%; }
+
+/* Numerals and Latin identifiers stay LTR inside RTL text. */
+.num { font-family: var(--display); direction: ltr; unicode-bidi: isolate; font-variant-numeric: tabular-nums; }
+
 .label {
-  font-family: var(--mono);
+  font-family: var(--display);
   font-size: var(--fs-micro);
+  font-weight: 400;
   letter-spacing: var(--tr-label);
   text-transform: uppercase;
-  color: var(--muted);
-  font-weight: 500;
+  color: var(--faint);
 }
-.rule { border: 0; border-block-start: 1px solid var(--rule); margin: 0; }
+[dir="rtl"] .label { font-family: var(--arabic); letter-spacing: 0.06em; text-transform: none; font-size: 0.78rem; }
 
-/* The mark motif: three vertical strokes. Used as a section opener so the
-   identity shows up in the layout, not only in the logo. */
-.stripes {
-  display: inline-flex;
-  gap: 3px;
-  block-size: 1em;
-  vertical-align: -0.1em;
-}
-.stripes i {
-  inline-size: 3px;
-  background: var(--sky);
-  display: block;
-}
-.stripes i:nth-child(2) { background: var(--sky-deep); }
-.stripes i:nth-child(3) { opacity: 0.45; }
-
-*:focus-visible {
-  outline: 2px solid var(--sky-deep);
-  outline-offset: 3px;
-}
+*:focus-visible { outline: 2px solid var(--wine); outline-offset: 3px; border-radius: 3px; }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }

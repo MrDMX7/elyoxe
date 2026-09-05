@@ -1,46 +1,50 @@
 [
   {
     "slug": "web",
-    "title": "Web products that stay cheap to run",
-    "summary": "Marketing sites, internal tools and customer-facing calculators — built static where static is enough, serverless where it isn't.",
-    "points": [
-      "Bilingual Arabic/English done properly: logical CSS, correct hreflang, no machine-translated filler",
-      "Structured data and technical SEO built into the generator, not bolted on afterwards",
-      "Deploys that verify the live response by content and refuse to publish a short build"
-    ],
-    "proof": "invoiceready.ae runs 102 pages on $0/month of infrastructure."
+    "icon": "browser",
+    "en": {
+      "title": "Web development",
+      "summary": "Marketing sites, internal tools and customer-facing applications, bilingual by default."
+    },
+    "ar": {
+      "title": "تطوير المواقع",
+      "summary": "مواقع تسويقية وأدوات داخلية وتطبيقات تواجه العملاء، ثنائية اللغة افتراضياً."
+    }
   },
   {
     "slug": "ai",
-    "title": "AI where it beats a rule, and not where it doesn't",
-    "summary": "Document extraction, classification, drafting and review pipelines — with the boring parts left deterministic.",
-    "points": [
-      "Deterministic checks stay deterministic; the model handles the judgement a linter cannot make",
-      "Arabic-language work treated as a first-class problem, not an afterthought translation",
-      "Every pipeline ships with the cost per run measured, not estimated"
-    ],
-    "proof": "A 24-check invoice validator that runs in the browser — no upload, no model call, no data-handling conversation."
+    "icon": "node",
+    "en": {
+      "title": "Artificial intelligence",
+      "summary": "Document processing, classification and review pipelines, with Arabic treated as first class."
+    },
+    "ar": {
+      "title": "الذكاء الاصطناعي",
+      "summary": "معالجة المستندات والتصنيف وخطوط المراجعة، والعربية معاملة كلغة أولى لا كترجمة."
+    }
+  },
+  {
+    "slug": "programming",
+    "icon": "code",
+    "en": {
+      "title": "Programming",
+      "summary": "Native Android, backend services and integrations, built for reliability over feature count."
+    },
+    "ar": {
+      "title": "البرمجة",
+      "summary": "أندرويد أصلي وخدمات خلفية وتكاملات، مبنية للموثوقية قبل كثرة الميزات."
+    }
   },
   {
     "slug": "cloud",
-    "title": "AWS architecture and cost engineering",
-    "summary": "Serverless-first builds, and audits of existing accounts that are quietly overspending.",
-    "points": [
-      "S3 + CloudFront + OAC, Lambda, DynamoDB, SES — locked down by default, public by exception",
-      "SPF/DKIM/DMARC and deliverability set up so transactional mail actually arrives",
-      "Infrastructure scripted end to end: domain, certificate, CDN and DNS in one resumable command"
-    ],
-    "proof": "A production site with a fully closed bucket, forced HTTPS and HTTP/3 — for the price of a DNS zone."
-  },
-  {
-    "slug": "mobile",
-    "title": "Android applications",
-    "summary": "Native Android where the hardware matters — sensors, background reliability, offline-first.",
-    "points": [
-      "Background work that survives process death, because most step and tracking bugs live there",
-      "Offline-first by default: no ads, no analytics, no telemetry unless you ask for it",
-      "Correctness held as a checkable invariant rather than a claim in the changelog"
-    ],
-    "proof": "Khutwa's stored history reconciles with its live sensor counter to a delta of exactly zero."
+    "icon": "cloud",
+    "en": {
+      "title": "Cloud technology",
+      "summary": "AWS architecture, deployment automation and cost engineering for systems that must stay up."
+    },
+    "ar": {
+      "title": "التقنيات السحابية",
+      "summary": "معمارية AWS وأتمتة النشر وهندسة التكلفة لأنظمة يجب أن تبقى عاملة."
+    }
   }
 ]
