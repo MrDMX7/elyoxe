@@ -1,0 +1,89 @@
+[
+  {
+    "slug": "invoiceready",
+    "title": "InvoiceReady",
+    "tagline": "A bilingual compliance tool for the UAE e-invoicing mandate, designed and shipped end to end.",
+    "role": "Sole designer, engineer and operator",
+    "period": "Aug 2026 – present",
+    "status": "Live",
+    "problem": "The UAE begins phasing in mandatory e-invoicing from 2026. Businesses must pick an accredited service provider and prove their invoices validate — but the provider market is opaque, and nothing existed to check an invoice before submitting it.",
+    "approach": [
+      "Researched all 44 accredited providers from primary sources only. Any field without a public source is published as “not disclosed” rather than guessed — a rule enforced in the build, which fails the whole run on a missing field.",
+      "Built a UBL/XML invoice validator that runs entirely in the browser. Nothing is uploaded, so a finance team can check a real invoice without a data-handling conversation.",
+      "Wrote a static site generator in plain Python. No Node toolchain, no dependencies — the whole site builds on a phone in seconds."
+    ],
+    "evidence": [
+      { "figure": "102", "label": "pages, Arabic-first with an English mirror" },
+      { "figure": "269", "label": "JSON-LD structured-data blocks" },
+      { "figure": "24", "label": "validation checks, PASS / WARN / FAIL" },
+      { "figure": "$0", "label": "monthly infrastructure cost" },
+      { "figure": "44/44", "label": "providers contacted, zero bounces or complaints" }
+    ],
+    "stack": ["Python", "S3 + CloudFront (OAC)", "ACM", "Route 53", "API Gateway", "Lambda", "DynamoDB", "SES", "Schema.org", "IndexedDB"],
+    "detail": [
+      { "h": "Architecture", "p": "Static site on S3 behind CloudFront with Origin Access Control — the bucket is fully closed to the public and reachable only through the distribution. Forms hit API Gateway → Lambda → DynamoDB, with SES sending bilingual transactional mail. HTTP/2 and HTTP/3, TLS 1.2 minimum, forced HTTPS." },
+      { "h": "Deliverability", "p": "SPF, DKIM and DMARC with aggregate reporting, plus SES production access. A 44-recipient outreach campaign ran across four batches with zero bounces and zero complaints." },
+      { "h": "Bilingual engineering", "p": "Arabic-first RTL using logical CSS properties throughout. Two i18n mechanisms, applied deliberately: article pairs have real /en/ URLs and carry hreflang; tool pages toggle language on a single URL and correctly carry none." },
+      { "h": "Deployment", "p": "One command builds, publishes, invalidates the CDN and verifies the live response by content — not by HTTP status, which a stale cache will happily return. A page-count floor aborts the run before any destructive sync if a build came out short." }
+    ],
+    "caveat": "Technical credibility, not commercial: the site is live and complete, but has not yet converted leads. It is shown here as evidence of what I build and ship, not as a business result.",
+    "links": [{ "label": "invoiceready.ae", "href": "https://invoiceready.ae" }]
+  },
+  {
+    "slug": "khutwa",
+    "title": "Khutwa",
+    "tagline": "An Android step counter built around an accuracy invariant that is checked, not assumed.",
+    "role": "Sole engineer",
+    "period": "Aug – Sep 2026",
+    "status": "Complete, pending store release",
+    "problem": "Step counters disagree with each other and with themselves — totals drift when the app is killed, and daily history stops reconciling with the live counter. Most apps hide this. The interesting problem is making the discrepancy impossible rather than invisible.",
+    "approach": [
+      "Two sensors with clearly separated jobs: the hardware step counter is the sole authority on how many steps happened and survives process death; the step detector supplies timestamps for cadence, which drives walk / brisk / run classification.",
+      "Held one invariant: stored daily totals must sum to exactly the live counter. Verified on-device three times with a delta of zero, and exposed as a diagnostics button so the check can be re-run by anyone, any time.",
+      "Set the default goal at 7,000 steps, following a 2025 Lancet Public Health meta-analysis. Onboarding explains that 10,000 came from a 1965 Japanese pedometer campaign, not from evidence."
+    ],
+    "evidence": [
+      { "figure": "7,600", "label": "lines of Kotlin across 42 files" },
+      { "figure": "0", "label": "delta between stored history and live counter" },
+      { "figure": "6", "label": "Jetpack Compose screens" },
+      { "figure": "1", "label": "file that opens a network socket — map tiles" },
+      { "figure": "0", "label": "ads, analytics or telemetry" }
+    ],
+    "stack": ["Kotlin", "Jetpack Compose", "Room", "SensorManager", "AlarmManager", "Foreground Services", "TTS", "App Widgets"],
+    "detail": [
+      { "h": "Sensor engine", "p": "TYPE_STEP_COUNTER is polled on 25-minute AlarmManager checkpoints and treated as the only source of truth for totals, so a killed process loses nothing. TYPE_STEP_DETECTOR batches in hardware on a 60-second window to supply the timing data that totals alone cannot give." },
+      { "h": "Derived metrics", "p": "Minute buckets and bouts, peak-30 cadence, barometer-based gradient, ACSM VO2 calorie equations, and a stride-length model refit per user by least squares against cadence." },
+      { "h": "Privacy posture", "p": "No ads, no analytics, no telemetry. Root access is optional everywhere it is used. Exactly one file in the codebase opens a network socket, and it fetches map tiles." },
+      { "h": "Testing", "p": "Unit tests cover the bout-detection and cadence logic — the two places where a silent error would corrupt history without ever surfacing to the user." }
+    ],
+    "caveat": "Currently a debug-signed build with Arabic-only strings. Release signing and store listing are the remaining work, not new engineering.",
+    "links": [{ "label": "github.com/MrDMX7/khutwa", "href": "https://github.com/MrDMX7/khutwa" }]
+  },
+  {
+    "slug": "quant-research-method",
+    "title": "Quantitative research method",
+    "tagline": "A year of systematic strategy research, and what it takes to let the data say no.",
+    "role": "Sole researcher and engineer",
+    "period": "2026",
+    "status": "Ongoing",
+    "problem": "Backtests are easy to make profitable and hard to trust. Almost every failure mode in systematic trading is a way of fooling yourself: fitting noise, testing until something passes, or grading a result against the wrong benchmark. The engineering problem is building a process that can return a negative answer and be believed.",
+    "approach": [
+      "Pre-register each hypothesis before testing it, so a result cannot be reinterpreted after the fact. Nine consecutive hypotheses have been recorded and falsified.",
+      "Validate out-of-sample: walk-forward across time, plus a cross-sectional holdout of instruments never used in development.",
+      "Run an empirical null control — the same pipeline against data with no signal in it — to establish what a false positive looks like before trusting a true one.",
+      "Write findings down, including the ones that invalidate earlier work: a misleading t-statistic in my own dashboard, and a validated result that turned out to have been graded against the wrong venue."
+    ],
+    "evidence": [
+      { "figure": "9", "label": "pre-registered hypotheses, all falsified and documented" },
+      { "figure": "3", "label": "independent out-of-sample checks before any result is kept" },
+      { "figure": "1", "label": "written policy file governing what may be deployed" }
+    ],
+    "stack": ["Python", "pandas", "NumPy", "SQLite", "EC2", "S3", "systemd", "REST + WebSocket market data"],
+    "detail": [
+      { "h": "Governance", "p": "A policy file defines what may run and under what conditions, backed by a kill switch and automated off-host backups. The constraints are written down before they are needed, not after something goes wrong." },
+      { "h": "Why the negatives matter", "p": "The useful output of this work is a documented map of what does not work and why — including corrections to my own earlier conclusions. A method that has never produced a negative result has not been tested; it has been fitted." }
+    ],
+    "caveat": "Presented as methodology only. No performance figures are shown, and none should be inferred — a research process is a transferable skill, a trading record is not a portfolio piece.",
+    "links": []
+  }
+]

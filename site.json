@@ -1,0 +1,32 @@
+{
+  "name": "elyox",
+  "domain": "elyox.dev",
+  "base_url": "https://elyox.dev",
+  "lang": "en",
+  "dir": "ltr",
+
+  "_comment_src_out": "src_dir != out_dir here, unlike invoiceready. src/ holds hand-authored assets, dist/ is pure build output, so deploy-site.sh may clean it before every build.",
+  "src_dir": "src",
+  "out_dir": "dist",
+
+  "generate": ["python3 build/generate.py"],
+  "min_html_count": 8,
+
+  "aws": {
+    "region": "ap-south-1",
+    "bucket": "elyox-574771023173",
+    "distribution_id": "",
+    "zone_id": ""
+  },
+
+  "verify": [
+    { "path": "/",                            "contains": "Elyox" },
+    { "path": "/work/invoiceready.html",      "contains": "102" },
+    { "path": "/work/khutwa.html",            "contains": "delta" },
+    { "path": "/work/quant-research-method.html", "contains": "falsified" },
+    { "path": "/services.html",               "contains": "AWS" },
+    { "path": "/ar/",                         "contains": "dir=\"rtl\"" },
+    { "path": "/sitemap.xml",                 "contains": "<urlset" },
+    { "path": "/robots.txt",                  "contains": "Sitemap" }
+  ]
+}

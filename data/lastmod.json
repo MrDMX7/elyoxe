@@ -1,0 +1,34 @@
+{
+ "about.html": {
+  "date": "2026-09-05",
+  "sha": "e6282ed2993ee936"
+ },
+ "ar/index.html": {
+  "date": "2026-09-05",
+  "sha": "5ed3dd203c093546"
+ },
+ "contact.html": {
+  "date": "2026-09-05",
+  "sha": "0fa0743708849522"
+ },
+ "index.html": {
+  "date": "2026-09-05",
+  "sha": "f215c947331f8299"
+ },
+ "services.html": {
+  "date": "2026-09-05",
+  "sha": "bee2cee9577bd9e0"
+ },
+ "work/invoiceready.html": {
+  "date": "2026-09-05",
+  "sha": "a7ce45b40e296708"
+ },
+ "work/khutwa.html": {
+  "date": "2026-09-05",
+  "sha": "e36c01cd3b8541c4"
+ },
+ "work/quant-research-method.html": {
+  "date": "2026-09-05",
+  "sha": "a0099d26922dd81f"
+ }
+}

@@ -1,0 +1,136 @@
+/* Elyox — design tokens
+ *
+ * Celeste and white, after the reference the brand was chosen against.
+ * Rules this system holds to, so pages stay consistent without policing:
+ *   · one accent colour, used sparingly — it stops meaning anything if it is everywhere
+ *   · rules and spacing carry structure, not boxes and shadows
+ *   · radius 2px, never more; no gradients; no emoji in the interface
+ *   · logical properties throughout, so the Arabic mirror needs no overrides
+ */
+
+:root {
+  /* ground */
+  --ground:      #FBFCFD;
+  --ground-2:    #F3F7FA;
+  --ground-3:    #E9F0F7;
+
+  /* ink */
+  --ink:         #0E1620;
+  --ink-2:       #33414F;
+  --muted:       #6B7C8C;
+  --muted-soft:  #93A2B0;
+
+  /* accent — celeste */
+  --sky:         #7CB9E8;
+  --sky-deep:    #2E6FA8;   /* passes contrast on --ground for text and links */
+  --sky-wash:    #EAF3FB;
+  --sky-line:    #B9D8F0;
+
+  /* structure */
+  --rule:        #DCE6EF;
+  --rule-soft:   #EDF2F7;
+  --radius:      2px;
+
+  /* type */
+  --display:  "Space Grotesk", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  --body:     "Inter", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  --mono:     "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --fs-display: clamp(2.4rem, 1.4rem + 3.6vw, 4.2rem);
+  --fs-h1:      clamp(1.9rem, 1.3rem + 2.2vw, 3rem);
+  --fs-h2:      clamp(1.3rem, 1.1rem + 0.8vw, 1.7rem);
+  --fs-h3:      1.05rem;
+  --fs-body:    1rem;
+  --fs-small:   0.875rem;
+  --fs-micro:   0.75rem;
+
+  --lh-head: 1.12;
+  --lh-body: 1.65;
+  --tr-display: -0.022em;
+  --tr-label:   0.14em;
+
+  /* motion */
+  --dur:  180ms;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  /* layout */
+  --measure: 68ch;
+  --gutter:  clamp(1.25rem, 0.6rem + 2.6vw, 3.5rem);
+  --wide:    1140px;
+
+  color-scheme: light dark;
+}
+
+/* Dark is a real mode, not an inversion: the celeste stays the accent and the
+   ground goes to a blue-black that the same accent still reads against. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground:     #0B1119;
+    --ground-2:   #111A24;
+    --ground-3:   #18232F;
+    --ink:        #EAF1F8;
+    --ink-2:      #B7C6D4;
+    --muted:      #8496A6;
+    --muted-soft: #63748333;
+    --sky-deep:   #8CC5F0;
+    --sky-wash:   #12202D;
+    --sky-line:   #23394C;
+    --rule:       #1E2C3A;
+    --rule-soft:  #172330;
+  }
+}
+
+:root[data-theme="dark"] {
+  --ground:     #0B1119;
+  --ground-2:   #111A24;
+  --ground-3:   #18232F;
+  --ink:        #EAF1F8;
+  --ink-2:      #B7C6D4;
+  --muted:      #8496A6;
+  --sky-deep:   #8CC5F0;
+  --sky-wash:   #12202D;
+  --sky-line:   #23394C;
+  --rule:       #1E2C3A;
+  --rule-soft:  #172330;
+}
+
+/* primitives ------------------------------------------------------------- */
+
+.mono  { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.label {
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+}
+.rule { border: 0; border-block-start: 1px solid var(--rule); margin: 0; }
+
+/* The mark motif: three vertical strokes. Used as a section opener so the
+   identity shows up in the layout, not only in the logo. */
+.stripes {
+  display: inline-flex;
+  gap: 3px;
+  block-size: 1em;
+  vertical-align: -0.1em;
+}
+.stripes i {
+  inline-size: 3px;
+  background: var(--sky);
+  display: block;
+}
+.stripes i:nth-child(2) { background: var(--sky-deep); }
+.stripes i:nth-child(3) { opacity: 0.45; }
+
+*:focus-visible {
+  outline: 2px solid var(--sky-deep);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
