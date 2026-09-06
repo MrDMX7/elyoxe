@@ -1,7 +1,7 @@
 {
   "name": "elyoxe",
-  "domain": "mrdmx7.github.io",
-  "base_url": "https://mrdmx7.github.io/elyoxe",
+  "domain": "elyoxe.com",
+  "base_url": "https://elyoxe.com",
   "lang": "en",
   "dir": "ltr",
   "_comment_src_out": "src_dir != out_dir here, unlike invoiceready. src/ holds hand-authored assets, dist/ is pure build output, so deploy-site.sh may clean it before every build.",
@@ -14,8 +14,8 @@
   "aws": {
     "region": "ap-south-1",
     "bucket": "elyoxe-574771023173",
-    "distribution_id": "",
-    "zone_id": ""
+    "distribution_id": "E2QY4WECG1P5WO",
+    "zone_id": "Z092471334IO8THU6C3A9"
   },
   "verify": [
     {
@@ -51,6 +51,6 @@
       "contains": "Sitemap"
     }
   ],
-  "_comment_domain": "Temporary: GitHub Pages until elyoxe.com is registered (external registrar, planned Oct 2026). Then set domain=elyoxe.com, base_url=https://elyoxe.com and run new-site.sh elyoxe.com elyoxe --existing-domain.",
-  "contact_endpoint": "https://hybw54y21l.execute-api.ap-south-1.amazonaws.com/"
+  "contact_endpoint": "https://hybw54y21l.execute-api.ap-south-1.amazonaws.com/",
+  "_comment_domain": "elyoxe.com registered at Namecheap 2026-09-06; DNS on Route53 (zone from new-site.sh --existing-domain). GitHub Pages copy at mrdmx7.github.io/elyoxe is now a mirror only."
 }
