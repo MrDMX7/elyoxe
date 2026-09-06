@@ -5,19 +5,19 @@
  },
  "ar/index.html": {
   "date": "2026-09-06",
-  "sha": "e8c955ba6edc8431"
+  "sha": "939337a2105673d6"
  },
  "ar/work/invoiceready.html": {
   "date": "2026-09-06",
-  "sha": "5a09e7781731116d"
+  "sha": "e92d305e3cc92477"
  },
  "ar/work/khutwa.html": {
   "date": "2026-09-06",
-  "sha": "11d23d53f4122338"
+  "sha": "3010786f1c5f969e"
  },
  "ar/work/quantitative-method.html": {
   "date": "2026-09-06",
-  "sha": "19c40392485acf1f"
+  "sha": "baba088ec5563a8e"
  },
  "contact.html": {
   "date": "2026-09-05",
@@ -25,7 +25,7 @@
  },
  "index.html": {
   "date": "2026-09-06",
-  "sha": "4a2c20118f796c85"
+  "sha": "a6b4bea5fc7d690b"
  },
  "services.html": {
   "date": "2026-09-05",
@@ -33,11 +33,11 @@
  },
  "work/invoiceready.html": {
   "date": "2026-09-06",
-  "sha": "367dffa70f71c65c"
+  "sha": "70d731a7b1dace91"
  },
  "work/khutwa.html": {
   "date": "2026-09-06",
-  "sha": "29ba38c9bb0c4da4"
+  "sha": "008f7efcba3480c6"
  },
  "work/quant-research-method.html": {
   "date": "2026-09-05",
@@ -45,6 +45,6 @@
  },
  "work/quantitative-method.html": {
   "date": "2026-09-06",
-  "sha": "65f9da4a1eb74414"
+  "sha": "d5e8e454dffa18f5"
  }
 }

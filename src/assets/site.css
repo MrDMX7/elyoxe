@@ -165,3 +165,21 @@
 @media (max-width: 560px) {
   .services, .figures { grid-template-columns: 1fr; }
 }
+
+/* ── contact form ─────────────────────────────────────────────────────── */
+.form { display: grid; gap: .875rem; }
+.form label { display: grid; gap: .375rem; font-family: var(--display); font-size: .8125rem; letter-spacing: .04em; color: var(--muted); }
+[dir="rtl"] .form label { font-family: var(--arabic); letter-spacing: 0; }
+.form input, .form textarea {
+  font: inherit; font-weight: 300; color: var(--ink); background: var(--ground);
+  border: 1px solid var(--rule); border-radius: 14px; padding: .8rem 1rem;
+  inline-size: 100%; transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.form textarea { min-block-size: 8.5rem; resize: vertical; }
+.form input:focus, .form textarea:focus { outline: none; border-color: var(--wine-line); box-shadow: 0 0 0 4px var(--wine-tint); }
+.form .hp { position: absolute; inset-inline-start: -9999px; block-size: 0; overflow: hidden; }
+.form-foot { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.form-note { font-size: .78rem; color: var(--faint); margin: 0; }
+.form-status { font-size: .9rem; margin: .25rem 0 0; min-block-size: 1.4em; }
+.form-status.ok { color: var(--wine); }
+.form-status.err { color: #9A3B2E; }

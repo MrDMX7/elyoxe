@@ -51,5 +51,6 @@
       "contains": "Sitemap"
     }
   ],
-  "_comment_domain": "Temporary: GitHub Pages until elyoxe.com is registered (external registrar, planned Oct 2026). Then set domain=elyoxe.com, base_url=https://elyoxe.com and run new-site.sh elyoxe.com elyoxe --existing-domain."
+  "_comment_domain": "Temporary: GitHub Pages until elyoxe.com is registered (external registrar, planned Oct 2026). Then set domain=elyoxe.com, base_url=https://elyoxe.com and run new-site.sh elyoxe.com elyoxe --existing-domain.",
+  "contact_endpoint": "https://hybw54y21l.execute-api.ap-south-1.amazonaws.com/"
 }

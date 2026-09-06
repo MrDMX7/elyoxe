@@ -8,7 +8,12 @@
     "lead": "Elyoxe designs, builds and operates production software for businesses in the United Arab Emirates — covering architecture, implementation, cloud infrastructure and the operations that follow delivery.",
     "cta_primary": "Discuss a project",
     "cta_secondary": "View selected work",
-    "nav": { "services": "Services", "work": "Work", "approach": "Approach", "contact": "Contact" },
+    "nav": {
+      "services": "Services",
+      "work": "Work",
+      "approach": "Approach",
+      "contact": "Contact"
+    },
     "lang_switch": "عربي",
     "lang_switch_code": "ar",
     "stat_label": "Production reference",
@@ -43,7 +48,16 @@
     "screenshot_slot": "Screenshot slot",
     "screenshot_note": "The live interface goes here.",
     "not_found": "That page does not exist.",
-    "not_found_cta": "Go to the homepage"
+    "not_found_cta": "Go to the homepage",
+    "form_name": "Name",
+    "form_email": "Email",
+    "form_message": "What is not working today?",
+    "form_send": "Send",
+    "form_sending": "Sending…",
+    "form_done": "Received. A reply follows within one working day.",
+    "form_fail": "That did not go through. Try again, or use the GitHub profile to get in touch.",
+    "form_privacy": "Nothing is stored beyond the message itself.",
+    "foot_contact_form": "Contact form"
   },
   "ar": {
     "brand": "Elyoxe",
@@ -54,7 +68,12 @@
     "lead": "تصمّم Elyoxe وتبني وتشغّل برمجيات إنتاجية لمنشآت في دولة الإمارات العربية المتحدة — تغطي المعمارية والتنفيذ والبنية السحابية والتشغيل الذي يلي التسليم.",
     "cta_primary": "ناقش مشروعك",
     "cta_secondary": "شاهد الأعمال",
-    "nav": { "services": "الخدمات", "work": "الأعمال", "approach": "المنهجية", "contact": "تواصل" },
+    "nav": {
+      "services": "الخدمات",
+      "work": "الأعمال",
+      "approach": "المنهجية",
+      "contact": "تواصل"
+    },
     "lang_switch": "EN",
     "lang_switch_code": "en",
     "stat_label": "مرجع إنتاجي",
@@ -89,6 +108,15 @@
     "screenshot_slot": "خانة لقطة الشاشة",
     "screenshot_note": "الواجهة الحيّة تُوضع هنا.",
     "not_found": "هذه الصفحة غير موجودة.",
-    "not_found_cta": "الصفحة الرئيسية"
+    "not_found_cta": "الصفحة الرئيسية",
+    "form_name": "الاسم",
+    "form_email": "البريد الإلكتروني",
+    "form_message": "ما الذي لا يعمل اليوم؟",
+    "form_send": "إرسال",
+    "form_sending": "جارٍ الإرسال…",
+    "form_done": "وصلت الرسالة. الرد خلال يوم عمل واحد.",
+    "form_fail": "لم تُرسل الرسالة. حاول مرة أخرى أو تواصل عبر حساب GitHub.",
+    "form_privacy": "لا يُحفظ شيء سوى الرسالة نفسها.",
+    "foot_contact_form": "نموذج التواصل"
   }
 }

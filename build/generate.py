@@ -62,6 +62,12 @@ COPY, SERVICES, APPROACH, CASES = (load("copy.json"), load("services.json"),
 
 FONTS = google_fonts(GOOGLE_FONTS)
 
+# Written into site.json by automation/contact-form/deploy.sh
+with open(os.path.join(PROJ, "site.json"), encoding="utf-8") as _fh:
+    CONTACT_ENDPOINT = json.load(_fh).get("contact_endpoint", "")
+if not CONTACT_ENDPOINT:
+    raise SystemExit("site.json has no contact_endpoint — run automation/contact-form/deploy.sh")
+
 E = escape
 
 ICONS = {
@@ -110,7 +116,7 @@ def footer(lang, root):
         f'<div><div class="label" style="margin-block-end:1rem">{E(c["foot_services"])}</div>'
         f'<div class="foot-links">{svc}</div></div>'
         f'<div><div class="label" style="margin-block-end:1rem">{E(c["foot_contact"])}</div>'
-        f'<div class="foot-links"><a href="mailto:hello@elyoxe.com">hello@elyoxe.com</a>'
+        f'<div class="foot-links"><a href="{root}#contact">{E(c["foot_contact_form"])}</a>'
         f'<a href="https://github.com/MrDMX7">github.com/MrDMX7</a></div></div>'
         f'</div>'
         f'<div class="foot-bottom"><span class="num">© 2026 Elyoxe</span>'
@@ -214,6 +220,7 @@ def page(*, lang, title, description, canonical, body, root="", current="", alte
         title=title, description=description, canonical=canonical,
         lang=lang, dir="rtl" if lang == "ar" else "ltr", root=root,
         css=["assets/tokens.css", "assets/site.css"],
+        js=["assets/contact.js"],
         fonts=FONTS, head_extra=alt, ldjson=ldjson,
         favicon='<link rel="icon" href="assets/mark.svg" type="image/svg+xml">'.replace(
             'href="assets/', f'href="{root}assets/'),
@@ -271,14 +278,23 @@ def approach_block(lang):
 
 
 def contact_block(lang):
+    """Form → Lambda Function URL → SES → owner's inbox. No address on the page:
+    the domain is not registered yet, so a mailto would bounce."""
     c = COPY[lang]
     return (
         f'<div class="contact"><div><h2>{E(c["contact_title_a"])}<br>{E(c["contact_title_b"])}</h2>'
         f'<p>{E(c["contact_lead"])}</p></div>'
-        f'<div class="contact-actions">'
-        f'<a class="btn" href="mailto:hello@elyoxe.com">hello@elyoxe.com</a>'
-        f'<a class="btn btn-ghost" href="mailto:hello@elyoxe.com?subject=Call">{E(c["contact_call"])}</a>'
-        f'</div></div>')
+        f'<form class="form" method="post" action="{CONTACT_ENDPOINT}" novalidate '
+        f'data-endpoint="{CONTACT_ENDPOINT}" data-lang="{lang}" '
+        f'data-sending="{E(c["form_sending"])}" data-done="{E(c["form_done"])}" data-fail="{E(c["form_fail"])}">'
+        f'<label>{E(c["form_name"])}<input name="name" type="text" required maxlength="120" autocomplete="name"></label>'
+        f'<label>{E(c["form_email"])}<input name="email" type="email" required maxlength="200" autocomplete="email"></label>'
+        f'<label>{E(c["form_message"])}<textarea name="message" required maxlength="4000"></textarea></label>'
+        f'<label class="hp" aria-hidden="true">Website<input name="website" type="text" tabindex="-1" autocomplete="off"></label>'
+        f'<div class="form-foot"><button class="btn" type="submit">{E(c["form_send"])}</button>'
+        f'<p class="form-note">{E(c["form_privacy"])}</p></div>'
+        f'<p class="form-status" role="status" aria-live="polite"></p>'
+        f'</form></div>')
 
 
 def home(lang):
