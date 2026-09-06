@@ -30,6 +30,21 @@ sys.path.insert(0, _find_infra(os.path.dirname(os.path.abspath(__file__))))
 from ssg import (SiteConfig, render_page, google_fonts, LastmodLedger,
                  build_sitemap, write_sitemap)
 
+# The brand (mark, palette, fonts) lives in web/_kit so every Elyoxe property
+# draws the same logo. Found the same way as infra: walk up, never count.
+def _find_kit(start):
+    d = start
+    while True:
+        if os.path.isdir(os.path.join(d, "web", "_kit")):
+            return os.path.join(d, "web", "_kit")
+        parent = os.path.dirname(d)
+        if parent == d:
+            raise RuntimeError("web/_kit not found above " + start)
+        d = parent
+
+sys.path.insert(0, _find_kit(os.path.dirname(os.path.abspath(__file__))))
+from brand import mark, GOOGLE_FONTS
+
 PROJ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(PROJ, "data")
 SRC = os.path.join(PROJ, "src")
@@ -45,45 +60,9 @@ load = lambda n: json.load(open(os.path.join(DATA, n), encoding="utf-8"))
 COPY, SERVICES, APPROACH, CASES = (load("copy.json"), load("services.json"),
                                    load("approach.json"), load("case-studies.json"))
 
-FONTS = google_fonts([
-    "Jost:wght@200;300;400;500",
-    "Manrope:wght@300;400;500",
-    "Tajawal:wght@200;300;400;500",
-])
+FONTS = google_fonts(GOOGLE_FONTS)
 
 E = escape
-
-# ── brand mark ──────────────────────────────────────────────────────────────
-def mark(size, uid):
-    """The EX monogram. Fine circuitry is dropped below 40px — invisible there,
-    and it only muddies the silhouette."""
-    fine = "" if size < 40 else (
-        f'<g fill="none" stroke="url(#d{uid})" stroke-width="2.4" stroke-linecap="round">'
-        f'<path d="M30 24 q10 -13 24 -9"/><path d="M36 17 v-7"/>'
-        f'<path d="M46 82 q-14 8 -18 -4"/></g>'
-        f'<g fill="#FFF" stroke="url(#d{uid})" stroke-width="2.2">'
-        f'<circle cx="36" cy="9" r="3"/><circle cx="54" cy="15" r="3"/>'
-        f'<circle cx="28" cy="78" r="3"/></g>'
-    )
-    return (
-        f'<svg viewBox="0 0 100 100" width="{size}" height="{size}" style="display:block" '
-        f'role="img" aria-label="Elyoxe"><defs>'
-        f'<linearGradient id="d{uid}" x1="0" y1="1" x2="1" y2="0">'
-        f'<stop offset="0%" stop-color="#4A1226"/><stop offset="100%" stop-color="#8E2547"/></linearGradient>'
-        f'<linearGradient id="a{uid}" x1="0" y1="1" x2="1" y2="0">'
-        f'<stop offset="0%" stop-color="#6B1B33"/><stop offset="55%" stop-color="#9C3352"/>'
-        f'<stop offset="100%" stop-color="#C05C79"/></linearGradient></defs>'
-        f'<path fill="url(#d{uid})" d="M8 26 h30 v11 H19 v9 h16 v11 H19 v9 h19 v11 H8 z"/>'
-        f'{fine}'
-        # lowercase x at x-height, italic (12°); the arrow shares the slant
-        f'<g transform="translate(12 0) skewX(-12)">'
-        f'<path fill="url(#d{uid})" d="M44 46 h11 L80 77 h-11 z" opacity=".92"/>'
-        f'<path fill="url(#d{uid})" d="M44 77 h11 L80 46 h-11 z"/>'
-        f'<path d="M50 76 L84 34" stroke="url(#a{uid})" stroke-width="3.6" stroke-linecap="round" fill="none"/>'
-        f'<path fill="url(#a{uid})" d="M90 27 L88.6 37.5 L80 30.5 z"/>'
-        f'<circle cx="62" cy="61.5" r="2.6" fill="#FCFAF9"/>'
-        f'</g></svg>'
-    )
 
 ICONS = {
     "browser": '<rect x="2" y="4" width="20" height="15" rx="2"/><path d="M2 9h20M6 6.5h.01M9 6.5h.01"/>',
