@@ -1,7 +1,7 @@
 {
   "name": "elyox",
-  "domain": "elyox.dev",
-  "base_url": "https://elyox.dev",
+  "domain": "mrdmx7.github.io",
+  "base_url": "https://mrdmx7.github.io/elyox",
   "lang": "en",
   "dir": "ltr",
   "_comment_src_out": "src_dir != out_dir here, unlike invoiceready. src/ holds hand-authored assets, dist/ is pure build output, so deploy-site.sh may clean it before every build.",

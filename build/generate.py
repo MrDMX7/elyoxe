@@ -36,6 +36,10 @@ SRC = os.path.join(PROJ, "src")
 SITE = SiteConfig(os.path.join(PROJ, "site.json"))
 OUT = SITE.out_dir
 BASE = SITE.base_url
+# Path component of base_url ("/elyox" on a project page, "" on a root domain).
+# The 404 can be served at any depth, so its link home must be site-absolute.
+from urllib.parse import urlparse
+ROOT_PATH = (urlparse(BASE).path or "").rstrip("/") + "/"
 
 load = lambda n: json.load(open(os.path.join(DATA, n), encoding="utf-8"))
 COPY, SERVICES, APPROACH, CASES = (load("copy.json"), load("services.json"),
@@ -412,7 +416,7 @@ def not_found():
     body = ('<main><section class="wrap" style="padding-block:8rem">'
             '<div class="label">404</div>'
             f'<h1 style="margin-block-start:1rem">{E(c["not_found"])}</h1>'
-            f'<p style="margin-block-start:2rem"><a class="btn" href="/">{E(c["not_found_cta"])}</a></p>'
+            f'<p style="margin-block-start:2rem"><a class="btn" href="{ROOT_PATH}">{E(c["not_found_cta"])}</a></p>'
             '</section></main>')
     return page(lang="en", title="Not found — Elyox", description=c["not_found"],
                 canonical=f"{BASE}/404.html", body=body)
@@ -431,6 +435,7 @@ def main():
     dst = os.path.join(OUT, "assets")
     shutil.rmtree(dst, ignore_errors=True)
     shutil.copytree(os.path.join(SRC, "assets"), dst)
+    open(os.path.join(OUT, ".nojekyll"), "w").close()
     with open(os.path.join(dst, "mark.svg"), "w", encoding="utf-8") as fh:
         fh.write('<?xml version="1.0" encoding="UTF-8"?>\n' + mark(100, "i"))
 
