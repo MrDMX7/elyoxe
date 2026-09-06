@@ -5,18 +5,56 @@
     "period": "2026 — present",
     "media": "browser",
     "figures": [
-      { "value": "102", "accent": false, "en": "pages, Arabic-first with an English mirror", "ar": "صفحة، عربية أولاً مع مرآة إنجليزية" },
-      { "value": "269", "accent": false, "en": "structured-data blocks", "ar": "كتلة بيانات منظَّمة" },
-      { "value": "24",  "accent": false, "en": "validation checks per invoice", "ar": "فحصاً لكل فاتورة" },
-      { "value": "$0",  "accent": true,  "en": "monthly infrastructure cost", "ar": "تكلفة البنية شهرياً" },
-      { "value": "0",   "accent": false, "en": "bounces across the provider outreach", "ar": "ارتداد في مراسلة المزوّدين" }
+      {
+        "value": "102",
+        "accent": false,
+        "en": "pages, Arabic-first with an English mirror",
+        "ar": "صفحة، عربية أولاً مع مرآة إنجليزية"
+      },
+      {
+        "value": "269",
+        "accent": false,
+        "en": "structured-data blocks",
+        "ar": "كتلة بيانات منظَّمة"
+      },
+      {
+        "value": "24",
+        "accent": false,
+        "en": "validation checks per invoice",
+        "ar": "فحصاً لكل فاتورة"
+      },
+      {
+        "value": "$0",
+        "accent": true,
+        "en": "monthly infrastructure cost",
+        "ar": "تكلفة البنية شهرياً"
+      },
+      {
+        "value": "0",
+        "accent": false,
+        "en": "bounces across the provider outreach",
+        "ar": "ارتداد في مراسلة المزوّدين"
+      }
     ],
-    "stack": ["Python", "Amazon S3", "CloudFront", "ACM", "Lambda", "DynamoDB", "SES", "Schema.org", "IndexedDB"],
+    "stack": [
+      "Python",
+      "Amazon S3",
+      "CloudFront",
+      "ACM",
+      "Lambda",
+      "DynamoDB",
+      "SES",
+      "Schema.org",
+      "IndexedDB"
+    ],
     "en": {
       "kicker": "Compliance platform",
       "status": "Live",
       "role": "Design, engineering, operations",
-      "link": { "label": "invoiceready.ae", "href": "https://invoiceready.ae" },
+      "link": {
+        "label": "invoiceready.ae",
+        "href": "https://invoiceready.ae"
+      },
       "tagline": "A bilingual platform for the United Arab Emirates e-invoicing mandate, designed, built and operated end to end.",
       "summary": "A bilingual platform for the UAE e-invoicing mandate, combining a researched directory of accredited providers with a browser-based invoice validator that keeps client data on the client.",
       "problem": "The United Arab Emirates begins phasing in mandatory e-invoicing from 2026. Businesses must appoint an accredited service provider and demonstrate that their invoices validate against the required format. The provider market is opaque, published information is inconsistent, and no independent way existed to check an invoice before submitting it.",
@@ -31,7 +69,10 @@
       "kicker": "منصة امتثال",
       "status": "منشور",
       "role": "تصميم وهندسة وتشغيل",
-      "link": { "label": "invoiceready.ae", "href": "https://invoiceready.ae" },
+      "link": {
+        "label": "invoiceready.ae",
+        "href": "https://invoiceready.ae"
+      },
       "tagline": "منصة ثنائية اللغة لإلزام الفوترة الإلكترونية في دولة الإمارات، صُمّمت وبُنيت وتُشغَّل بالكامل.",
       "summary": "منصة ثنائية اللغة لإلزام الفوترة الإلكترونية في الإمارات، تجمع دليلاً مبحوثاً للمزوّدين المعتمدين مع فاحص فواتير يعمل داخل المتصفح ويُبقي بيانات العميل عند العميل.",
       "problem": "تبدأ دولة الإمارات العربية المتحدة بتطبيق الفوترة الإلكترونية الإلزامية تدريجياً من 2026. على المنشآت تعيين مزوّد خدمة معتمد وإثبات أن فواتيرها تجتاز الصيغة المطلوبة. سوق المزوّدين غير شفاف، والمعلومات المنشورة متضاربة، ولم تكن هناك وسيلة مستقلة لفحص فاتورة قبل إرسالها.",
@@ -41,7 +82,8 @@
         "يُولَّد الموقع ببناء بايثون بلا اعتماديات ويُخدَم كملفات ثابتة، ولهذا لا تكلّف منصة بهذا الحجم شيئاً شهرياً."
       ],
       "caveat": "المنصة مكتملة ومنشورة، لكنها لم تحوّل عملاء تجاريين بعد. تُعرض هنا كدليل على الهندسة والتسليم، لا كنتيجة تجارية."
-    }
+    },
+    "screenshot": "assets/work/invoiceready.webp"
   },
   {
     "slug": "khutwa",
@@ -49,17 +91,47 @@
     "period": "2026",
     "media": "line",
     "figures": [
-      { "value": "7,600", "accent": false, "en": "lines of Kotlin across 42 files", "ar": "سطر Kotlin في 42 ملفاً" },
-      { "value": "0", "accent": true, "en": "delta between stored history and the live counter", "ar": "فرق بين السجل المخزَّن والعدّاد الحي" },
-      { "value": "6", "accent": false, "en": "Jetpack Compose screens", "ar": "شاشة بـJetpack Compose" },
-      { "value": "0", "accent": false, "en": "ads, analytics or telemetry", "ar": "إعلانات أو تتبّع أو تحليلات" }
+      {
+        "value": "7,600",
+        "accent": false,
+        "en": "lines of Kotlin across 42 files",
+        "ar": "سطر Kotlin في 42 ملفاً"
+      },
+      {
+        "value": "0",
+        "accent": true,
+        "en": "delta between stored history and the live counter",
+        "ar": "فرق بين السجل المخزَّن والعدّاد الحي"
+      },
+      {
+        "value": "6",
+        "accent": false,
+        "en": "Jetpack Compose screens",
+        "ar": "شاشة بـJetpack Compose"
+      },
+      {
+        "value": "0",
+        "accent": false,
+        "en": "ads, analytics or telemetry",
+        "ar": "إعلانات أو تتبّع أو تحليلات"
+      }
     ],
-    "stack": ["Kotlin", "Jetpack Compose", "Room", "SensorManager", "AlarmManager", "Foreground Services"],
+    "stack": [
+      "Kotlin",
+      "Jetpack Compose",
+      "Room",
+      "SensorManager",
+      "AlarmManager",
+      "Foreground Services"
+    ],
     "en": {
       "kicker": "Mobile",
       "status": "Complete",
       "role": "Engineering",
-      "link": { "label": "github.com/MrDMX7/khutwa", "href": "https://github.com/MrDMX7/khutwa" },
+      "link": {
+        "label": "github.com/MrDMX7/khutwa",
+        "href": "https://github.com/MrDMX7/khutwa"
+      },
       "tagline": "A native Android activity tracker built around sensor accuracy and complete data privacy.",
       "summary": "A native Android activity tracker built around sensor accuracy and complete data privacy.",
       "problem": "Step counters disagree with each other and with themselves. Totals drift when the application is killed, and daily history stops reconciling with the live sensor. Most applications hide the discrepancy rather than resolve it.",
@@ -74,7 +146,10 @@
       "kicker": "تطبيقات الجوال",
       "status": "مكتمل",
       "role": "هندسة",
-      "link": { "label": "github.com/MrDMX7/khutwa", "href": "https://github.com/MrDMX7/khutwa" },
+      "link": {
+        "label": "github.com/MrDMX7/khutwa",
+        "href": "https://github.com/MrDMX7/khutwa"
+      },
       "tagline": "تطبيق أندرويد أصلي لتتبّع النشاط، مبني حول دقّة الحسّاسات وخصوصية كاملة للبيانات.",
       "summary": "تطبيق أندرويد أصلي لتتبّع النشاط، مبني حول دقّة الحسّاسات وخصوصية كاملة للبيانات.",
       "problem": "عدّادات الخطوات تتضارب فيما بينها ومع نفسها. تنحرف المجاميع عند إنهاء التطبيق، ويتوقّف السجل اليومي عن مطابقة الحسّاس الحي. أغلب التطبيقات تخفي الفارق بدل أن تحلّه.",
@@ -92,11 +167,33 @@
     "period": "2026",
     "media": "scatter",
     "figures": [
-      { "value": "9", "accent": true, "en": "hypotheses pre-registered, every one falsified", "ar": "فرضية مسجَّلة مسبقاً، كلها دُحضت" },
-      { "value": "3", "accent": false, "en": "independent out-of-sample checks", "ar": "فحوص مستقلة خارج العيّنة" },
-      { "value": "1", "accent": false, "en": "written policy governing what may run", "ar": "سياسة مكتوبة تحكم ما يُشغَّل" }
+      {
+        "value": "9",
+        "accent": true,
+        "en": "hypotheses pre-registered, every one falsified",
+        "ar": "فرضية مسجَّلة مسبقاً، كلها دُحضت"
+      },
+      {
+        "value": "3",
+        "accent": false,
+        "en": "independent out-of-sample checks",
+        "ar": "فحوص مستقلة خارج العيّنة"
+      },
+      {
+        "value": "1",
+        "accent": false,
+        "en": "written policy governing what may run",
+        "ar": "سياسة مكتوبة تحكم ما يُشغَّل"
+      }
     ],
-    "stack": ["Python", "pandas", "NumPy", "SQLite", "Amazon EC2", "systemd"],
+    "stack": [
+      "Python",
+      "pandas",
+      "NumPy",
+      "SQLite",
+      "Amazon EC2",
+      "systemd"
+    ],
     "en": {
       "kicker": "Research",
       "status": "Ongoing",

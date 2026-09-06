@@ -1,11 +1,11 @@
 {
   "en": {
-    "brand": "Elyox",
+    "brand": "Elyoxe",
     "tagline": "Development · AI · Programming · Technology",
     "hero_a": "Digital systems,",
     "hero_accent": "engineered",
     "hero_b": "end to end.",
-    "lead": "Elyox designs, builds and operates production software for businesses in the United Arab Emirates — covering architecture, implementation, cloud infrastructure and the operations that follow delivery.",
+    "lead": "Elyoxe designs, builds and operates production software for businesses in the United Arab Emirates — covering architecture, implementation, cloud infrastructure and the operations that follow delivery.",
     "cta_primary": "Discuss a project",
     "cta_secondary": "View selected work",
     "nav": { "services": "Services", "work": "Work", "approach": "Approach", "contact": "Contact" },
@@ -46,12 +46,12 @@
     "not_found_cta": "Go to the homepage"
   },
   "ar": {
-    "brand": "Elyox",
+    "brand": "Elyoxe",
     "tagline": "تطوير مواقع · ذكاء اصطناعي · برمجة · تقنيات",
     "hero_a": "أنظمة رقمية",
     "hero_accent": "مهندَسة",
     "hero_b": "من الطرف إلى الطرف.",
-    "lead": "تصمّم Elyox وتبني وتشغّل برمجيات إنتاجية لمنشآت في دولة الإمارات العربية المتحدة — تغطي المعمارية والتنفيذ والبنية السحابية والتشغيل الذي يلي التسليم.",
+    "lead": "تصمّم Elyoxe وتبني وتشغّل برمجيات إنتاجية لمنشآت في دولة الإمارات العربية المتحدة — تغطي المعمارية والتنفيذ والبنية السحابية والتشغيل الذي يلي التسليم.",
     "cta_primary": "ناقش مشروعك",
     "cta_secondary": "شاهد الأعمال",
     "nav": { "services": "الخدمات", "work": "الأعمال", "approach": "المنهجية", "contact": "تواصل" },

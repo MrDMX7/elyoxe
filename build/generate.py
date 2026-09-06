@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the Elyox site into dist/.
+"""Build the Elyoxe site into dist/.
 
 Both languages are generated from one set of records: adding a project means
 one entry in data/case-studies.json with an en and an ar block, then a deploy.
@@ -36,7 +36,7 @@ SRC = os.path.join(PROJ, "src")
 SITE = SiteConfig(os.path.join(PROJ, "site.json"))
 OUT = SITE.out_dir
 BASE = SITE.base_url
-# Path component of base_url ("/elyox" on a project page, "" on a root domain).
+# Path component of base_url ("/elyoxe" on a project page, "" on a root domain).
 # The 404 can be served at any depth, so its link home must be site-absolute.
 from urllib.parse import urlparse
 ROOT_PATH = (urlparse(BASE).path or "").rstrip("/") + "/"
@@ -67,7 +67,7 @@ def mark(size, uid):
     )
     return (
         f'<svg viewBox="0 0 100 100" width="{size}" height="{size}" style="display:block" '
-        f'role="img" aria-label="Elyox"><defs>'
+        f'role="img" aria-label="Elyoxe"><defs>'
         f'<linearGradient id="d{uid}" x1="0" y1="1" x2="1" y2="0">'
         f'<stop offset="0%" stop-color="#4A1226"/><stop offset="100%" stop-color="#8E2547"/></linearGradient>'
         f'<linearGradient id="a{uid}" x1="0" y1="1" x2="1" y2="0">'
@@ -75,10 +75,14 @@ def mark(size, uid):
         f'<stop offset="100%" stop-color="#C05C79"/></linearGradient></defs>'
         f'<path fill="url(#d{uid})" d="M8 26 h30 v11 H19 v9 h16 v11 H19 v9 h19 v11 H8 z"/>'
         f'{fine}'
-        f'<path fill="url(#d{uid})" d="M40 26 h13 l28 51 H68 z"/>'
-        f'<path fill="url(#d{uid})" d="M68 26 h13 L53 77 H40 z" opacity=".92"/>'
-        f'<path fill="url(#a{uid})" d="M52 74 L86 18 l-13 -1 l17 -9 l3 19 l-7 -6 L60 79 z"/>'
-        f'<circle cx="60" cy="60" r="2.6" fill="url(#d{uid})"/></svg>'
+        # lowercase x at x-height, italic (12°); the arrow shares the slant
+        f'<g transform="translate(12 0) skewX(-12)">'
+        f'<path fill="url(#d{uid})" d="M44 46 h11 L80 77 h-11 z" opacity=".92"/>'
+        f'<path fill="url(#d{uid})" d="M44 77 h11 L80 46 h-11 z"/>'
+        f'<path d="M50 76 L84 34" stroke="url(#a{uid})" stroke-width="3.6" stroke-linecap="round" fill="none"/>'
+        f'<path fill="url(#a{uid})" d="M90 27 L88.6 37.5 L80 30.5 z"/>'
+        f'<circle cx="62" cy="61.5" r="2.6" fill="#FCFAF9"/>'
+        f'</g></svg>'
     )
 
 ICONS = {
@@ -106,7 +110,7 @@ def nav(lang, root, current=""):
               f'{E(c["lang_switch"])}</a>')
     return (
         f'<header class="wrap head"><a class="brand" href="{root or "./"}">{mark(42, "h")}'
-        f'<span class="brand-name">Elyox</span></a>'
+        f'<span class="brand-name">Elyoxe</span></a>'
         f'<nav class="nav">{links}</nav>'
         f'<button class="nav-toggle" aria-label="Menu">'
         f'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5E2138" '
@@ -122,15 +126,15 @@ def footer(lang, root):
         f'<footer class="foot"><div class="wrap">'
         f'<div class="foot-grid">'
         f'<div><div class="brand" style="margin-block-end:1.125rem">{mark(34, "f")}'
-        f'<span class="brand-name" style="font-size:1.4375rem">Elyox</span></div>'
+        f'<span class="brand-name" style="font-size:1.4375rem">Elyoxe</span></div>'
         f'<p style="font-size:.84rem;color:var(--muted);max-inline-size:34ch">{E(c["foot_blurb"])}</p></div>'
         f'<div><div class="label" style="margin-block-end:1rem">{E(c["foot_services"])}</div>'
         f'<div class="foot-links">{svc}</div></div>'
         f'<div><div class="label" style="margin-block-end:1rem">{E(c["foot_contact"])}</div>'
-        f'<div class="foot-links"><a href="mailto:hello@elyox.dev">hello@elyox.dev</a>'
+        f'<div class="foot-links"><a href="mailto:hello@elyoxe.com">hello@elyoxe.com</a>'
         f'<a href="https://github.com/MrDMX7">github.com/MrDMX7</a></div></div>'
         f'</div>'
-        f'<div class="foot-bottom"><span class="num">© 2026 Elyox</span>'
+        f'<div class="foot-bottom"><span class="num">© 2026 Elyoxe</span>'
         f'<span>{E(c["foot_place"])}</span></div>'
         f'</div></footer>'
     )
@@ -256,7 +260,11 @@ def work_grid(lang, root):
     big, small = CASES[0], CASES[1:]
     def block(cs, i, sm):
         d = cs[lang]
-        art = media(cs["media"], rtl, 230 if not sm else 120)
+        if cs.get("screenshot"):
+            art = (f'<img src="{root}{cs["screenshot"]}" alt="{E(cs["title"])}" loading="lazy" '
+                   f'style="display:block;inline-size:100%;block-size:100%;object-fit:cover;object-position:top">')
+        else:
+            art = media(cs["media"], rtl, 230 if not sm else 120)
         return (
             f'<a class="card card-lg{" work-sm" if sm else ""}" href="{root}work/{cs["slug"]}.html" '
             f'style="display:flex;flex-direction:column">'
@@ -289,15 +297,15 @@ def contact_block(lang):
         f'<div class="contact"><div><h2>{E(c["contact_title_a"])}<br>{E(c["contact_title_b"])}</h2>'
         f'<p>{E(c["contact_lead"])}</p></div>'
         f'<div class="contact-actions">'
-        f'<a class="btn" href="mailto:hello@elyox.dev">hello@elyox.dev</a>'
-        f'<a class="btn btn-ghost" href="mailto:hello@elyox.dev?subject=Call">{E(c["contact_call"])}</a>'
+        f'<a class="btn" href="mailto:hello@elyoxe.com">hello@elyoxe.com</a>'
+        f'<a class="btn btn-ghost" href="mailto:hello@elyoxe.com?subject=Call">{E(c["contact_call"])}</a>'
         f'</div></div>')
 
 
 def home(lang):
     c, rtl, root = COPY[lang], lang == "ar", ("../" if lang == "ar" else "")
     ld = json.dumps({
-        "@context": "https://schema.org", "@type": "ProfessionalService", "name": "Elyox",
+        "@context": "https://schema.org", "@type": "ProfessionalService", "name": "Elyoxe",
         "url": BASE, "description": c["lead"], "areaServed": "AE",
         "address": {"@type": "PostalAddress", "addressLocality": "Dubai", "addressCountry": "AE"},
         "knowsAbout": [s["en"]["title"] for s in SERVICES],
@@ -329,7 +337,7 @@ def home(lang):
         f'<section class="wrap section" id="approach">{approach_block(lang)}</section>'
         f'<section class="wrap section" id="contact">{contact_block(lang)}</section>'
         '</main>')
-    return page(lang=lang, title=f'Elyox — {c["tagline"]}', description=c["lead"],
+    return page(lang=lang, title=f'Elyoxe — {c["tagline"]}', description=c["lead"],
                 canonical=f"{BASE}/" if lang == "en" else f"{BASE}/ar/",
                 root=root, current="services", body=body,
                 alternates={"en": f"{BASE}/", "ar": f"{BASE}/ar/", "x-default": f"{BASE}/"},
@@ -351,7 +359,7 @@ def case_page(cs, lang):
     nxt = CASES[(idx + 1) % len(CASES)]
     ld = json.dumps({"@context": "https://schema.org", "@type": "CreativeWork",
                      "name": cs["title"], "abstract": d["tagline"],
-                     "author": {"@type": "Organization", "name": "Elyox"},
+                     "author": {"@type": "Organization", "name": "Elyoxe"},
                      "url": f'{BASE}/{"ar/" if rtl else ""}work/{cs["slug"]}.html'}, ensure_ascii=False)
     body = (
         '<main>'
@@ -370,12 +378,16 @@ def case_page(cs, lang):
 
         f'<section class="wrap" style="padding-block-start:4rem"><div class="browser">'
         f'<div class="browser-bar"><i></i><i></i><i></i>'
-        f'<span>{E(d["link"]["label"]) if d["link"] else "elyox.dev"}</span></div>'
-        f'<div style="block-size:26.25rem;background:#221A1C;display:flex;align-items:center;justify-content:center">'
-        f'<div style="text-align:center;padding:1.5rem">'
-        f'<div class="label" style="color:#7A6068;margin-block-end:.625rem">{E(c["screenshot_slot"])}</div>'
-        f'<div style="font-size:.84rem;color:#8E7880;max-inline-size:34ch">{E(c["screenshot_note"])}</div>'
-        f'</div></div></div></section>'
+        f'<span>{E(d["link"]["label"]) if d["link"] else "elyoxe.com"}</span></div>'
+        + (f'<img src="{root}{cs["screenshot"]}" alt="{E(cs["title"])}" '
+           f'style="display:block;inline-size:100%;aspect-ratio:16/9;object-fit:cover;object-position:top">'
+           if cs.get("screenshot") else
+           f'<div style="block-size:26.25rem;background:#221A1C;display:flex;align-items:center;justify-content:center">'
+           f'<div style="text-align:center;padding:1.5rem">'
+           f'<div class="label" style="color:#7A6068;margin-block-end:.625rem">{E(c["screenshot_slot"])}</div>'
+           f'<div style="font-size:.84rem;color:#8E7880;max-inline-size:34ch">{E(c["screenshot_note"])}</div>'
+           f'</div></div>')
+        + '</div></section>'
 
         f'<section class="wrap" style="padding-block-start:6.875rem">'
         f'<div class="case-row"><h2>{E(c["case_problem"])}</h2><p>{E(d["problem"])}</p></div>'
@@ -402,7 +414,7 @@ def case_page(cs, lang):
         f'<a class="btn" href="{root}#contact">{E(c["cta_primary"])}</a>'
         f'</div></section>'
         '</main>')
-    return page(lang=lang, title=f'{cs["title"]} — Elyox', description=d["tagline"],
+    return page(lang=lang, title=f'{cs["title"]} — Elyoxe', description=d["tagline"],
                 canonical=f'{BASE}/{"ar/" if rtl else ""}work/{cs["slug"]}.html',
                 root=root, current="work", body=body,
                 alternates={"en": f'{BASE}/work/{cs["slug"]}.html',
@@ -418,7 +430,7 @@ def not_found():
             f'<h1 style="margin-block-start:1rem">{E(c["not_found"])}</h1>'
             f'<p style="margin-block-start:2rem"><a class="btn" href="{ROOT_PATH}">{E(c["not_found_cta"])}</a></p>'
             '</section></main>')
-    return page(lang="en", title="Not found — Elyox", description=c["not_found"],
+    return page(lang="en", title="Not found — Elyoxe", description=c["not_found"],
                 canonical=f"{BASE}/404.html", body=body)
 
 

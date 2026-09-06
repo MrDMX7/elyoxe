@@ -1,7 +1,7 @@
 {
-  "name": "elyox",
+  "name": "elyoxe",
   "domain": "mrdmx7.github.io",
-  "base_url": "https://mrdmx7.github.io/elyox",
+  "base_url": "https://mrdmx7.github.io/elyoxe",
   "lang": "en",
   "dir": "ltr",
   "_comment_src_out": "src_dir != out_dir here, unlike invoiceready. src/ holds hand-authored assets, dist/ is pure build output, so deploy-site.sh may clean it before every build.",
@@ -13,14 +13,14 @@
   "min_html_count": 9,
   "aws": {
     "region": "ap-south-1",
-    "bucket": "elyox-574771023173",
+    "bucket": "elyoxe-574771023173",
     "distribution_id": "",
     "zone_id": ""
   },
   "verify": [
     {
       "path": "/",
-      "contains": "Elyox"
+      "contains": "Elyoxe"
     },
     {
       "path": "/ar/",
@@ -50,5 +50,6 @@
       "path": "/robots.txt",
       "contains": "Sitemap"
     }
-  ]
+  ],
+  "_comment_domain": "Temporary: GitHub Pages until elyoxe.com is registered (external registrar, planned Oct 2026). Then set domain=elyoxe.com, base_url=https://elyoxe.com and run new-site.sh elyoxe.com elyoxe --existing-domain."
 }
