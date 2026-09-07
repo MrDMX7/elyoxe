@@ -58,8 +58,8 @@ jobs:
         if: always()
         run: |
           npm i --no-save lighthouse@12
-          for p in / /en/; do
-            npx lighthouse "http://localhost:8080$p" --quiet --chrome-flags="--headless --no-sandbox" --only-categories=performance,accessibility,best-practices,seo --output=json --output-path="shots/lh$(echo $p | tr / _).json" || true
+          for p in / "/?noscene" /en/; do
+            npx lighthouse "http://localhost:8080$p" --quiet --chrome-flags="--headless --no-sandbox" --only-categories=performance,accessibility,best-practices,seo --output=json --output-path="shots/lh$(echo "$p" | tr '/?' '__').json" || true
           done
           node -e 'for (const f of require("fs").readdirSync("shots").filter(f=>f.startsWith("lh"))) { const r=require("./shots/"+f); console.log(f, Object.fromEntries(Object.entries(r.categories).map(([k,v])=>[k,Math.round(v.score*100)]))); }'
       - uses: actions/upload-artifact@v4

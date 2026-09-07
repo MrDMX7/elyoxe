@@ -451,7 +451,9 @@ function Field({ dir, mobile, reduced }: { dir: "rtl" | "ltr"; mobile: boolean; 
       // compressed into the top ~45%: y 0.06..0.62 maps to 0.082..0.429, which
       // keeps every anchor (and its label, which hangs ~0.55rem lower) clear of
       // both the veil and the headline.
-      if (mobile) { nx = 0.07 + nx * 0.86; ny = 0.045 + n.y * 0.62; }
+      // on phones the canvas is a 48svh band above the copy (see globals.css),
+      // so the layout fills the band instead of the top of a full-height hero
+      if (mobile) { nx = 0.07 + nx * 0.86; ny = 0.10 + n.y * 1.55; }
 
       const anchor = n.kind === "anchor";
       const h1 = hash(i, 1);
@@ -777,7 +779,7 @@ function Field({ dir, mobile, reduced }: { dir: "rtl" | "ltr"; mobile: boolean; 
     (su.uPar.value as THREE.Vector2).set(-ptrEase.current.nx * 14, ptrEase.current.ny * 14 + scroll * 45);
     // the sheet fades out below the field: on mobile that window rides above
     // the veil (which is solid paper up to 22% and clear by 52%)
-    (su.uKeep.value as THREE.Vector2).set(mobile ? 0.46 : 0.18, mobile ? 0.74 : 0.56);
+    (su.uKeep.value as THREE.Vector2).set(mobile ? 0.30 : 0.18, mobile ? 0.80 : 0.56);
     su.uAmp.value = mobile ? 0.045 : 0.055;
 
     const wu = wireMat.uniforms;
