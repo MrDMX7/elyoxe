@@ -1,0 +1,70 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+    paths: ["site/**", ".github/workflows/build.yml"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - name: site
+            base: ""
+            preview: ""
+          - name: preview
+            base: /next
+            preview: "1"
+    defaults:
+      run: { working-directory: site }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run build
+        env:
+          BASE_PATH: ${{ matrix.base }}
+          PREVIEW: ${{ matrix.preview }}
+          SITE_URL: https://elyoxe.com${{ matrix.base }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.name }}
+          path: site/out
+          retention-days: 7
+
+  critique:
+    needs: build
+    runs-on: ubuntu-latest
+    defaults:
+      run: { working-directory: site }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - uses: actions/download-artifact@v4
+        with: { name: site, path: site/out }
+      - run: npm i --no-save playwright@1.55 serve@14 && npx playwright install --with-deps chromium
+      - run: npx serve -l 8080 out & sleep 2
+      - run: node scripts/shots.mjs http://localhost:8080 shots
+      - name: lighthouse (mobile)
+        if: always()
+        run: |
+          npm i --no-save lighthouse@12
+          for p in / /en/; do
+            npx lighthouse "http://localhost:8080$p" --quiet --chrome-flags="--headless --no-sandbox" --only-categories=performance,accessibility,best-practices,seo --output=json --output-path="shots/lh$(echo $p | tr / _).json" || true
+          done
+          node -e 'for (const f of require("fs").readdirSync("shots").filter(f=>f.startsWith("lh"))) { const r=require("./shots/"+f); console.log(f, Object.fromEntries(Object.entries(r.categories).map(([k,v])=>[k,Math.round(v.score*100)]))); }'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: critique
+          path: site/shots
+          retention-days: 7
