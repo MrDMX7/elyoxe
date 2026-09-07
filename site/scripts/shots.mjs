@@ -53,6 +53,20 @@ for (const [name, ctxOpts] of [
     await ctx.close();
   }
 }
+// reduced motion: the page must read complete with nothing moving
+{
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: "reduce" });
+  const page = await ctx.newPage();
+  await page.goto(base + "/", { waitUntil: "networkidle", timeout: 60000 });
+  await page.waitForTimeout(800);
+  await page.screenshot({ path: `${out}/desktop-reduced-top.png` });
+  const hidden = await page.evaluate(() => [...document.querySelectorAll(".hero-title .mask > span, .ledger, [data-slot]")].filter((e) => { const s = getComputedStyle(e); return s.opacity === "0" || (e.style.getPropertyValue("--slot-opacity") === "0"); }).length);
+  if (hidden) report.blocking.push(`reduced-motion: ${hidden} hero elements hidden`);
+  // keyboard: tab through the first links and make sure focus is visible somewhere
+  await page.keyboard.press("Tab"); await page.keyboard.press("Tab"); await page.keyboard.press("Tab");
+  await page.screenshot({ path: `${out}/desktop-focus.png` });
+  await ctx.close();
+}
 await browser.close();
 writeFileSync(`${out}/report.json`, JSON.stringify(report, null, 2));
 console.log(JSON.stringify(report.blocking, null, 2));

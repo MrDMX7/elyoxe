@@ -811,12 +811,27 @@ function Field({ dir, mobile, reduced }: { dir: "rtl" | "ltr"; mobile: boolean; 
   );
 }
 
+function isSoftwareGL(): boolean {
+  try {
+    const c = document.createElement("canvas");
+    const gl = (c.getContext("webgl2") || c.getContext("webgl")) as WebGLRenderingContext | null;
+    if (!gl) return true;
+    const ext = gl.getExtension("WEBGL_debug_renderer_info");
+    const r = ext ? String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL)) : "";
+    gl.getExtension("WEBGL_lose_context")?.loseContext();
+    return /swiftshader|llvmpipe|softpipe|software|mesa offscreen|basic render/i.test(r);
+  } catch { return true; }
+}
+
 export default function HeroScene({ dir }: { dir: "rtl" | "ltr" }) {
   // dynamic(ssr:false) guarantees `window` here, so these are resolved on the
   // first render — an effect would paint one desktop frame on a phone, and run
   // several animated frames before honouring prefers-reduced-motion
   const [mobile, setMobile] = useState(() => window.matchMedia("(max-width: 1023px)").matches);
-  const [reduced, setReduced] = useState(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  // A software rasteriser (SwiftShader, llvmpipe — headless Chrome, some VMs)
+  // would burn the main thread on every frame; there the field is drawn once,
+  // as a static map, exactly like the reduced-motion path.
+  const [reduced, setReduced] = useState(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches || isSoftwareGL());
   // starts true so heroBus.ready is set before Hero's timeline fires its
   // number fragments at ~1.05s
   const [visible, setVisible] = useState(true);

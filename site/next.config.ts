@@ -14,6 +14,8 @@ const config: NextConfig = {
   images: { unoptimized: true },
   transpilePackages: ["three"],
   reactStrictMode: true,
+  // one fewer render-blocking request on the LCP path: the (small) CSS ships in the HTML
+  experimental: { inlineCss: true },
 };
 
 export default config;

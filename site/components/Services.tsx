@@ -110,11 +110,15 @@ function buildWeb(root: SVGSVGElement): gsap.core.Timeline {
   const tick = one(root, ".svc-tick");
   drawIn(tl, all(root, ".svc-tl"), 0, 0.5, 0.06);
   if (rails.length) tl.fromTo(rails, { opacity: 0 }, { opacity: 1, duration: 0.4, stagger: 0.09 }, 0.3);
+  // The turn is a plain transform attribute, not GSAP's SVG scale machinery:
+  // under the mirrored parent group that machinery rendered the page as a
+  // sliver. translate(W)·scale(-1) → identity mirrors about x = W/2, and the
+  // midpoint (translate W/2, scale 0) is the spine.
   if (page)
     tl.fromTo(
       page,
-      { scaleX: -1 },
-      { scaleX: 1, duration: 1.05, ease: "power3.inOut", svgOrigin: `${W / 2} ${H / 2}` },
+      { attr: { transform: `translate(${W} 0) scale(-1 1)` } },
+      { attr: { transform: "translate(0 0) scale(1 1)" }, duration: 1.05, ease: "power3.inOut" },
       0.45,
     );
   if (tick)
