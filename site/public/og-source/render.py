@@ -25,14 +25,14 @@ EN = "IBM Plex Sans"
 # IBM's own release has one "IBM Plex Mono" family where weight 500 picks the Medium.
 MO = "IBM Plex Mono Medium, IBM Plex Mono"
 
-LEDGER = "102 · 2,665 · 7,600 · 9 · $0"
+LEDGER = "102 · 2,665 · 7,600 · 9"
 
 # The hero idea, mirrored from content/copy.ts → hero.lines. Kept here rather than
 # parsed, because every size and baseline below is fitted to these exact strings;
 # check_copy() below shouts if the two ever drift apart.
 LINES = {
-    "ar": ['برمجياتٌ تعمل الآن في الإنتاج.', 'افتح الأرقام وتحقّق بنفسك.'],
-    "en": ['Software running in production right now.', 'Open the numbers and check them yourself.'],
+    "ar": ['هدوءٌ في الواجهة، وهندسةٌ تحتها.', 'البساطة آخر ما يُنجَز.'],
+    "en": ['Quiet on the surface, engineered underneath.', 'Simplicity is the last thing built.'],
 }
 
 def check_copy():

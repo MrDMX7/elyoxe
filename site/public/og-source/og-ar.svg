@@ -38,7 +38,7 @@ The whole set — both cards, both icons — regenerates with: python3 og-source
   <text x="1000.0" y="102" font-family="IBM Plex Sans" font-weight="700" font-size="40" letter-spacing="-0.4" fill="#F4F2ED">Elyoxe</text>
   <path d="M80 168.5 H1120" stroke="#2E3934" stroke-width="1"/>
   <path d="M80 508.5 H1120" stroke="#2E3934" stroke-width="1"/>
-  <text x="1120" y="293" text-anchor="start" direction="rtl" font-family="IBM Plex Sans Arabic" font-weight="700" font-size="76" fill="#F4F2ED">برمجياتٌ تعمل الآن في الإنتاج.</text>
-  <text x="1120" y="425" text-anchor="start" direction="rtl" font-family="IBM Plex Sans Arabic" font-weight="700" font-size="76" fill="#F4F2ED">افتح الأرقام وتحقّق بنفسك.</text>
-  <text x="1120" y="562" text-anchor="end" direction="ltr" font-family="IBM Plex Mono Medium, IBM Plex Mono" font-weight="500" font-size="26" letter-spacing="1" fill="#F0BC5A">102 · 2,665 · 7,600 · 9 · $0</text>
+  <text x="1120" y="293" text-anchor="start" direction="rtl" font-family="IBM Plex Sans Arabic" font-weight="700" font-size="76" fill="#F4F2ED">هدوءٌ في الواجهة، وهندسةٌ تحتها.</text>
+  <text x="1120" y="425" text-anchor="start" direction="rtl" font-family="IBM Plex Sans Arabic" font-weight="700" font-size="76" fill="#F4F2ED">البساطة آخر ما يُنجَز.</text>
+  <text x="1120" y="562" text-anchor="end" direction="ltr" font-family="IBM Plex Mono Medium, IBM Plex Mono" font-weight="500" font-size="26" letter-spacing="1" fill="#F0BC5A">102 · 2,665 · 7,600 · 9</text>
 </svg>

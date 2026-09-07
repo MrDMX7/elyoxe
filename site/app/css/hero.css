@@ -1,46 +1,53 @@
-/* ── hero scene · owned by the hero pass ─────────────────────────────────────
-   Two rules only. Everything else about the field lives in the shaders, where
-   it belongs; these exist because the browser composites the canvas over the
-   page better than the canvas can composite the page over itself.
+/* ── hero scene · «المجال» / The Field ───────────────────────────────────────
+   Two rules. Everything else about the field lives in the shaders, where it
+   belongs — including, now, the hand-off to the headline.
+
+   The old `.hs-veil` is gone on purpose. A CSS veil is a horizontal band: it
+   dims the reading-END side of the plate just as hard as the reading-start
+   column where the copy actually sits, and it costs the top of the map the
+   contrast that makes it read as an instrument plate. The scene replaces it
+   with two shader terms that know the geometry:
+
+     · the headline mask (MASK_X0/X1, MASK_Y0/Y1 in HeroScene.tsx) takes the
+       field's HEIGHT and its INK to zero over the reading-start column's lower
+       half, so bare paper sits exactly under the type — and about a fifth of
+       the fragments are discarded before they cost anything;
+     · the foot fade (FOOT_0/FOOT_1) softens the last 6% of the canvas so the
+       plate meets the frame edge without a razor cut.
+
+   On ≤1023px the mask is switched off — the canvas is already a band above the
+   copy, and `.hero-canvas::after` in globals.css does the bottom fade there.
    Classes are prefixed hs- to stay out of the way of the rest of globals.css. */
 
-/* The WebGL host. Fills .hero-canvas; the labels are a sibling that paints on
-   top of it, so the veil below can never dim them. */
-.hs-root { position: absolute; inset: 0; }
-.hs-root canvas { display: block; }
-
-/* The hand-off. The headline is anchored to the bottom of the hero, so the
-   field is faded into the paper before it reaches the type instead of being
-   dimmed globally — the top of the map keeps its full contrast. Painted in the
-   page's own --paper so it is invisible as a layer, only as an absence.
-   Non-interactive: the pointer parallax reads through it. */
-.hs-veil {
+/* The WebGL host. Fills .hero-canvas, which is itself absolutely positioned by
+   globals.css (full hero on desktop, a 48svh band at the top on phones). The
+   canvas is transparent and premultiplied, so the page's own --paper shows
+   through it — the field is ink on the page, not a picture of ink on paper. */
+.hs-root {
   position: absolute;
   inset: 0;
-  pointer-events: none;
-  background: linear-gradient(
-    to top,
-    var(--paper) 0%,
-    var(--paper) 14%,
-    color-mix(in srgb, var(--paper) 74%, transparent) 28%,
-    transparent 46%
-  );
 }
 
-/* Under 1024px the copy takes far more of the frame, and the field is
-   compressed into the top ~45% to match. */
-@media (max-width: 1023px) {
-  .hs-veil {
-    background: linear-gradient(
-      to top,
-      var(--paper) 0%,
-      var(--paper) 22%,
-      color-mix(in srgb, var(--paper) 78%, transparent) 36%,
-      transparent 52%
-    );
-  }
+/* R3F sizes its own wrapper divs to 100% and three writes the canvas' own
+   width/height inline, so this is only here to keep the element out of the
+   inline-flow rules the rest of globals.css applies to media. */
+.hs-root canvas {
+  display: block;
 }
 
-/* prefers-reduced-motion renders one static frame, so nothing here changes —
-   but the field is quieter without the motion cue, and the veil is what keeps
-   the still frame from crowding the headline. Left as-is deliberately. */
+/* R3F puts `pointer-events: auto` on its own wrapper inline, which would
+   otherwise punch a hole through `.hero-canvas { pointer-events: none }` and
+   let the scene sit between the reader and the hero. The probe listens on the
+   window, not on the canvas, so nothing here needs to receive an event.
+   Deliberately weaker than globals.css's `.hero-canvas.is-interactive canvas`,
+   so that escape hatch still wins if the hero ever needs it back. */
+.hs-root,
+.hs-root > div,
+.hs-root canvas {
+  pointer-events: none !important;
+}
+
+/* prefers-reduced-motion: the scene renders one still frame at full resolve —
+   no sweep, no drift, no probe. Nothing here needs to change for it, and
+   nothing here may animate: the whole point is that the plate is already
+   finished when it arrives. */

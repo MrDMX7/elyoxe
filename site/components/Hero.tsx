@@ -34,11 +34,13 @@ export default function Hero({ lang }: { lang: Lang }) {
   // The scene mounts after the document has loaded and the main thread is
   // idle, so the first paint never waits for three.js. `?noscene` disables it.
   useEffect(() => {
-    if (new URLSearchParams(window.location.search).has("noscene")) return;
+    const q = new URLSearchParams(window.location.search);
+    if (q.has("noscene")) return;
+    const force = q.has("forcescene"); // for screenshot tools on software GL
     let idle = 0;
     const arm = () => {
       const ric = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
-      const pick = () => { if (hasHardwareGL()) setSceneOn(true); };
+      const pick = () => { if (force || hasHardwareGL()) setSceneOn(true); };
       if (ric) idle = ric(pick, { timeout: 900 });
       else idle = window.setTimeout(pick, 250);
     };

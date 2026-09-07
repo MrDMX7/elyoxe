@@ -38,7 +38,7 @@ The whole set — both cards, both icons — regenerates with: python3 og-source
   <text x="159.8" y="102" font-family="IBM Plex Sans" font-weight="700" font-size="40" letter-spacing="-0.4" fill="#F4F2ED">Elyoxe</text>
   <path d="M80 168.5 H1120" stroke="#2E3934" stroke-width="1"/>
   <path d="M80 508.5 H1120" stroke="#2E3934" stroke-width="1"/>
-  <text x="78" y="323" font-family="IBM Plex Sans" font-weight="700" font-size="52" letter-spacing="-1.30" fill="#F4F2ED">Software running in production right now.</text>
-  <text x="78" y="381" font-family="IBM Plex Sans" font-weight="700" font-size="52" letter-spacing="-1.30" fill="#F4F2ED">Open the numbers and check them yourself.</text>
-  <text x="79" y="562" direction="ltr" font-family="IBM Plex Mono Medium, IBM Plex Mono" font-weight="500" font-size="26" letter-spacing="1" fill="#F0BC5A">102 · 2,665 · 7,600 · 9 · $0</text>
+  <text x="78" y="323" font-family="IBM Plex Sans" font-weight="700" font-size="52" letter-spacing="-1.30" fill="#F4F2ED">Quiet on the surface, engineered underneath.</text>
+  <text x="78" y="381" font-family="IBM Plex Sans" font-weight="700" font-size="52" letter-spacing="-1.30" fill="#F4F2ED">Simplicity is the last thing built.</text>
+  <text x="79" y="562" direction="ltr" font-family="IBM Plex Mono Medium, IBM Plex Mono" font-weight="500" font-size="26" letter-spacing="1" fill="#F0BC5A">102 · 2,665 · 7,600 · 9</text>
 </svg>
