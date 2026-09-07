@@ -4,13 +4,13 @@
   "base_url": "https://elyoxe.com",
   "lang": "ar",
   "dir": "rtl",
-  "_comment_src_out": "src_dir != out_dir here, unlike invoiceready. src/ holds hand-authored assets, dist/ is pure build output, so deploy-site.sh may clean it before every build.",
-  "src_dir": "src",
-  "out_dir": "dist",
+  "_comment_src_out": "Next.js static export lives in site/. src_dir != out_dir, so deploy-site.sh may clean site/out before every build. The phone can build this (≈4 min); CI builds the same thing for the /next/ preview.",
+  "src_dir": "site",
+  "out_dir": "site/out",
   "generate": [
-    "python3 build/generate.py"
+    "cd site && npm run build"
   ],
-  "min_html_count": 16,
+  "min_html_count": 14,
   "aws": {
     "region": "ap-south-1",
     "bucket": "elyoxe-574771023173",
@@ -24,54 +24,42 @@
     },
     {
       "path": "/",
-      "contains": "أنظمة رقمية"
+      "contains": "lang=\"ar\""
     },
     {
       "path": "/en/",
-      "contains": "Digital systems"
+      "contains": "dir=\"ltr\""
     },
     {
-      "path": "/work/invoiceready.html",
-      "contains": "غير معلن"
+      "path": "/work/quantitative-method/",
+      "contains": "H-09"
     },
     {
-      "path": "/work/ahlam.html",
-      "contains": "منتخب الكلام"
-    },
-    {
-      "path": "/en/work/invoiceready.html",
+      "path": "/en/work/invoiceready/",
       "contains": "102"
     },
     {
-      "path": "/en/work/khutwa.html",
-      "contains": "Khutwa"
-    },
-    {
-      "path": "/en/work/quantitative-method.html",
-      "contains": "falsified"
-    },
-    {
-      "path": "/en/work/ahlam.html",
+      "path": "/work/ahlam/",
       "contains": "ahlam.elyoxe.com"
     },
     {
-      "path": "/ar/",
-      "contains": "noindex"
-    },
-    {
-      "path": "/ar/work/khutwa.html",
-      "contains": "noindex"
+      "path": "/en/work/khutwa/",
+      "contains": "Khutwa"
     },
     {
       "path": "/sitemap.xml",
-      "contains": "<urlset"
+      "contains": "hreflang=\"ar\""
     },
     {
       "path": "/robots.txt",
       "contains": "Sitemap"
+    },
+    {
+      "path": "/404/",
+      "contains": "404"
     }
   ],
   "contact_endpoint": "https://hybw54y21l.execute-api.ap-south-1.amazonaws.com/",
   "_comment_domain": "elyoxe.com registered at Namecheap 2026-09-06; DNS on Route53 (zone from new-site.sh --existing-domain). GitHub Pages copy at mrdmx7.github.io/elyoxe is now a mirror only.",
-  "_comment_langs": "Arabic is served from the root and English from /en/. The five /ar/* files are redirect pages for the previous layout: excluded from the sitemap and marked noindex, so they are never read as duplicates."
+  "_comment_langs": "Arabic is served from the root and English from /en/. Case studies are /work/<slug>/ in both trees. The old *.html URLs are gone with the Python generator (site was two days old)."
 }

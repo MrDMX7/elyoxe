@@ -214,8 +214,8 @@ html[lang="ar"] .nav .switch { font-family: var(--font-en); }
 @keyframes pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--verdigris-lit) 55%, transparent); } 100% { box-shadow: 0 0 0 10px transparent; } }
 .ledger-rows { display: grid; }
 .ledger-row { display: grid; grid-template-columns: 1fr auto; grid-template-areas: "label value" "unit action"; column-gap: 1rem; align-items: baseline; padding-block: .8rem; border-block-start: 1px solid var(--rule-ink); }
-@media (min-width: 560px) { .ledger-row { grid-template-columns: minmax(0, 1.4fr) auto minmax(0, 1fr) auto; grid-template-areas: "label value unit action"; } }
-.ledger-row .label { grid-area: label; font-family: var(--font-mono); font-size: var(--fs-small); direction: ltr; unicode-bidi: isolate; text-align: start; }
+@media (min-width: 560px) { .ledger-row { grid-template-columns: minmax(0, 1.7fr) auto minmax(0, 1fr) auto; grid-template-areas: "label value unit action"; } }
+.ledger-row .label { grid-area: label; font-family: var(--font-mono); font-size: var(--fs-small); direction: ltr; unicode-bidi: isolate; text-align: start; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ledger-row .label.is-text { font-family: var(--font-body); direction: inherit; }
 .ledger-row .value { grid-area: value; font-family: var(--font-mono); font-weight: 500; font-size: 1.5rem; color: var(--saffron-lit); direction: ltr; unicode-bidi: isolate; text-align: end; min-inline-size: 4.5ch; opacity: var(--slot-opacity, 1); }
 .ledger-row .unit { grid-area: unit; font-size: var(--fs-small); color: var(--stone-lit); }
