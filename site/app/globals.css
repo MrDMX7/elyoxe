@@ -176,8 +176,8 @@ html[lang="ar"] .nav .switch { font-family: var(--font-en); }
 .nav-toggle { display: inline-flex; align-items: center; gap: .6rem; font-size: var(--fs-small); font-weight: 500; min-block-size: 2.75rem; }
 @media (min-width: 900px) { .nav-toggle { display: none; } }
 .nav-toggle i { display: block; inline-size: 22px; block-size: 1px; background: currentColor; box-shadow: 0 -6px 0 currentColor, 0 6px 0 currentColor; }
-.drawer { position: fixed; inset: 0; z-index: 80; background: var(--ink); color: var(--paper); display: grid; grid-template-rows: auto 1fr auto; padding: 1.25rem var(--gutter) 2rem; transform: translateY(-100%); transition: transform 480ms var(--ease-out); }
-.drawer[data-open="true"] { transform: none; }
+.drawer { position: fixed; inset: 0; z-index: 80; background: var(--ink); color: var(--paper); display: grid; grid-template-rows: auto 1fr auto; padding: 1.25rem var(--gutter) 2rem; transform: translateY(-100%); visibility: hidden; transition: transform 480ms var(--ease-out), visibility 0s linear 480ms; }
+.drawer[data-open="true"] { transform: none; visibility: visible; transition: transform 480ms var(--ease-out), visibility 0s; }
 .drawer-top { display: flex; align-items: center; justify-content: space-between; min-block-size: 3rem; }
 .drawer nav { display: grid; align-content: center; gap: .5rem; }
 .drawer nav a { font-family: var(--font-display); font-size: clamp(2rem, 8vw, 3rem); font-weight: 700; line-height: 1.3; }
@@ -191,6 +191,13 @@ html[lang="ar"] .nav .switch { font-family: var(--font-en); }
 .hero-canvas canvas { pointer-events: none !important; }
 .hero-canvas.is-interactive { pointer-events: auto; }
 .hero-canvas.is-interactive canvas { pointer-events: auto !important; }
+/* on phones the field lives in the top of the hero; the copy below it sits on
+   a paper fade so the map never competes with the headline */
+@media (max-width: 1023px) {
+  .hero-canvas::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 22%, var(--paper) 52%); pointer-events: none; }
+  .hero-label:not(.is-anchor) { display: none; }
+  .hero-label { font-size: 11px; }
+}
 .hero-labels { position: absolute; inset: 0; pointer-events: none; }
 .hero-label { position: absolute; top: 0; left: 0; transform: translate(-50%, 0); font-family: var(--font-mono); font-size: 11px; color: var(--stone); white-space: nowrap; opacity: 0; will-change: transform, opacity; padding-block-start: .55rem; direction: ltr; }
 .hero-label.is-anchor { color: var(--ink); font-weight: 500; font-size: 12px; }

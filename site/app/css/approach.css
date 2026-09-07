@@ -1,1 +1,130 @@
 /* owned by the approach pass — see the agent brief; classes prefixed to avoid collisions */
+
+/* The methodology set as the instrument it is: a running head, a ruled
+ * document, four clauses that come into force in reading direction, and a
+ * signature block that seals once all four hold.
+ *
+ * Direction: every draw runs from --origin-start, which is `left` under LTR
+ * and `right` under RTL, so "forward" is forward in both languages.
+ * Motion is transform / opacity / stroke-dashoffset only. Under reduced
+ * motion the scrub resolves to 1 and the global transition kill leaves the
+ * document already executed — no state is hidden behind an animation.
+ */
+.apr { --origin-start: left; }
+html[dir="rtl"] .apr { --origin-start: right; }
+
+/* ── running head ───────────────────────────────────────────── */
+.apr-head {
+  display: flex; align-items: center; gap: .9rem;
+  margin-block-end: .9rem;
+  font-size: var(--fs-micro); color: var(--stone);
+}
+.apr-head span {
+  font-family: var(--font-mono); font-variant-numeric: tabular-nums;
+  direction: ltr; unicode-bidi: isolate; white-space: nowrap;
+}
+.apr-head i { flex: 1 1 0; block-size: 1px; background: var(--rule); }
+
+/* ── the document ───────────────────────────────────────────── */
+.apr-doc { --pad: clamp(1rem, 2vw, 1.75rem); border: 1px solid var(--ink); background: var(--paper); }
+
+.apr-doc-head {
+  display: flex; flex-wrap: wrap; justify-content: space-between;
+  gap: .35rem 1.5rem;
+  padding: .95rem var(--pad);
+  border-block-end: 1px solid var(--rule);
+  font-size: var(--fs-small); color: var(--stone);
+}
+
+.apr-clauses { margin: 0; padding: 0; list-style: none; }
+
+.apr-clause {
+  position: relative;
+  display: grid; gap: .4rem 2rem;
+  padding: clamp(1.5rem, 2.4vw, 2.5rem) var(--pad);
+  border-block-start: 1px solid var(--rule-soft);
+}
+.apr-clause:first-child { border-block-start: 0; }
+@media (min-width: 760px) { .apr-clause { grid-template-columns: 11rem 1fr; } }
+
+/* the clause coming into force: a hairline drawing along its leading edge */
+.apr-clause::before {
+  content: ""; position: absolute;
+  inset-block-start: -1px; inset-inline: calc(-1 * var(--pad)); block-size: 1px;
+  background: var(--ink);
+  transform: scaleX(0); transform-origin: var(--origin-start);
+  transition: transform 760ms var(--ease-out);
+}
+.apr-clause[data-force="true"]::before { transform: scaleX(1); }
+
+.apr-ord { display: grid; gap: .1rem; align-content: start; }
+.apr-num {
+  font-family: var(--font-mono); font-variant-numeric: tabular-nums;
+  direction: ltr; unicode-bidi: isolate;
+  font-size: var(--fs-small); font-weight: 500; color: var(--stone);
+  transform: translateY(3px);
+  transition: transform 620ms var(--ease-out), color 620ms var(--ease);
+}
+.apr-word {
+  font-size: var(--fs-small); font-weight: 500; color: var(--stone);
+  transition: color 620ms var(--ease);
+}
+.apr-clause[data-force="true"] .apr-num { transform: none; color: var(--ink); }
+.apr-clause[data-force="true"] .apr-word { color: var(--ink); }
+
+.apr-text h3 { margin: 0; }
+.apr-text p { margin-block-start: .5rem; max-inline-size: 58ch; color: var(--ink); }
+
+/* ── signature block ────────────────────────────────────────── */
+.apr-sign {
+  display: grid; gap: 2rem;
+  padding: clamp(1.75rem, 2.6vw, 2.75rem) var(--pad);
+  border-block-start: 1px solid var(--ink);
+}
+@media (min-width: 760px) {
+  .apr-sign { grid-template-columns: 1fr auto; align-items: end; column-gap: clamp(2rem, 6vw, 7rem); }
+}
+.apr-sign-label { font-size: var(--fs-small); font-weight: 500; color: var(--stone); }
+.apr-sign-body { max-inline-size: 44ch; margin-block-start: .4rem; }
+
+.apr-sign-mark {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end; column-gap: clamp(1rem, 3vw, 2rem);
+  min-inline-size: min(19rem, 100%);
+}
+.apr-sign-name {
+  grid-column: 1; grid-row: 1;
+  font-family: var(--font-en); font-weight: 600; font-size: 1.75rem;
+  letter-spacing: -0.015em; line-height: 1.15;
+  direction: ltr; unicode-bidi: isolate;
+  padding-block-end: .4rem;
+}
+.apr-sign-rule { grid-column: 1; grid-row: 2; position: relative; display: block; block-size: 1px; background: var(--rule); }
+.apr-sign-rule::after {
+  content: ""; position: absolute; inset: 0; background: var(--ink);
+  transform: scaleX(0); transform-origin: var(--origin-start);
+  transition: transform 900ms var(--ease-out) 140ms;
+}
+.apr-sign[data-sealed="true"] .apr-sign-rule::after { transform: scaleX(1); }
+.apr-sign-note { grid-column: 1; grid-row: 3; margin-block-start: .55rem; font-size: var(--fs-small); color: var(--stone); }
+
+/* the seal: a hairline circle carrying the mark's one gesture, nothing more */
+.apr-seal {
+  grid-column: 2; grid-row: 1 / 4; align-self: center;
+  inline-size: 44px; block-size: 44px;
+}
+html[dir="rtl"] .apr-seal { transform: scaleX(-1); }
+.apr-seal circle, .apr-seal path {
+  fill: none; stroke: var(--saffron); stroke-width: 1;
+  stroke-dasharray: 1; stroke-dashoffset: 1;
+  transition: stroke-dashoffset 900ms var(--ease-out) 300ms;
+}
+.apr-seal path { transition-delay: 620ms; }
+.apr-seal .apr-seal-head {
+  fill: var(--saffron); stroke: none;
+  opacity: 0; transition: opacity 380ms var(--ease) 1150ms;
+}
+.apr-sign[data-sealed="true"] .apr-seal circle,
+.apr-sign[data-sealed="true"] .apr-seal path { stroke-dashoffset: 0; }
+.apr-sign[data-sealed="true"] .apr-seal .apr-seal-head { opacity: 1; }

@@ -41,8 +41,8 @@ export const services: Service[] = [
       "en": "Software engineering"
     },
     "body": {
-      "ar": "أندرويد أصلي، وخدمات خلفية، وتكاملات، مبنية على الموثوقية قبل عدد الميزات.",
-      "en": "Native Android, backend services and integrations, built for reliability before feature count."
+      "ar": "أندرويد أصلي وخدمات خلفية وتكاملات، تُقاس بالموثوقية لا بعدد الميزات.",
+      "en": "Native Android, backend services and integrations, measured by reliability rather than feature count."
     },
     "proof": {
       "slug": "khutwa",
@@ -56,7 +56,7 @@ export const services: Service[] = [
       "en": "Cloud infrastructure"
     },
     "body": {
-      "ar": "معمارية AWS، وأتمتة النشر، وهندسة التكلفة لأنظمة يجب أن تبقى تعمل.",
+      "ar": "معمارية AWS وأتمتة النشر وهندسة التكلفة، لأنظمة لا تحتمل التوقّف.",
       "en": "AWS architecture, deployment automation and cost engineering for systems that have to stay running."
     },
     "proof": {

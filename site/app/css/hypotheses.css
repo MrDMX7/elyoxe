@@ -1,1 +1,204 @@
 /* owned by the hypotheses pass — see the agent brief; classes prefixed to avoid collisions */
+
+/* The hypothesis ledger (quantitative method).
+ *
+ * Everything below describes the FINISHED record: nine entries struck, the
+ * verdict written on each, the tally at 9/9. That is the resting state, so the
+ * static export, a browser without JS, a misfiring trigger and reduced motion
+ * all render the truth. The script adds `.is-running` / `.is-pending` to take
+ * the record apart and replay it as you scroll; it never has to put it back.
+ *
+ * Direction: the strike and every rule are absolutely positioned with
+ * `inset-inline: 0`, so they span the full width in both directions, and only
+ * `transform-origin` decides which end they grow from — right in RTL, left in
+ * LTR, i.e. always the reading start. `--hyl-origin` comes off `data-dir`,
+ * which comes off the `lang` prop, so the component is correct even if it is
+ * rendered outside its own document direction.
+ *
+ * Saffron is the strike and the tally only. No verdigris: nothing here is live.
+ */
+
+.hyl {
+  --hyl-origin: left;
+  /* Plex Mono has no Arabic; the Arabic face has to come before the generic,
+     which would otherwise end the chain. Latin and digits stay mono. */
+  --hyl-mono: var(--font-plex-mono), var(--font-plex-arabic), "IBM Plex Mono", ui-monospace, monospace;
+  max-inline-size: 46rem;
+}
+.hyl[data-dir="rtl"] { --hyl-origin: right; }
+
+/* ── head: what the ledger withholds, and the gate every line passed ── */
+.hyl-head {
+  display: grid;
+  gap: .3rem 2rem;
+  padding-block-end: .8rem;
+  font-size: var(--fs-small);
+  line-height: 1.55;
+  color: var(--stone);
+}
+@media (min-width: 640px) {
+  .hyl-head { grid-template-columns: minmax(0, 1fr) auto; align-items: end; }
+  .hyl-gate { text-align: end; }
+}
+.hyl-gate { display: flex; align-items: center; gap: .55rem; }
+@media (min-width: 640px) { .hyl-gate { justify-content: flex-end; } }
+
+/* ── the list: a real <ol>, one line per entry ── */
+.hyl-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-block-start: 1px solid var(--ink);
+}
+.hyl-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: .3rem 1.5rem;
+  padding-block: .8rem .78rem;
+}
+@media (min-width: 520px) {
+  .hyl-row { grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; }
+}
+
+/* the line the entry is written on — ruled from the reading start */
+.hyl-line {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  block-size: 1px;
+  background: var(--rule);
+  transform: scaleX(1);
+  transform-origin: var(--hyl-origin) center;
+}
+.hyl-row:last-child .hyl-line { background: var(--ink); } /* the ledger closes */
+
+/* ── the entry: id, statement, and the rule pulled through both ── */
+.hyl-entry {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3.1rem minmax(0, 1fr);
+  column-gap: .85rem;
+  align-items: baseline;
+  line-height: 1.5; /* a ledger line, not a paragraph — and it fixes where the strike falls */
+}
+.hyl-id {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-small);
+  color: var(--stone);
+  direction: ltr;
+  unicode-bidi: isolate;
+  transition: color 320ms var(--ease);
+}
+.hyl-name {
+  color: var(--stone);
+  transition: color 420ms var(--ease);
+}
+.hyl-row.is-pending .hyl-name { color: var(--ink); }
+.hyl-row.is-tested .hyl-id,
+.hyl-row.is-tested .hyl-v-reg { color: var(--ink); }
+
+.hyl-strike {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: 54%;
+  block-size: 1.5px;
+  background: var(--saffron);
+  transform: scaleX(1);
+  transform-origin: var(--hyl-origin) center;
+  pointer-events: none;
+}
+.hyl-row:last-child .hyl-strike { block-size: 2px; }
+
+/* ── end column: the shared gate, then the verdict ── */
+.hyl-end {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+@media (min-width: 520px) { .hyl-end { justify-content: flex-end; gap: 1.35rem; } }
+
+.hyl-marks { display: inline-flex; align-items: center; gap: 4px; flex: none; }
+.hyl-marks i {
+  display: block;
+  inline-size: 1.5px;
+  block-size: 12px;
+  background: var(--stone);
+}
+.hyl-gate .hyl-marks i { block-size: 10px; }
+
+.hyl-verdict {
+  display: grid;
+  justify-items: end;
+  flex: none;
+  font-family: var(--hyl-mono);
+  font-size: var(--fs-small);
+  line-height: 1.5;
+}
+.hyl-verdict > span {
+  grid-area: 1 / 1;
+  white-space: nowrap;
+  transition: opacity 300ms var(--ease), color 320ms var(--ease);
+}
+.hyl-v-reg { color: var(--stone); opacity: 0; }
+.hyl-v-fal { color: var(--saffron); opacity: 1; }
+.hyl-row.is-pending .hyl-v-reg { opacity: 1; }
+.hyl-row.is-pending .hyl-v-fal { opacity: 0; }
+
+/* ── foot: the count, and what it is worth ── */
+.hyl-foot {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem 1.75rem;
+  padding-block-start: 1.35rem;
+}
+@media (min-width: 520px) {
+  .hyl-foot { grid-template-columns: auto minmax(0, 1fr); align-items: start; }
+}
+.hyl-tally {
+  display: flex;
+  align-items: baseline;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(2.5rem, 1.7rem + 2.4vw, 3.5rem);
+  font-weight: 500;
+  line-height: .95;
+  color: var(--saffron);
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+.hyl-tally .n { display: inline-block; transform-origin: 50% 62%; }
+.hyl-word {
+  display: block;
+  margin-block-start: .4rem;
+  font-family: var(--hyl-mono);
+  font-size: var(--fs-small);
+  color: var(--stone);
+}
+.hyl-foot-note {
+  font-size: var(--fs-small);
+  line-height: 1.7;
+  color: var(--stone);
+  max-inline-size: 44ch;
+  transition: opacity 700ms var(--ease-out), transform 700ms var(--ease-out);
+}
+/* held back until the ninth strike lands */
+.hyl.is-running .hyl-foot-note { opacity: 0; transform: translate3d(0, 8px, 0); }
+
+/* compositor hints only while the sequence is actually running */
+.hyl.is-running .hyl-strike,
+.hyl.is-running .hyl-line { will-change: transform; }
+.hyl.is-running .hyl-entry { will-change: transform, opacity; }
+.hyl.is-running .hyl-end { will-change: opacity; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hyl-entry,
+  .hyl-line,
+  .hyl-strike,
+  .hyl-id,
+  .hyl-name,
+  .hyl-verdict > span,
+  .hyl-foot-note { transition: none !important; }
+}

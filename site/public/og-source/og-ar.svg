@@ -1,0 +1,44 @@
+<!-- Elyoxe — Open Graph card, Arabic — 1200x630
+Fonts are NOT embedded: librsvg resolves families through fontconfig only, and ignores
+an @font-face whose src is a file:// or data: URL. Fetch the IBM Plex cuts, then render:
+
+  D=/tmp/plex; mkdir -p $D
+  curl -sL -A "Mozilla/5.0" "https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,500,600,700|IBM+Plex+Mono:400,500"  > $D/f.css
+  curl -sL -A "Mozilla/5.0" "https://fonts.googleapis.com/css?family=IBM+Plex+Sans+Arabic:400,500,600,700&subset=arabic"  >> $D/f.css
+  i=0; for u in $(grep -o "https://[^)]*" $D/f.css); do curl -sL -A "Mozilla/5.0" "$u" -o $D/plex-$i.ttf; i=$((i+1)); done
+  printf '<?xml version="1.0"?><fontconfig><dir>%s</dir><cachedir>%s/cache</cachedir></fontconfig>' $D $D > $D/fonts.conf
+  FONTCONFIG_FILE=$D/fonts.conf rsvg-convert -w 1200 -h 630 og-ar.svg -o out.png
+
+  Two traps in that curl. &subset=arabic is required — without it Google serves the
+  Latin-only cut of Plex Sans Arabic and every Arabic glyph comes out a tofu box; check with
+  FONTCONFIG_FILE=$D/fonts.conf fc-list ":charset=0646"  (it must list the Arabic files).
+  And the UA matters: an IE-era UA gets EOT, a modern browser UA gets woff2, and fontconfig
+  reads neither. Plain "Mozilla/5.0" gets .ttf.
+
+Text is live, not outlined, so the copy stays editable — but every size and baseline below
+was fitted to the measured ink box of these exact strings in these exact cuts. If a string
+changes, re-measure it (render the line alone, then magick line.png -trim -format "%wx%h%X%Y").
+Arabic lines need text-anchor="start" TOGETHER WITH direction="rtl": that pair both
+right-aligns the line and puts the sentence-final period on its left. Every other
+combination gets one of the two wrong, silently.
+
+The whole set — both cards, both icons — regenerates with: python3 og-source/render.py
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#141A17"/>
+  <g transform="translate(914.355 52.927) scale(0.73359)">
+    <path fill="#F4F2ED" d="M8 26 h30 v11 H19 v9 h16 v11 H19 v9 h19 v11 H8 z"/>
+    <g transform="translate(12 0) skewX(-12)">
+      <path fill="#F4F2ED" d="M44 46 h11 L80 77 h-11 z" opacity=".92"/>
+      <path fill="#F4F2ED" d="M44 77 h11 L80 46 h-11 z"/>
+      <path d="M50 76 L84 34" stroke="#F0BC5A" stroke-width="3.6" stroke-linecap="round" fill="none"/>
+      <path fill="#F0BC5A" d="M90 27 L88.6 37.5 L80 30.5 z"/>
+    </g>
+  </g>
+  <text x="1000.0" y="102" font-family="IBM Plex Sans" font-weight="700" font-size="40" letter-spacing="-0.4" fill="#F4F2ED">Elyoxe</text>
+  <path d="M80 168.5 H1120" stroke="#2E3934" stroke-width="1"/>
+  <path d="M80 508.5 H1120" stroke="#2E3934" stroke-width="1"/>
+  <text x="1120" y="293" text-anchor="start" direction="rtl" font-family="IBM Plex Sans Arabic" font-weight="700" font-size="76" fill="#F4F2ED">برمجياتٌ تعمل الآن في الإنتاج.</text>
+  <text x="1120" y="425" text-anchor="start" direction="rtl" font-family="IBM Plex Sans Arabic" font-weight="700" font-size="76" fill="#F4F2ED">افتح الأرقام وتحقّق بنفسك.</text>
+  <text x="1120" y="562" text-anchor="end" direction="ltr" font-family="IBM Plex Mono Medium, IBM Plex Mono" font-weight="500" font-size="26" letter-spacing="1" fill="#F0BC5A">102 · 2,665 · 7,600 · 9 · $0</text>
+</svg>

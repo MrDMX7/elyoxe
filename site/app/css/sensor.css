@@ -1,1 +1,205 @@
-/* owned by the sensor pass — see the agent brief; classes prefixed to avoid collisions */
+/* owned by the sensor pass — see the agent brief; classes prefixed to avoid collisions
+ *
+ * Khutwa: the invariant as an instrument. Ink ground, hairline rules, two traces
+ * and a delta that has to read zero. Nothing here has a radius, a shadow or a
+ * fill it did not earn — the frame is a 1px rule, and the hierarchy is size and
+ * space. Every horizontal is logical, so the Arabic root and the English mirror
+ * share these rules unchanged; the trace direction itself is mirrored in the SVG
+ * geometry (see Sensor.tsx), not here.
+ */
+
+.snr {
+  display: grid;
+  gap: 0;
+  max-inline-size: 60rem;
+  margin-inline: auto;
+  padding: clamp(1rem, 1.6vw, 1.5rem) clamp(1rem, 1.6vw, 1.5rem) clamp(1rem, 1.6vw, 1.35rem);
+  border: 1px solid var(--rule-ink);
+  background: var(--ink);
+  color: var(--paper);
+  contain: layout paint;
+}
+
+/* ── header: the invariant, stated before it is demonstrated ── */
+.snr-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: .35rem 1.5rem;
+  padding-block-end: .85rem;
+  border-block-end: 1px solid var(--rule-ink);
+  font-size: var(--fs-small);
+  line-height: 1.5;
+}
+.snr-inv { color: var(--paper); display: inline-flex; align-items: baseline; gap: .6rem; flex-wrap: wrap; }
+.snr-eq {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--paper);
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+.snr-cap { color: var(--stone-lit); font-size: var(--fs-micro); line-height: 1.6; }
+
+/* ── plot ──────────────────────────────────────────────────────
+   The overlay's percentages and the SVG's hairlines only agree while the SVG
+   keeps its intrinsic ratio, so nothing here may constrain its height. */
+.snr-plot { position: relative; margin-block: .9rem .4rem; }
+.snr-plot svg { display: block; inline-size: 100%; block-size: auto; }
+.snr-plot svg * { vector-effect: non-scaling-stroke; }
+
+/* the instrument, present before any data is */
+.snr-grid line { stroke: var(--rule-ink); stroke-width: 1; }
+.snr-grid .snr-axis { stroke: #38443E; }
+
+/* the store: a value only at the moment it writes */
+.snr-store {
+  fill: none;
+  stroke: var(--stone-lit);
+  stroke-width: 1.25;
+  stroke-linejoin: miter;
+}
+/* gone. still holding a number, but nothing behind it. */
+.snr-store.is-dead { stroke-dasharray: 3 4; opacity: .75; }
+.snr-ck { fill: var(--stone-lit); stroke: none; }
+
+/* the hardware counter: the authority, and the one live colour */
+.snr-live { fill: none; stroke: var(--verdigris-lit); stroke-width: 1.75; stroke-linejoin: round; }
+
+/* the step detector: timing, at the density of the cadence */
+.snr-ticks { fill: none; stroke: var(--stone-lit); stroke-width: 1; opacity: .42; }
+
+/* what the counter recorded and the store has not written */
+.snr-gap { fill: var(--saffron-lit); stroke: none; opacity: 0; }
+
+.snr-restart { fill: none; stroke: var(--stone-lit); stroke-width: 1.25; stroke-dasharray: 2 2.5; }
+.snr-join { fill: none; stroke: var(--verdigris-lit); stroke-width: 1.5; }
+
+.snr-death { opacity: 0; }
+.snr-death line { stroke: var(--saffron-lit); stroke-width: 1; stroke-dasharray: 2 4; }
+
+.snr-sweep { opacity: 0; }
+.snr-sweep line { stroke: var(--verdigris-lit); stroke-width: 1; opacity: .45; }
+
+.snr-head-store { opacity: 0; }
+.snr-head-store rect { fill: none; stroke: var(--stone-lit); stroke-width: 1.25; }
+.snr-head-live { opacity: 0; }
+.snr-head-live circle { fill: var(--verdigris-lit); }
+
+/* ── annotations ───────────────────────────────────────────────
+   Positioned as a fraction of the plot's inline size. `inset-inline-start` is
+   measured from the right edge under RTL, which is exactly the mirror the SVG
+   geometry already applies — so one number serves both directions. */
+.snr-ann { position: absolute; inset: 0; pointer-events: none; }
+.snr-a {
+  position: absolute;
+  opacity: 0;
+  font-size: var(--fs-micro);
+  line-height: 1.3;
+  white-space: nowrap;
+}
+.snr-a-death {
+  inset-block-start: 0;
+  padding-inline-start: .4rem;
+  color: var(--saffron-lit);
+}
+.snr-a-rec {
+  inset-block-start: 1.35em;
+  padding-inline-end: .4rem;
+  text-align: end;
+  color: var(--verdigris-lit);
+}
+
+/* ── the detector's one sentence ───────────────────────────── */
+.snr-note {
+  font-size: var(--fs-micro);
+  line-height: 1.6;
+  color: var(--stone-lit);
+  padding-block: .5rem .9rem;
+  max-inline-size: 46ch;
+}
+
+/* ── readouts ──────────────────────────────────────────────── */
+.snr-out {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .75rem 1rem;
+  border-block-start: 1px solid var(--rule-ink);
+  padding-block-start: .85rem;
+}
+.snr-cell { display: grid; gap: .15rem; align-content: start; min-inline-size: 0; }
+.snr-v {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(1.1rem, .85rem + .95vw, 1.65rem);
+  line-height: 1.15;
+  color: var(--paper);
+  direction: ltr;
+  unicode-bidi: isolate;
+  text-align: start;
+  transition: color 320ms var(--ease-out);
+}
+.snr-v.is-live { color: var(--verdigris-lit); }
+.snr-lbl { font-size: var(--fs-micro); line-height: 1.5; color: var(--stone-lit); }
+
+/* the delta: stone while it is still a number, live once it lands on zero and
+   holds. The settle is a single rule drawing under the digit — the lock, not a
+   celebration. */
+.snr-d .snr-v { color: var(--stone-lit); position: relative; justify-self: start; }
+.snr-d .snr-v::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: calc(100% + 4px);
+  block-size: 1px;
+  background: var(--verdigris-lit);
+  transform: scaleX(0);
+  transform-origin: var(--snr-origin, left);
+  transition: transform 420ms var(--ease-out);
+}
+html[dir="rtl"] .snr-d .snr-v::after { --snr-origin: right; }
+.snr-d.is-locked .snr-v { color: var(--verdigris-lit); }
+.snr-d.is-locked .snr-v::after { transform: scaleX(1); }
+
+/* one line of state, under the delta column in both directions */
+.snr-state {
+  font-size: var(--fs-micro);
+  line-height: 1.5;
+  min-block-size: 1.5em;
+  margin-block-start: .55rem;
+  text-align: end;
+  color: var(--stone-lit);
+  transition: color 320ms var(--ease-out);
+}
+.snr-state > span { display: none; }
+.snr-state[data-phase="awaiting"] > [data-st="awaiting"],
+.snr-state[data-phase="died"] > [data-st="died"],
+.snr-state[data-phase="matched"] > [data-st="matched"] { display: inline; }
+.snr-state[data-phase="died"] { color: var(--saffron-lit); }
+.snr-state[data-phase="matched"] { color: var(--paper); }
+
+@media (max-width: 460px) {
+  .snr-out { gap: .6rem .75rem; }
+}
+
+/* ── reduced motion ────────────────────────────────────────────
+   Not "no animation" but the finished, reconciled state, painted on the first
+   frame: the sweep is removed rather than parked, so the whole record is drawn
+   and the delta already reads zero before any script runs. */
+@media (prefers-reduced-motion: reduce) {
+  .snr *, .snr *::after, .snr *::before { transition: none !important; animation: none !important; }
+  .snr-data { clip-path: none !important; }
+  .snr-sweep, .snr-gap { opacity: 0 !important; }
+  .snr-death { opacity: .45 !important; }
+  .snr-a-death { opacity: .5 !important; }
+  .snr-a-rec { opacity: 1 !important; }
+  .snr-head-store, .snr-head-live { opacity: 1 !important; }
+  .snr-d .snr-v { color: var(--verdigris-lit); }
+  .snr-d .snr-v::after { transform: scaleX(1); }
+  .snr-state > span { display: none !important; }
+  .snr-state > [data-st="matched"] { display: inline !important; }
+  .snr-state { color: var(--paper) !important; }
+}

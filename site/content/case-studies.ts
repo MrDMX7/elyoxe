@@ -57,7 +57,7 @@ export const caseStudies: CaseStudy[] = [
         "accent": false,
         "label": {
           "ar": "ارتداد في مراسلة المزوّدين",
-          "en": "bounces across the provider outreach"
+          "en": "bounced emails across the provider outreach"
         }
       }
     ],
@@ -120,8 +120,8 @@ export const caseStudies: CaseStudy[] = [
       ]
     },
     "caveat": {
-      "ar": "المنصة مكتملة ومنشورة، لكنها لم تحوّل عملاء تجاريين بعد. تُعرض هنا كدليل على الهندسة والتسليم، لا كنتيجة تجارية.",
-      "en": "The platform is complete and live, but has not yet converted commercial leads. It is presented here as evidence of engineering and delivery, not as a business result."
+      "ar": "المنصة مكتملة ومنشورة، ولم يأتِ منها عميل يدفع حتى الآن. تُعرض هنا دليلاً على الهندسة والتسليم، لا نتيجةً تجارية.",
+      "en": "The platform is complete and live, and it has not yet brought in a paying client. It is here as evidence of engineering and delivery, not as a business result."
     },
     "link": {
       "label": "invoiceready.ae",
@@ -205,8 +205,8 @@ export const caseStudies: CaseStudy[] = [
       "en": "A native Android activity tracker built around sensor accuracy and complete data privacy."
     },
     "summary": {
-      "ar": "تطبيق أندرويد أصلي لتتبّع النشاط، مبني حول دقّة الحسّاسات وخصوصية كاملة للبيانات.",
-      "en": "A native Android activity tracker built around sensor accuracy and complete data privacy."
+      "ar": "تطبيق أندرويد أصلي لتتبّع النشاط: العدّاد العتادي هو المرجع الوحيد للمجاميع، ومجموع السجل اليومي يساوي العدّاد الحي تماماً، ولا إعلانات ولا تحليلات ولا تتبّع.",
+      "en": "A native Android activity tracker: the hardware counter is the only authority on totals, stored daily history sums to exactly the live counter, and there is no advertising, analytics or telemetry."
     },
     "problem": {
       "ar": "عدّادات الخطوات تتضارب فيما بينها ومع نفسها. تنحرف المجاميع عند إنهاء التطبيق، ويتوقّف السجل اليومي عن مطابقة الحسّاس الحي. أغلب التطبيقات تخفي الفارق بدل أن تحلّه.",
@@ -245,7 +245,7 @@ export const caseStudies: CaseStudy[] = [
         "value": "9",
         "accent": true,
         "label": {
-          "ar": "فرضية مسجَّلة مسبقاً، كلها دُحضت",
+          "ar": "فرضية سُجّلت قبل اختبارها، ودُحضت كلها",
           "en": "hypotheses pre-registered, every one falsified"
         }
       },
@@ -301,12 +301,12 @@ export const caseStudies: CaseStudy[] = [
       "en": "Research and engineering"
     },
     "tagline": {
-      "ar": "عملية تحقّق مصمّمة ليكون بالإمكان الوثوق بالنتيجة حين تكون سلبية.",
-      "en": "A validation process designed so that results can be trusted when they are negative."
+      "ar": "عملية تحقّق مبنيّة ليُوثق بنتيجتها حين تكون سلبية.",
+      "en": "A validation process built so a negative result can be trusted."
     },
     "summary": {
-      "ar": "عملية تحقّق مصمّمة ليكون بالإمكان الوثوق بالنتيجة حين تكون سلبية.",
-      "en": "A validation process designed so results can be trusted when they are negative."
+      "ar": "تسع فرضيات سُجّلت كتابةً قبل اختبارها، ودُحضت كلها. المنهج نفسه هو المُنتَج: تحقّق خارج العيّنة بثلاث طرق مستقلة، وضابط عدم تجريبي، وسياسة مكتوبة تحكم ما يُشغَّل.",
+      "en": "Nine hypotheses were pre-registered and every one was falsified. The method is the product: out-of-sample validation three independent ways, an empirical null control, and a written policy governing what may run."
     },
     "problem": {
       "ar": "من السهل جعل النتائج التحليلية تبدو مقنعة، ومن الصعب الوثوق بها. أغلب أنماط الفشل طرق لخداع النفس: ملاءمة الضجيج، أو الاختبار حتى ينجح شيء، أو القياس مقابل مرجع خاطئ. المسألة الهندسية هي بناء عملية تستطيع أن تعطي إجابة سلبية ويُوثق بها.",

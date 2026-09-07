@@ -1,1 +1,298 @@
-/* owned by the validator pass — see the agent brief; classes prefixed to avoid collisions */
+/* owned by the validator pass — see the agent brief; classes prefixed to avoid collisions
+ *
+ * InvoiceReady — "a UBL invoice validated inside the browser".
+ *
+ * One instrument, two panes: the document on the start side (the input), the
+ * validation report on the end side (the output). A single scroll-scrubbed
+ * number, --vld-p (0..1), is written imperatively onto .vld by the component;
+ * every moving part below is a pure function of it. Nothing here transitions:
+ * the scrub already interpolates, and a transition on top only adds lag.
+ *
+ * Only transform, opacity and clip-path move. No layout is read or written
+ * during scroll.
+ *
+ * Every declaration driven by --vld-p is preceded by its own un-progressed
+ * value, so if a browser drops the calc() the pane still reads as "nothing
+ * checked yet" rather than blank or inverted.
+ */
+
+@property --vld-p    { syntax: "<number>"; inherits: true;  initial-value: 0; }
+@property --vld-scan { syntax: "<number>"; inherits: true;  initial-value: 0; }
+@property --vld-done { syntax: "<number>"; inherits: true;  initial-value: 0; }
+@property --vld-gp   { syntax: "<number>"; inherits: true;  initial-value: 0; }
+@property --at       { syntax: "<number>"; inherits: false; initial-value: 1; }
+@property --gend     { syntax: "<number>"; inherits: false; initial-value: 1; }
+
+/* ── the instrument ─────────────────────────────────────────── */
+.vld {
+  --vld-bg: var(--paper-2);
+  --vld-x: left;                    /* transform-origin for "forward" motion */
+
+  /* the scan head crosses the document over p 0.06 → 0.86 */
+  --vld-scan: clamp(0, calc((var(--vld-p, 0) - 0.06) * 1.25), 1);
+  /* the lock-in: the last beat, after the 24th check */
+  --vld-done: clamp(0, calc((var(--vld-p, 0) - 0.87) * 11.112), 1);
+
+  container: vld / inline-size;
+  display: grid;
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  max-inline-size: 68rem;
+  isolation: isolate;
+}
+html[dir="rtl"] .vld { --vld-x: right; }
+
+@container vld (min-width: 30rem) {
+  .vld { grid-template-columns: 1.35fr 1fr; }
+}
+
+.vld-pane {
+  background: var(--vld-bg);
+  padding: clamp(1rem, 3cqi, 1.6rem);
+  min-inline-size: 0;
+}
+
+.vld-panehead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block-end: .7rem;
+  margin-block-end: .9rem;
+  border-block-end: 1px solid var(--rule);
+}
+.vld-name { font-size: var(--fs-small); font-weight: 500; color: var(--ink); }
+.vld-file {
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--ink);
+  direction: ltr;
+  unicode-bidi: isolate;
+  letter-spacing: 0;
+}
+.vld-std {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  color: var(--stone);
+  direction: ltr;
+  unicode-bidi: isolate;
+  letter-spacing: 0;
+}
+
+/* ── the document ───────────────────────────────────────────── */
+/* Always LTR — an XML document does not mirror. Both text layers are the same
+   markup with the same metrics; they differ by opacity only, so they can never
+   drift apart. */
+.vld-lines {
+  position: relative;
+  padding: 0;                        /* the scan head measures this box */
+  overflow: hidden;
+  direction: ltr;
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: clamp(9.5px, 2cqi, 12px);
+  line-height: 1.85;
+  white-space: pre;
+  font-variant-ligatures: none;
+  letter-spacing: 0;
+  min-block-size: 14rem;
+}
+.vld-layer { display: block; }
+.vld-base { opacity: .4; }
+.vld-lit {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(0 0 100% 0);
+  clip-path: inset(0 0 calc((1 - var(--vld-scan, 0)) * 100%) 0);
+  will-change: clip-path;
+}
+.vld-line { display: block; }
+.vld-ln { color: var(--stone); opacity: .55; }
+.vld-k  { color: var(--ink); }
+.vld-v  { color: var(--saffron); }
+
+/* the scan head: a hairline with the swept region trailing above it.
+   Faint verdigris — "reading", not yet "proven". */
+.vld-scan {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: 0;
+  block-size: 100%;
+  pointer-events: none;
+  transform: translateY(0);
+  transform: translateY(calc(var(--vld-scan, 0) * 100%));
+  opacity: 1;
+  opacity: calc(1 - var(--vld-done, 0));
+  will-change: transform;
+}
+.vld-scan::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: 0;
+  block-size: 1px;
+  background: color-mix(in srgb, var(--verdigris) 65%, transparent);
+}
+.vld-scan::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 100%;
+  block-size: 2.6rem;
+  background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--verdigris) 11%, transparent));
+}
+
+/* long lines clip at the end edge; the fade says that is deliberate */
+.vld-fade {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  inline-size: 3rem;
+  pointer-events: none;
+  background: linear-gradient(to left, var(--vld-bg), transparent);
+}
+
+/* ── the report ─────────────────────────────────────────────── */
+.vld-groups { display: grid; gap: clamp(.9rem, 2.4cqi, 1.25rem); }
+
+.vld-g { --vld-gp: 0; --vld-gp: clamp(0, calc((var(--vld-p, 0) - var(--gend, 1)) * 30 + 1), 1); }
+.vld-grow {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: baseline;
+  gap: .25rem .8rem;
+  margin-block-end: .4rem;
+}
+.vld-gname {
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--stone);
+  color: color-mix(in srgb, var(--ink) calc(var(--vld-gp, 0) * 100%), var(--stone));
+  min-inline-size: 0;
+}
+.vld-gid {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  color: var(--stone);
+  direction: ltr;
+  unicode-bidi: isolate;
+  letter-spacing: 0;
+  opacity: .75;
+}
+.vld-gn {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  font-variant-numeric: tabular-nums;
+  color: var(--stone);
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* six tick bars per group; each one fills start → end in the reading direction */
+.vld-strip { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; }
+.vld-cell {
+  position: relative;
+  block-size: .75rem;
+  border: 1px solid var(--rule);
+}
+.vld-cell::before,
+.vld-cell::after { content: ""; position: absolute; }
+.vld-cell::before {
+  inset: -1px;
+  border: 1px solid var(--verdigris);
+  opacity: 0;
+  opacity: clamp(0, calc((var(--vld-p, 0) - var(--at, 1)) * 55 + 1), 1);
+}
+.vld-cell::after {
+  inset: 0;
+  background: var(--verdigris);
+  transform-origin: var(--vld-x);
+  transform: scaleX(0);
+  transform: scaleX(clamp(0, calc((var(--vld-p, 0) - var(--at, 1)) * 55 + 1), 1));
+}
+
+/* ── the tally ──────────────────────────────────────────────── */
+.vld-tally { margin-block-start: clamp(1.1rem, 3cqi, 1.6rem); padding-block-start: .9rem; border-block-start: 1px solid var(--rule); }
+/* The tally locks from ink to verdigris on the last beat. A colour change
+   rather than a stacked crossfade: paint-only, and two text layers can never
+   drift a pixel apart if there is only one. */
+.vld-frac {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: clamp(1.75rem, 7cqi, 2.5rem);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  direction: ltr;
+  unicode-bidi: isolate;
+  color: var(--ink);
+  color: color-mix(in srgb, var(--verdigris) calc(var(--vld-done, 0) * 100%), var(--ink));
+}
+.vld-den {
+  font-size: .45em;
+  color: var(--stone);
+  color: color-mix(in srgb, var(--verdigris) calc(var(--vld-done, 0) * 60%), var(--stone));
+}
+.vld-cap { display: block; font-size: var(--fs-small); color: var(--stone); max-inline-size: 30ch; margin-block-start: .25rem; }
+
+/* The lock rule and the "valid" line hold their space from first paint —
+   invisible, not absent. Deliberate: the final beat lands without reflowing
+   the pane, and the reserved strip reads as the report's own bottom margin. */
+.vld-lock {
+  display: block;
+  block-size: 1px;
+  background: var(--verdigris);
+  margin-block-start: .85rem;
+  transform-origin: var(--vld-x);
+  transform: scaleX(0);
+  transform: scaleX(var(--vld-done, 0));
+}
+.vld-valid {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-block-start: .55rem;
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--verdigris);
+  opacity: 0;
+  opacity: var(--vld-done, 0);
+  transform: translateY(6px);
+  transform: translateY(calc((1 - var(--vld-done, 0)) * 6px));
+}
+.vld-valid .vld-std { color: var(--verdigris); opacity: .8; }
+
+/* ── the request log, which stays empty ─────────────────────── */
+.vld-net {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-block-start: clamp(1.1rem, 3cqi, 1.5rem);
+  padding-block-start: .8rem;
+  border-block-start: 1px solid var(--rule);
+  font-size: var(--fs-small);
+  color: var(--stone);
+}
+.vld-net b { font-weight: 500; color: var(--ink); }
+.vld-zero {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  direction: ltr;
+  unicode-bidi: isolate;
+  margin-inline-end: .4rem;
+}
+.vld-never { margin-block-start: .5rem; font-size: var(--fs-small); color: var(--stone); max-inline-size: 34ch; }
+
+/* ── reduced motion: the finished state, with nothing moving ─── */
+@media (prefers-reduced-motion: reduce) {
+  .vld { --vld-p: 1 !important; }
+  .vld-scan { display: none; }
+  .vld-lit { will-change: auto; }
+}

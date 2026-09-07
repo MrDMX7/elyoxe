@@ -1,1 +1,159 @@
-/* owned by the citation pass — see the agent brief; classes prefixed to avoid collisions */
+/* owned by the citation pass — see the agent brief; classes prefixed to avoid collisions
+ *
+ * Ahlam. A page, not a card: paper-2 ground, one hairline border, no radius, no
+ * shadow. Three registers, separated by rules rather than boxes —
+ *   the running head   the book's own apparatus, small and grey
+ *   the passage        set as printed, IBM Plex Sans Arabic, leading 2.05
+ *   the caption        a real bibliographic line, then the two links out
+ * The traced hairline is drawn from measured rects in Citation.tsx; everything
+ * here only says what colour it is and what lights up when it arrives.
+ * The block reads correctly with no JS and with reduced motion: the symbol is a
+ * marked headword either way, and useScrub resolves to 1 so the trace is finished.
+ */
+
+.cit {
+  position: relative;
+  margin: 0;
+  display: grid;
+  gap: clamp(1.1rem, 1.9vw, 1.6rem);
+  padding: clamp(1.25rem, 2.2vw, 2rem);
+  max-inline-size: min(100%, 38rem);
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: 0;
+}
+
+/* running head — short title against the start margin, the book's section
+   against the end margin, the way a printed page carries them */
+.cit-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding-block-end: .65rem;
+  border-block-end: 1px solid var(--rule);
+  font-size: var(--fs-micro);
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--stone);
+}
+.cit-chapter { font-family: var(--font-ar); }
+
+/* the passage, as printed */
+.cit-passage {
+  margin: 0;
+  font-family: var(--font-ar);
+  font-size: clamp(1.0625rem, 1rem + .34vw, 1.25rem);
+  line-height: 2.05;
+  color: var(--ink);
+  text-align: start;
+}
+/* the headword. It is marked because the book marks it, not because the page
+   animates — the rule is always there, and the trace grows out of its end. */
+.cit-sym {
+  position: relative;
+  font-weight: 700;
+  color: var(--saffron);
+  white-space: nowrap;
+}
+.cit-sym::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: -5px;
+  block-size: 1px;
+  background: var(--saffron);
+}
+
+/* the traced hairline */
+.cit-trace {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.cit-trace path {
+  fill: none;
+  stroke: var(--saffron);
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+
+/* the citation */
+.cit-cap {
+  display: grid;
+  gap: 1.15rem;
+  padding-block-start: .95rem;
+  border-block-start: 1px solid var(--rule);
+  font-size: var(--fs-small);
+  color: var(--stone);
+}
+.cit-bib {
+  margin: 0;
+  color: var(--ink);
+  line-height: 1.85;
+  text-wrap: pretty;
+}
+.cit-from { color: var(--stone); }
+/* no italic face is loaded for either family; the title carries its weight instead */
+.cit-bib cite { font-style: normal; font-weight: 500; }
+.cit-page { color: var(--stone); transition: color var(--dur) var(--ease); }
+.cit.is-at-page .cit-page { color: var(--saffron); font-weight: 500; }
+
+/* A colophon row: the two links pinned to the two margins. The source link is
+   ordered last and pushed out by an auto inline-start margin, so it sits on the
+   end margin — the side the bibliographic line finishes on in either direction —
+   and the second trace drops out of the page number almost straight down instead
+   of running back across the citation. The auto margin holds per flex line, so
+   the pairing survives the wrap at narrow widths where space-between alone would
+   drop the link back to the start. DOM order keeps the source link first, where
+   it belongs for reading and for the keyboard. */
+.cit-links {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: .5rem 1.5rem;
+}
+.cit-src {
+  order: 2;
+  margin-inline-start: auto;
+  display: inline-flex;
+  align-items: baseline;
+  gap: .55rem;
+}
+.cit-open {
+  font-weight: 500;
+  color: var(--ink);
+  border-block-end: 1px solid var(--rule);
+  padding-block-end: .12em;
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.cit.is-at-source .cit-open { border-block-end-color: var(--saffron); }
+.cit-open:hover { color: var(--saffron); border-block-end-color: var(--saffron); }
+.cit-host { color: var(--stone); font-size: var(--fs-micro); }
+.cit-entry {
+  order: 1;
+  color: var(--stone);
+  border-block-end: 1px solid var(--rule);
+  padding-block-end: .12em;
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.cit-entry:hover { color: var(--saffron); border-block-end-color: var(--saffron); }
+
+.cit-note {
+  margin: 0;
+  font-size: var(--fs-micro);
+  line-height: 1.7;
+  color: var(--stone);
+  max-inline-size: 54ch;
+}
+
+@media (max-width: 480px) {
+  /* the margin stem needs somewhere to run; keep the gutter even when the
+     paper is narrow */
+  .cit { padding-inline: 1.4rem; }
+  .cit-head { font-size: 11px; }
+}

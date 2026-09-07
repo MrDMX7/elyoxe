@@ -8,23 +8,23 @@ export type SystemNode = {
 
 export const nodes: SystemNode[] = [
   // the four projects + this page
-  { id: "invoiceready", label: "invoiceready.ae", x: 0.74, y: 0.4, kind: "anchor", live: true, slug: "invoiceready", size: 1.6 },
-  { id: "ahlam", label: "ahlam.elyoxe.com", x: 0.86, y: 0.14, kind: "anchor", live: true, slug: "ahlam", size: 1.6 },
-  { id: "elyoxe", label: "elyoxe.com", x: 0.62, y: 0.5, kind: "anchor", live: true, size: 1.3 },
-  { id: "khutwa", label: "Khutwa · Android", x: 0.95, y: 0.36, kind: "anchor", slug: "khutwa", size: 1.5 },
-  { id: "quant", label: "quant · EC2 Tokyo", x: 0.3, y: 0.46, kind: "anchor", slug: "quantitative-method", size: 1.5 },
+  { id: "invoiceready", label: "invoiceready.ae", x: 0.74, y: 0.26, kind: "anchor", live: true, slug: "invoiceready", size: 1.6 },
+  { id: "ahlam", label: "ahlam.elyoxe.com", x: 0.86, y: 0.12, kind: "anchor", live: true, slug: "ahlam", size: 1.6 },
+  { id: "elyoxe", label: "elyoxe.com", x: 0.62, y: 0.34, kind: "anchor", live: true, size: 1.3 },
+  { id: "khutwa", label: "Khutwa · Android", x: 0.95, y: 0.31, kind: "anchor", slug: "khutwa", size: 1.5 },
+  { id: "quant", label: "quant · EC2 Tokyo", x: 0.3, y: 0.37, kind: "anchor", slug: "quantitative-method", size: 1.5 },
   // the infrastructure they run on
-  { id: "cloudfront", label: "CloudFront", x: 0.66, y: 0.2, kind: "infra", size: 1.1 },
-  { id: "s3", label: "S3", x: 0.54, y: 0.34, kind: "infra", size: 1.1 },
+  { id: "cloudfront", label: "CloudFront", x: 0.66, y: 0.14, kind: "infra", size: 1.1 },
+  { id: "s3", label: "S3", x: 0.54, y: 0.24, kind: "infra", size: 1.1 },
   { id: "acm", label: "ACM", x: 0.76, y: 0.05, kind: "infra" },
-  { id: "route53", label: "Route 53", x: 0.48, y: 0.1, kind: "infra" },
-  { id: "lambda", label: "Lambda", x: 0.42, y: 0.38, kind: "infra" },
-  { id: "ses", label: "SES", x: 0.34, y: 0.2, kind: "infra" },
-  { id: "dynamodb", label: "DynamoDB", x: 0.46, y: 0.54, kind: "infra" },
-  { id: "actions", label: "GitHub Actions", x: 0.24, y: 0.08, kind: "infra" },
-  { id: "github", label: "GitHub", x: 0.16, y: 0.28, kind: "infra" },
-  { id: "ec2", label: "EC2 · ap-northeast-1", x: 0.2, y: 0.58, kind: "infra" },
-  { id: "android", label: "SensorManager", x: 0.88, y: 0.56, kind: "infra" },
+  { id: "route53", label: "Route 53", x: 0.48, y: 0.08, kind: "infra" },
+  { id: "lambda", label: "Lambda", x: 0.42, y: 0.27, kind: "infra" },
+  { id: "ses", label: "SES", x: 0.34, y: 0.17, kind: "infra" },
+  { id: "dynamodb", label: "DynamoDB", x: 0.46, y: 0.35, kind: "infra" },
+  { id: "actions", label: "GitHub Actions", x: 0.24, y: 0.07, kind: "infra" },
+  { id: "github", label: "GitHub", x: 0.16, y: 0.21, kind: "infra" },
+  { id: "ec2", label: "EC2 · ap-northeast-1", x: 0.2, y: 0.44, kind: "infra" },
+  { id: "android", label: "SensorManager", x: 0.88, y: 0.4, kind: "infra" },
 ];
 
 export const edges: [string, string][] = [

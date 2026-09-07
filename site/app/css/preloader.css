@@ -1,1 +1,103 @@
-/* owned by the preloader pass — see the agent brief; classes prefixed to avoid collisions */
+/* ══ Elyoxe — the two ink layers ═══════════════════════════════════════════
+ *
+ * Two full-viewport overlays, both at z-index 9000 (header 70, drawer 80,
+ * cursor 9999):
+ *
+ *   .pl   the one load-in curtain. Home only, first visit of a session only,
+ *         never with reduced motion. The mark draws itself, then the curtain
+ *         lifts in the reading direction.
+ *   .pt   the ink wipe that covers a same-language route swap.
+ *
+ * The curtain's cover rules are deliberately duplicated in a tiny inline
+ * <style id="pl-crit"> inside Preloader.tsx. That block is parsed with the
+ * markup itself, so the curtain is already opaque even if this stylesheet is
+ * a beat late — and it carries the CSS failsafe that removes the curtain at
+ * 1.6s with no JavaScript involved at all. Keep the two in sync.
+ * ────────────────────────────────────────────────────────────────────────── */
+
+/* ── the load-in curtain ───────────────────────────────────────────────── */
+
+/* Oversized on both axes so the lift can skew and drift without ever
+   uncovering a corner before it is meant to. Centre still lands on the
+   viewport centre: -6vw + 112vw/2 = 50vw, -10vh + 120vh/2 = 50vh. */
+.pl {
+  position: fixed;
+  left: -6vw;
+  top: -10vh;
+  inline-size: 112vw;
+  block-size: 120vh;
+  z-index: 9000;
+  background: #141A17;
+  display: grid;
+  place-items: center;
+  transform-origin: 50% 50%;
+  will-change: transform;
+  /* no-JS / dead-JS net: the curtain leaves on its own at 1.6s */
+  animation: pl-failsafe 300ms linear 1600ms forwards;
+}
+
+@keyframes pl-failsafe { to { opacity: 0; visibility: hidden; } }
+
+/* Belt and braces with the inline script: reduced motion never sees it. */
+@media (prefers-reduced-motion: reduce) { .pl { display: none !important; } }
+
+/* Fallback channel, used only if the inline <style> has no CSSOM sheet to
+   insert into (never in practice) — see Preloader.tsx. */
+html[data-pl="off"] .pl { display: none !important; }
+
+.pl-stage { display: grid; place-items: center; }
+
+.pl-mark {
+  inline-size: clamp(78px, 17vw, 128px);
+  block-size: auto;
+  overflow: visible;
+}
+
+/* Undrawn state lives in CSS, not in a gsap.set(), so there is no frame of
+   finished mark between first paint and hydration. 260 is comfortably longer
+   than either path (E ≈ 232, arrow shaft ≈ 54); the effect replaces both with
+   the exact getTotalLength() before it tweens. */
+.pl-draw {
+  fill: none;
+  stroke-dasharray: 260;
+  stroke-dashoffset: 260;
+  stroke-linejoin: miter;
+  stroke-linecap: butt;
+}
+.pl-e-trace { stroke: #F4F2ED; stroke-width: 1.4; }
+.pl-e-fill  { fill: #F4F2ED; opacity: 0; }
+.pl-x       { fill: #F4F2ED; }            /* revealed by the clip rect, not opacity */
+.pl-arrow-line { stroke: #F0BC5A; stroke-width: 3.6; stroke-linecap: round; }
+.pl-arrow-head { fill: #F0BC5A; opacity: 0; }
+
+/* Scroll lock while the curtain is up. scrollbar-gutter keeps the desktop
+   gutter reserved so hiding the scrollbar shifts nothing underneath. */
+html.pl-lock { overflow: hidden; scrollbar-gutter: stable; }
+
+
+/* ── the page-transition wipe ──────────────────────────────────────────── */
+
+/* Parked fully off-screen AND hidden at rest, so the saffron edge lines can
+   never show as a stripe down the side of a normal page. */
+/* left/right rather than a vw width: it resolves to exactly the viewport, so
+   the panel can never widen the document (the audit checks scrollWidth at
+   390px). The saffron edges are box-shadows, which never affect layout — at
+   full cover they sit just outside the viewport, and they read as the leading
+   and trailing edge of the ink while it sweeps. */
+.pt-panel {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  block-size: 100vh;
+  block-size: 100dvh;
+  z-index: 9000;
+  background: #141A17;
+  box-shadow: 5px 0 0 0 #F0BC5A, -5px 0 0 0 #F0BC5A;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate3d(-110%, 0, 0);
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) { .pt-panel { display: none !important; } }

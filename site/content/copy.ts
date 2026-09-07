@@ -25,23 +25,23 @@ export const copy = {
 
   hero: {
     lines: {
-      ar: ["برمجيات تعمل في الإنتاج.", "وكلّ رقمٍ عنها يُفتح الآن."],
-      en: ["Software running in production.", "Every number about it opens now."],
+      ar: ["برمجياتٌ تعمل الآن في الإنتاج.", "افتح الأرقام وتحقّق بنفسك."],
+      en: ["Software running in production right now.", "Open the numbers and check them yourself."],
     } as L<[string, string]>,
     lead: {
-      ar: "Elyoxe استوديو هندسي في دبي يصمّم الأنظمة ويبنيها ويشغّلها: مواقع ثنائية اللغة، وخطوط ذكاء اصطناعي تعامل العربية لغةً أولى، وتطبيقات أندرويد أصلية، وبنية سحابية على AWS. ما يظهر في هذه الصفحة منشورٌ ويُفتح، لا موصوف.",
-      en: "Elyoxe is an engineering studio in Dubai that designs, builds and runs systems: bilingual websites, AI pipelines that treat Arabic as a first language, native Android applications, and cloud infrastructure on AWS. What this page shows is published and opens. It is not described.",
+      ar: "Elyoxe استوديو هندسي في دبي يصمّم الأنظمة ويبنيها ويشغّلها: مواقع ثنائية اللغة، وخطوط ذكاء اصطناعي تعامل العربية لغةً أولى، وتطبيقات أندرويد أصلية، وبنية سحابية على AWS. ولا شيء هنا موصوفٌ من بعيد؛ كلّ رقمٍ في الصفحة له رابطٌ تفتحه أو صفحةٌ تقرأها.",
+      en: "Elyoxe is an engineering studio in Dubai that designs systems, builds them and runs them: bilingual websites, AI pipelines that treat Arabic as a first language, native Android applications, and cloud infrastructure on AWS. Nothing here is described from a distance — every number on the page has a link you can open or a page you can read.",
     },
     cta: { ar: "ناقش مشروعك", en: "Discuss a project" },
-    cta2: { ar: "الأعمال", en: "See the work" },
+    cta2: { ar: "شاهد الأعمال", en: "See the work" },
     canvasLabel: { ar: "خريطة الأنظمة التي تشغّلها Elyoxe الآن", en: "A map of the systems Elyoxe runs right now" },
   },
 
   ledger: {
     title: { ar: "السجلّ الحيّ", en: "The live ledger" },
     note: {
-      ar: "أربعة أرقام من أربعة مشاريع. النطاقان يُفتحان في المتصفح الآن، والرقمان الآخران من مستودع عام وسجلّ داخلي مذكورٌ بحدوده. كلّ رقم هنا هو نفسه في دراسة الحالة التي تخصّه.",
-      en: "Four numbers from four projects. The two domains open in a browser right now; the other two come from a public repository and an internal record whose limits are stated. Every number here is the same one its case study reports.",
+      ar: "أربعة أرقام من أربعة مشاريع. نطاقان يُفتحان في المتصفح الآن، ومستودع مفتوح للعامة، وسجلّ داخلي حدوده مكتوبة في دراسته. الرقم هنا هو الرقم هناك.",
+      en: "Four numbers from four projects. Two domains open in a browser right now, one repository is public, and one is an internal record whose limits are written into its case study. The number here is the number there.",
     },
     open: { ar: "افتح", en: "Open" },
     read: { ar: "اقرأ", en: "Read" },
@@ -62,8 +62,8 @@ export const copy = {
   work: {
     title: { ar: "الأعمال", en: "Work" },
     lead: {
-      ar: "مشاريع منشورة، لكلٍّ منها لغته وأرقامه وحدوده المكتوبة.",
-      en: "Published projects, each with its own language, its numbers, and its limits in writing.",
+      ar: "مشاريع حقيقية، لكلٍّ منها أرقامه وحدوده المكتوبة ورسمٌ تفاعلي بُني له وحده.",
+      en: "Real projects, each with its own numbers, its own limits in writing, and an interactive diagram built for it alone.",
     },
     caseStudy: { ar: "دراسة الحالة", en: "Case study" },
     visit: { ar: "زيارة", en: "Visit" },
@@ -81,10 +81,10 @@ export const copy = {
     registered: { ar: "مسجَّلة مسبقاً", en: "Pre-registered" },
     falsified: { ar: "دُحضت", en: "Falsified" },
     ledgerFoot: {
-      ar: "تسع فرضيات، تسع نتائج سلبية، ولا واحدة أُعيد تفسيرها بعد الاختبار. هذا ما يجعل الفحص موثوقاً.",
-      en: "Nine hypotheses, nine negative results, and not one reinterpreted after the test. That is what makes the check trustworthy.",
+      ar: "تسع فرضيات سُجّلت قبل اختبارها، وتسع نتائج سلبية، ولا واحدة أُعيد تفسيرها بعد ظهور النتيجة. بهذا وحده يُوثق بالفحص.",
+      en: "Nine hypotheses pre-registered, nine negative results, and not one reinterpreted afterwards. That is the only thing that makes a check worth trusting.",
     },
-    checks: { ar: "فحصاً لكل فاتورة، داخل المتصفح", en: "checks per invoice, inside the browser" },
+    checks: { ar: "فحصاً لكل فاتورة", en: "checks per invoice" },
     stored: { ar: "مجموع السجلّ المخزَّن", en: "Stored history, summed" },
     liveCounter: { ar: "العدّاد الحي", en: "Live counter" },
     delta: { ar: "الفرق", en: "Delta" },
@@ -112,8 +112,8 @@ export const copy = {
   contact: {
     title: { ar: ["ابدأ من المشكلة،", "لا من المواصفات."], en: ["Start with the problem,", "not the specification."] } as L<[string, string]>,
     lead: {
-      ar: "وصفٌ قصير لما لا يعمل اليوم أنفع من كرّاسة مواصفات مكتملة. الاستشارة الأولى بلا مقابل، والردّ خلال يوم عمل.",
-      en: "A short description of what is not working today is more useful than a finished brief. The first consultation carries no charge, and a reply follows within one working day.",
+      ar: "وصفٌ قصير لما لا يعمل اليوم أنفع من كرّاسة مواصفات كاملة. المحادثة الأولى بلا مقابل، والردّ خلال يوم عمل واحد.",
+      en: "A short description of what is not working today is worth more than a finished specification. The first conversation costs nothing, and a reply follows within one working day.",
     },
     name: { ar: "الاسم", en: "Name" },
     email: { ar: "البريد الإلكتروني", en: "Email" },

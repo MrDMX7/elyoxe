@@ -1,1 +1,116 @@
 /* owned by the services pass — see the agent brief; classes prefixed to avoid collisions */
+
+/* Four parallel fields as four rows on hairline rules. No card, no shadow, no
+   icon tile, no numbering — the rule and the whitespace do the containing, and
+   each row carries one instrument drawn on a single 480×180 grid at one weight.
+   Everything here is logical-property only: the Arabic root and the English
+   mirror share these rules and differ only where the language does. */
+
+.svc-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-block-start: 1px solid var(--rule);
+}
+
+.svc-row {
+  display: grid;
+  gap: clamp(1.5rem, 1rem + 2.5vw, 2.5rem);
+  padding-block: clamp(2rem, 1.5rem + 2.4vw, 3.5rem);
+  border-block-end: 1px solid var(--rule);
+  align-items: start;
+  min-inline-size: 0;
+}
+
+@media (min-width: 900px) {
+  .svc-row { grid-template-columns: 5fr 7fr; column-gap: var(--gutter); align-items: center; }
+  /* The one deliberate break in the run: the row everything else runs on
+     reverses the reading order, so the infrastructure sits underneath. */
+  .svc-row[data-svc="cloud"] { grid-template-columns: 7fr 5fr; }
+  .svc-row[data-svc="cloud"] .svc-copy { order: 2; }
+  .svc-row[data-svc="cloud"] .svc-instr { order: 1; }
+}
+
+/* ── copy column ──────────────────────────────────────────────── */
+
+.svc-copy { display: grid; gap: .8rem; align-content: start; min-inline-size: 0; }
+.svc-copy h3 { margin: 0; }
+.svc-body { max-inline-size: 38ch; }
+
+.svc-proof {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 1.1rem;
+  row-gap: .25rem;
+  align-items: baseline;
+  margin-block-start: .9rem;
+  padding-block-start: .95rem;
+  border-block-start: 1px solid var(--rule-soft);
+}
+.svc-figure {
+  grid-row: span 2;
+  align-self: start;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  font-size: clamp(1.75rem, 1.4rem + 1vw, 2.25rem);
+  line-height: 1.1;
+  color: var(--saffron);
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+.svc-what { font-size: var(--fs-small); color: var(--stone); line-height: 1.5; }
+.svc-link { font-size: var(--fs-small); font-weight: 500; justify-self: start; }
+
+/* ── instrument column ────────────────────────────────────────── */
+
+.svc-instr { margin: 0; display: grid; gap: .65rem; justify-items: start; min-inline-size: 0; }
+
+.svc-svg {
+  inline-size: 100%;
+  max-inline-size: 540px;
+  block-size: auto;
+  opacity: .58;
+  transition: opacity 420ms var(--ease);
+}
+.svc-row:hover .svc-svg,
+.svc-row:focus-within .svc-svg { opacity: 1; }
+
+/* one grid, one stroke weight, monochrome ink with a single saffron accent */
+.svc-svg * {
+  fill: none;
+  stroke-width: 1.1;
+  stroke-linecap: butt;
+  stroke-linejoin: miter;
+}
+.svc-ink { stroke: var(--ink); }
+.svc-stone { stroke: var(--stone); }
+.svc-rule { stroke: var(--rule); }
+.svc-acc { stroke: var(--saffron); }
+.svc-dash { stroke-dasharray: 3 4; }
+.svc-fill { fill: var(--saffron); stroke: none; }
+
+.svc-note {
+  font-size: var(--fs-small);
+  color: var(--stone);
+  line-height: 1.55;
+  max-inline-size: 46ch;
+}
+
+/* At small sizes the 480-unit viewBox scales down, so the hairline is nudged
+   up to land on a whole device pixel rather than half of one. */
+@media (max-width: 899px) {
+  .svc-svg * { stroke-width: 1.5; }
+}
+
+/* Coarse pointers have no hover to reveal with: the instrument reads at full
+   strength and runs once when the row enters. */
+@media (hover: none) {
+  .svc-svg { opacity: 1; }
+}
+
+/* Reduced motion never builds a timeline, so the markup's resting state — the
+   finished drawing — is what shows, at full strength and static. */
+@media (prefers-reduced-motion: reduce) {
+  .svc-svg { opacity: 1; transition: none; }
+}

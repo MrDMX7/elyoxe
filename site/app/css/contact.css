@@ -1,1 +1,232 @@
 /* owned by the contact pass — see the agent brief; classes prefixed to avoid collisions */
+
+/* A form built the way the rest of the work is: underline fields with a
+ * mono gutter, one focus choreography (index inks, label lifts, the rule
+ * draws in reading direction), a length readout that says what the field
+ * actually requires, and send states shown inline instead of in an alert.
+ *
+ * --origin-start is `left` under LTR and `right` under RTL, so every draw
+ * runs forward in the language being read. --dir flips the sending sweep.
+ * Motion is transform and opacity only; under reduced motion the global
+ * transition kill leaves every state legible at rest.
+ */
+.ctc { --origin-start: left; --dir: 1; }
+html[dir="rtl"] .ctc { --origin-start: right; --dir: -1; }
+
+/* ── the statement column ───────────────────────────────────── */
+.ctc-intro { display: grid; gap: 1.5rem; align-content: start; }
+
+.ctc-privacy {
+  display: grid; gap: .65rem;
+  margin-block-start: .75rem; padding-block-start: 1.35rem;
+  border-block-start: 1px solid var(--ink);
+  max-inline-size: 44ch;
+}
+.ctc-privacy-line { font-size: var(--fs-lead); line-height: 1.5; color: var(--ink); text-wrap: balance; }
+html[lang="ar"] .ctc-privacy-line { line-height: 1.8; }
+
+/* the delivery path, named. It reads left-to-right in both languages —
+   it is a technical string — but sits flush against the reading edge. */
+.ctc-path {
+  font-family: var(--font-mono); font-size: var(--fs-small);
+  color: var(--stone); direction: ltr; unicode-bidi: isolate;
+  text-align: left;
+}
+html[dir="rtl"] .ctc-path { text-align: right; }
+.ctc-path span { color: var(--saffron); }
+
+.ctc-privacy-note { font-size: var(--fs-small); color: var(--stone); }
+
+/* ── the form ───────────────────────────────────────────────── */
+.ctc-form { display: grid; gap: 2.25rem; max-inline-size: 42rem; }
+
+.ctc-field { display: grid; grid-template-columns: 2.5rem 1fr; column-gap: .75rem; align-items: start; }
+
+.ctc-idx {
+  font-family: var(--font-mono); font-variant-numeric: tabular-nums;
+  direction: ltr; unicode-bidi: isolate;
+  font-size: var(--fs-micro); color: var(--stone);
+  /* the same 1.75rem line box as the field's first line, so the gutter number
+     sits on the field's text rather than near it */
+  padding-block-start: 1.75rem; line-height: 1.75rem;
+  transition: color var(--dur) var(--ease);
+}
+.ctc-field:focus-within .ctc-idx { color: var(--ink); }
+
+.ctc-input { position: relative; }
+
+.ctc-input input,
+.ctc-input textarea {
+  font: inherit; color: var(--ink); background: transparent;
+  display: block; inline-size: 100%;
+  border: 0; border-block-end: 1px solid var(--rule); border-radius: 0;
+  padding: 1.75rem 0 .5rem;
+  transition: border-color var(--dur) var(--ease);
+}
+.ctc-input textarea { min-block-size: 9rem; resize: vertical; line-height: var(--lh-body); }
+.ctc-input input:hover, .ctc-input textarea:hover { border-color: var(--stone); }
+/* the drawn saffron rule is the focus indicator, so the default ring is dropped */
+.ctc-input input:focus, .ctc-input textarea:focus { outline: none; border-color: var(--stone); }
+.ctc-input input:focus-visible, .ctc-input textarea:focus-visible { outline: none; }
+/* forced colours drop the drawn rule, so the platform ring comes back */
+@media (forced-colors: active) {
+  .ctc-input input:focus-visible, .ctc-input textarea:focus-visible { outline: 2px solid; outline-offset: 2px; }
+}
+.ctc-input input:-webkit-autofill {
+  -webkit-text-fill-color: var(--ink);
+  -webkit-box-shadow: 0 0 0 100px var(--paper) inset;
+  caret-color: var(--ink);
+}
+
+.ctc-label {
+  position: absolute; inset-inline-start: 0; inset-block-end: .5rem;
+  font-size: var(--fs-body); line-height: 1.75; color: var(--stone);
+  pointer-events: none; white-space: nowrap;
+  transform-origin: var(--origin-start) bottom;
+  transition: transform 340ms var(--ease-out), color var(--dur) var(--ease);
+}
+.ctc-label.is-block { inset-block-end: auto; inset-block-start: 1.75rem; }
+
+.ctc-input input:focus ~ .ctc-label,
+.ctc-input input:not(:placeholder-shown) ~ .ctc-label,
+.ctc-input textarea:focus ~ .ctc-label,
+.ctc-input textarea:not(:placeholder-shown) ~ .ctc-label {
+  transform: translateY(-1.85rem) scale(.8);
+}
+.ctc-input input:focus ~ .ctc-label,
+.ctc-input textarea:focus ~ .ctc-label { color: var(--saffron); }
+
+.ctc-rule {
+  position: absolute; inset-inline: 0; inset-block-end: -1px;
+  block-size: 2px; background: var(--saffron); pointer-events: none;
+  transform: scaleX(0); transform-origin: var(--origin-start);
+  transition: transform 460ms var(--ease-out);
+}
+.ctc-input input:focus ~ .ctc-rule,
+.ctc-input textarea:focus ~ .ctc-rule { transform: scaleX(1); }
+
+/* native validation stays in charge; this only states it in the design */
+.ctc-input input:user-invalid, .ctc-input textarea:user-invalid { border-color: var(--saffron-deep); }
+.ctc-input input:user-invalid ~ .ctc-label, .ctc-input textarea:user-invalid ~ .ctc-label { color: var(--saffron-deep); }
+
+.ctc-meter {
+  grid-column: 2;
+  display: flex; align-items: baseline; justify-content: flex-end; gap: .45rem;
+  margin-block-start: .5rem;
+  font-size: var(--fs-micro); color: var(--stone);
+  opacity: 0; transition: opacity var(--dur) var(--ease);
+}
+.ctc-meter[data-on="true"] { opacity: 1; }
+.ctc-count {
+  font-family: var(--font-mono); font-variant-numeric: tabular-nums;
+  direction: ltr; unicode-bidi: isolate; color: var(--ink);
+}
+.ctc-meter[data-short="true"] .ctc-count { color: var(--saffron); }
+
+/* ── send, and what happened ────────────────────────────────── */
+.ctc-foot { display: grid; gap: 1rem; align-items: center; margin-block-start: .25rem; }
+@media (min-width: 560px) { .ctc-foot { grid-template-columns: auto 1fr; column-gap: 1.75rem; } }
+
+.ctc-send {
+  position: relative; overflow: clip; justify-self: start;
+  display: inline-flex; align-items: center; justify-content: center;
+  min-block-size: 3.5rem; padding-inline: 2.25rem;
+  background: var(--ink); color: var(--paper);
+  font-weight: 500; font-size: var(--fs-body);
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.ctc-send:hover:not(:disabled) { background: var(--ink-3); }
+.ctc-send:disabled { cursor: default; }
+.ctc-send[data-state="sending"] { color: var(--stone-lit); }
+
+.ctc-sweep {
+  position: absolute; inset-block-end: 0; inset-inline-start: 0;
+  block-size: 2px; inline-size: 32%;
+  background: var(--saffron-lit); opacity: 0;
+}
+.ctc-send[data-state="sending"] .ctc-sweep { opacity: 1; animation: ctc-sweep 1150ms linear infinite; }
+@keyframes ctc-sweep {
+  from { transform: translateX(calc(-120% * var(--dir, 1))); }
+  to   { transform: translateX(calc(380% * var(--dir, 1))); }
+}
+
+.ctc-status { font-size: var(--fs-small); min-block-size: 1.5em; }
+.ctc-status.is-ok { display: flex; align-items: center; gap: .55rem; color: var(--verdigris); }
+.ctc-status.is-ok::before {
+  content: ""; flex: none;
+  inline-size: 7px; block-size: 7px; border-radius: 50%;
+  background: var(--verdigris);
+}
+.ctc-status.is-err { color: var(--saffron-deep); }
+
+/* ── footer ─────────────────────────────────────────────────────────────────
+ * The footer's rules live here because approach.css and contact.css are the
+ * two stylesheets this pass owns; there is no footer.css to add. Both are
+ * imported from globals.css, so the scope is the same either way.
+ *
+ * The one ink bookend: the mark, the site describing itself, the two navs,
+ * the build date this export was made on, and a large quiet wordmark as the
+ * page's last beat. The only motion is a hairline drawing under a link the
+ * visitor is actually pointing at, forward in reading direction.
+ * ─────────────────────────────────────────────────────────────────────────── */
+.footer { --origin-start: left; }
+html[dir="rtl"] .footer { --origin-start: right; }
+footer.footer { padding-block-end: 0; }
+
+.ftr-top { display: grid; gap: 2.5rem; }
+@media (min-width: 760px) { .ftr-top { grid-template-columns: 1.5fr 1fr 1fr; column-gap: var(--gutter); } }
+
+.ftr-id { display: grid; gap: 1.25rem; align-content: start; justify-items: start; }
+.ftr-self {
+  max-inline-size: 40ch;
+  font-size: clamp(1rem, .96rem + .25vw, 1.1875rem);
+  line-height: 1.6; color: var(--paper);
+}
+html[lang="ar"] .ftr-self { line-height: 1.9; }
+
+.footer .ftr-nav a {
+  position: relative; justify-self: start; padding-block-end: .18rem;
+  transition: color var(--dur) var(--ease);
+}
+.footer .ftr-nav a::after {
+  content: ""; position: absolute; inset-inline: 0; inset-block-end: 0;
+  block-size: 1px; background: var(--saffron-lit);
+  transform: scaleX(0); transform-origin: var(--origin-start);
+  transition: transform 380ms var(--ease-out);
+}
+.footer .ftr-nav a:hover { color: var(--saffron-lit); }
+.footer .ftr-nav a:hover::after, .footer .ftr-nav a:focus-visible::after { transform: scaleX(1); }
+.footer .ftr-repo {
+  font-family: var(--font-mono); font-size: var(--fs-micro);
+  direction: ltr; unicode-bidi: isolate;
+}
+/* the switch is set in the language it switches to */
+.footer .ftr-nav a[lang] { font-family: var(--font-en); }
+html[lang="en"] .footer .ftr-nav a[lang] { font-family: var(--font-ar); }
+
+.ftr-bottom {
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem 2rem;
+  margin-block-start: clamp(2.5rem, 5vw, 4rem);
+  padding-block-start: 1.25rem; border-block-start: 1px solid var(--rule-ink);
+  font-size: var(--fs-small); color: var(--stone-lit);
+}
+.ftr-c { direction: ltr; unicode-bidi: isolate; }
+.ftr-built { display: inline-flex; align-items: baseline; gap: .5rem; }
+.ftr-date {
+  font-family: var(--font-mono); font-variant-numeric: tabular-nums;
+  direction: ltr; unicode-bidi: isolate; color: var(--paper);
+}
+
+/* the last beat: the wordmark, quiet enough to read as ground, not a headline */
+.ftr-wordmark {
+  margin-block-start: clamp(3rem, 7vw, 6rem);
+  padding-block-end: clamp(.75rem, 2vw, 1.5rem);
+}
+.ftr-wordmark .wrap { text-align: start; }
+.ftr-wordmark span {
+  display: inline-block; direction: ltr; unicode-bidi: isolate;
+  font-family: var(--font-en); font-weight: 700;
+  font-size: clamp(3.5rem, 18vw, 14rem);
+  line-height: .95; letter-spacing: -0.045em;
+  color: var(--ink-3); user-select: none;
+}
