@@ -82,12 +82,15 @@ def icon(name):
 
 
 # ── chrome ──────────────────────────────────────────────────────────────────
-def nav(lang, root, current=""):
+def nav(lang, root, current="", home=""):
+    """`root` reaches the SITE root; `home` reaches the current LANGUAGE's
+    home page. Section anchors must use `home`: on /ar/ the site root is the
+    English page, so "../#services" sent every Arabic visitor to the English
+    site — nav, footer and all."""
     c = COPY[lang]
     other_root = ("../" * root.count("../")) if False else root
     lang_href = (root + "ar/") if lang == "en" else (root or "./")
-    items = [(k, f'{root}#{k}' if k in ("services", "work", "approach", "contact") else root)
-             for k in ("services", "work", "approach", "contact")]
+    items = [(k, f'{home}#{k}') for k in ("services", "work", "approach", "contact")]
     links = "".join(
         '<a href="{}"{}>{}</a>'.format(h, ' aria-current="page"' if k == current else "", E(c["nav"][k]))
         for k, h in items)
@@ -104,9 +107,9 @@ def nav(lang, root, current=""):
     )
 
 
-def footer(lang, root):
+def footer(lang, root, home=""):
     c = COPY[lang]
-    svc = "".join(f'<a href="{root}#services">{E(s[lang]["title"])}</a>' for s in SERVICES)
+    svc = "".join(f'<a href="{home}#services">{E(s[lang]["title"])}</a>' for s in SERVICES)
     return (
         f'<footer class="foot"><div class="wrap">'
         f'<div class="foot-grid">'
@@ -116,7 +119,7 @@ def footer(lang, root):
         f'<div><div class="label" style="margin-block-end:1rem">{E(c["foot_services"])}</div>'
         f'<div class="foot-links">{svc}</div></div>'
         f'<div><div class="label" style="margin-block-end:1rem">{E(c["foot_contact"])}</div>'
-        f'<div class="foot-links"><a href="{root}#contact">{E(c["foot_contact_form"])}</a>'
+        f'<div class="foot-links"><a href="{home}#contact">{E(c["foot_contact_form"])}</a>'
         f'<a href="https://github.com/MrDMX7">github.com/MrDMX7</a></div></div>'
         f'</div>'
         f'<div class="foot-bottom"><span class="num">© 2026 Elyoxe</span>'
@@ -213,30 +216,52 @@ def media(kind, rtl, h=230):
 
 
 # ── page assembly ───────────────────────────────────────────────────────────
-def page(*, lang, title, description, canonical, body, root="", current="", alternates=None, ldjson=""):
+def page(*, lang, title, description, canonical, body, root="", current="", alternates=None, ldjson="", home=""):
     alt = "".join(f'<link rel="alternate" hreflang="{k}" href="{v}">'
                   for k, v in (alternates or {}).items())
     return render_page(
         title=title, description=description, canonical=canonical,
         lang=lang, dir="rtl" if lang == "ar" else "ltr", root=root,
         css=["assets/tokens.css", "assets/site.css"],
-        js=["assets/contact.js"],
+        js=["assets/nav.js", "assets/motion.js", "assets/contact.js"],
         fonts=FONTS, head_extra=alt, ldjson=ldjson,
         favicon='<link rel="icon" href="assets/mark.svg" type="image/svg+xml">'.replace(
             'href="assets/', f'href="{root}assets/'),
-        nav=nav(lang, root, current), footer=footer(lang, root),
+        nav=nav(lang, root, current, home), footer=footer(lang, root, home),
         og={"og:title": title, "og:description": description, "og:type": "website",
             "og:url": canonical, "og:locale": "ar_AE" if lang == "ar" else "en_AE"},
         body=body,
     )
 
 
-def services_grid(lang):
+def services_grid(lang, root=""):
+    """Services as rows, each ending in the work that proves it.
+
+    This was four identical cards with a generic icon tile — the default
+    container, and the shape that makes a page read as filler. A row carries
+    the same words plus the one thing a card had no room for: a number from a
+    live system, and a link to go check it. A service with nothing shipped
+    behind it would render without that link rather than with a decorative one.
+    """
+    arrow = "←" if lang == "ar" else "→"
     out = []
     for i, s in enumerate(SERVICES, 1):
+        pr = s.get("proof")
+        link = ""
+        if pr:
+            cs = next((c for c in CASES if c["slug"] == pr["slug"]), None)
+            if cs:
+                fig = cs["figures"][pr["figure"]]
+                link = (f'<a class="svc-proof" href="{root}work/{cs["slug"]}.html">'
+                        f'<b class="num">{E(fig["value"])}</b>'
+                        f'<span>{E(fig[lang])}</span>'
+                        f'<span class="svc-arrow" aria-hidden="true">{arrow}</span></a>')
         out.append(
-            f'<article class="card service"><div class="n num">{i:02d}</div>{icon(s["icon"])}'
-            f'<h3>{E(s[lang]["title"])}</h3><p>{E(s[lang]["summary"])}</p></article>')
+            f'<article class="service-row" data-reveal data-reveal-group="svc">'
+            f'<div class="n num">{i:02d}</div>'
+            f'<div class="svc-text"><h3>{E(s[lang]["title"])}</h3>'
+            f'<p>{E(s[lang]["summary"])}</p></div>'
+            f'{link}</article>')
     return f'<div class="services">{"".join(out)}</div>'
 
 
@@ -252,7 +277,7 @@ def work_grid(lang, root):
         else:
             art = media(cs["media"], rtl, 230 if not sm else 120)
         return (
-            f'<a class="card card-lg{" work-sm" if sm else ""}" href="{root}work/{cs["slug"]}.html" '
+            f'<a class="card card-lg{" work-sm" if sm else ""}" data-reveal data-reveal-group="work" href="{root}work/{cs["slug"]}.html" '
             f'style="display:flex;flex-direction:column">'
             f'<div class="work-media" style="block-size:{"7.5rem" if sm else "14.375rem"}">{art}</div>'
             f'<div class="work-body"><div class="work-meta"><span class="n num">{i:02d}</span>'
@@ -266,7 +291,7 @@ def work_grid(lang, root):
 def approach_block(lang):
     c = COPY[lang]
     items = "".join(
-        f'<div class="approach-item"><span class="n num">{i:02d}</span><div>'
+        f'<div class="approach-item" data-reveal data-reveal-group="appr"><span class="n num">{i:02d}</span><div>'
         f'<h3>{E(a[lang]["title"])}</h3><p>{E(a[lang]["body"])}</p></div></div>'
         for i, a in enumerate(APPROACH, 1))
     return (
@@ -297,6 +322,15 @@ def contact_block(lang):
         f'</form></div>')
 
 
+def figure(slug, index=0):
+    """A headline number straight off a case study, so the hero cannot drift
+    from the work it cites. The card previously claimed '99.9% availability' —
+    a number nothing on this site measures, on a page whose whole argument is
+    that claims should be checkable."""
+    cs = next(c for c in CASES if c["slug"] == slug)
+    return cs["figures"][index]["value"]
+
+
 def home(lang):
     c, rtl, root = COPY[lang], lang == "ar", ("../" if lang == "ar" else "")
     ld = json.dumps({
@@ -308,24 +342,39 @@ def home(lang):
     body = (
         '<main>'
         f'<section class="wrap hero"><div>'
-        f'<div class="label" style="margin-block-end:1.875rem">{E(c["tagline"])}</div>'
-        f'<h1>{E(c["hero_a"])}<br><span class="accent">{E(c["hero_accent"])}</span><br>{E(c["hero_b"])}</h1>'
-        f'<p class="lead">{E(c["lead"])}</p>'
-        f'<div class="hero-actions"><a class="btn" href="#contact">{E(c["cta_primary"])}</a>'
+        f'<div class="label" data-reveal data-reveal-group="hero" '
+        f'style="margin-block-end:1.875rem">{E(c["tagline"])}</div>'
+        f'<h1>'
+        f'<span data-reveal="line" data-reveal-group="heroline"><span>{E(c["hero_a"])}</span></span>'
+        f'<span data-reveal="line" data-reveal-group="heroline">'
+        f'<span class="accent">{E(c["hero_accent"])}</span></span>'
+        f'<span data-reveal="line" data-reveal-group="heroline"><span>{E(c["hero_b"])}</span></span>'
+        f'</h1>'
+        f'<p class="lead" data-reveal data-reveal-group="herob">{E(c["lead"])}</p>'
+        f'<div class="hero-actions" data-reveal data-reveal-group="herob">'
+        f'<a class="btn" href="#contact">{E(c["cta_primary"])}</a>'
         f'<a class="btn-text" href="#work">{E(c["cta_secondary"])}</a></div></div>'
-        f'<div class="hero-visual"><div class="hero-frame">{hero_visual(rtl)}</div>'
+        f'<div class="hero-visual" data-reveal data-reveal-group="herob"><div class="hero-frame">{hero_visual(rtl)}</div>'
         f'<div class="hero-card"><div class="label" style="margin-block-end:.9375rem">{E(c["stat_label"])}</div>'
-        f'<div class="stat-row"><div class="stat"><b class="num">102</b><span>{E(c["stat_1_label"])}</span></div>'
+        f'<div class="stat-row">'
+        f'<div class="stat"><b class="num">{figure("invoiceready")}</b>'
+        f'<span>{E(c["stat_1_label"])}</span></div>'
         f'<div class="stat-div"></div>'
-        f'<div class="stat"><b class="num accent">99.9%</b><span>{E(c["stat_2_label"])}</span></div>'
-        f'</div></div></div></section>'
+        f'<div class="stat"><b class="num accent">{figure("ahlam")}</b>'
+        f'<span>{E(c["stat_2_label"])}</span></div></div>'
+        f'<p class="stat-note">{E(c["stat_note"])}</p>'
+        f'</div></div></section>'
 
         f'<section class="wrap section" id="services">'
-        f'<div class="section-head"><h2>{E(c["services_title"])}</h2><span class="rule"></span></div>'
-        f'{services_grid(lang)}</section>'
+        f'<div class="section-head">'
+        f'<h2><span data-reveal="line"><span>{E(c["services_title"])}</span></span></h2>'
+        f'<span class="rule" data-reveal="rule"></span></div>'
+        f'{services_grid(lang, root)}</section>'
 
         f'<section class="wrap section" id="work">'
-        f'<div class="section-head"><h2>{E(c["work_title"])}</h2><span class="rule"></span>'
+        f'<div class="section-head">'
+        f'<h2><span data-reveal="line"><span>{E(c["work_title"])}</span></span></h2>'
+        f'<span class="rule" data-reveal="rule"></span>'
         f'<span class="count">{E(c["work_count"])}</span></div>'
         f'{work_grid(lang, root)}</section>'
 
@@ -334,7 +383,7 @@ def home(lang):
         '</main>')
     return page(lang=lang, title=f'Elyoxe — {c["tagline"]}', description=c["lead"],
                 canonical=f"{BASE}/" if lang == "en" else f"{BASE}/ar/",
-                root=root, current="services", body=body,
+                root=root, home="", current="services", body=body,
                 alternates={"en": f"{BASE}/", "ar": f"{BASE}/ar/", "x-default": f"{BASE}/"},
                 ldjson=f'<script type="application/ld+json">{ld}</script>')
 
@@ -342,9 +391,12 @@ def home(lang):
 def case_page(cs, lang):
     c, d = COPY[lang], cs[lang]
     root = "../../" if lang == "ar" else "../"
+    # One level under the language home in both languages:
+    # /work/x.html -> /  and  /ar/work/x.html -> /ar/
+    home = "../"
     rtl = lang == "ar"
     figs = "".join(
-        f'<div class="figure"><b class="num{" accent" if f["accent"] else ""}">{E(f["value"])}</b>'
+        f'<div class="figure" data-reveal data-reveal-group="fig"><b class="num{" accent" if f["accent"] else ""}">{E(f["value"])}</b>'
         f'<span>{E(f[lang])}</span></div>' for f in cs["figures"])
     appr = "".join(f'<li><span class="dot"></span><p>{E(a)}</p></li>' for a in d["approach"])
     tags = "".join(f'<span class="tag">{E(t)}</span>' for t in cs["stack"])
@@ -359,34 +411,32 @@ def case_page(cs, lang):
     body = (
         '<main>'
         f'<section class="wrap case-head">'
-        f'<a href="{root}#work" style="font-family:var(--display);font-size:.8125rem;color:var(--faint)">'
+        f'<a href="{home}#work" style="font-family:var(--display);font-size:.8125rem;color:var(--faint)">'
         f'{"←" if not rtl else "→"} {E(c["case_back"])}</a>'
         f'<div class="label" style="margin:2rem 0 1.25rem">{E(d["kicker"])}</div>'
-        f'<h1>{E(cs["title"])}</h1>'
-        f'<p style="font-size:1.1875rem;color:var(--ink-2);max-inline-size:54ch;margin-block-start:1.5rem">{E(d["tagline"])}</p>'
-        f'<dl class="case-meta">'
+        f'<h1><span data-reveal="line"><span>{E(cs["title"])}</span></span></h1>'
+        f'<p data-reveal data-reveal-group="casehead" style="font-size:1.1875rem;color:var(--ink-2);max-inline-size:54ch;margin-block-start:1.5rem">{E(d["tagline"])}</p>'
+        f'<dl class="case-meta" data-reveal data-reveal-group="casehead">'
         f'<div><dt class="label">{E(c["case_role"])}</dt><dd>{E(d["role"])}</dd></div>'
         f'<div><dt class="label">{E(c["case_period"])}</dt><dd>{E(cs["period"])}</dd></div>'
         f'<div><dt class="label">{E(c["case_status"])}</dt><dd style="color:var(--wine)">{E(d["status"])}</dd></div>'
         f'<div><dt class="label">{E(c["case_visit"])}</dt>{link}</div>'
         f'</dl></section>'
 
-        f'<section class="wrap" style="padding-block-start:4rem"><div class="browser">'
-        f'<div class="browser-bar"><i></i><i></i><i></i>'
-        f'<span>{E(d["link"]["label"]) if d["link"] else "elyoxe.com"}</span></div>'
-        + (f'<img src="{root}{cs["screenshot"]}" alt="{E(cs["title"])}" '
+        # The browser frame renders only when there is a real screenshot.
+        # It used to fall back to a dark slate captioned "screenshot slot" —
+        # a visible placeholder on a published page, and the one dark block on
+        # a site whose identity forbids them. An absent shot is now an absent
+        # section, which is the honest version of the same fact.
+        + (f'<section class="wrap" style="padding-block-start:4rem"><div class="browser">'
+           f'<div class="browser-bar"><i></i><i></i><i></i>'
+           f'<span>{E(d["link"]["label"]) if d["link"] else "elyoxe.com"}</span></div>'
+           f'<img src="{root}{cs["screenshot"]}" alt="{E(cs["title"])}" loading="lazy" '
            f'style="display:block;inline-size:100%;aspect-ratio:16/9;object-fit:cover;object-position:top">'
-           if cs.get("screenshot") else
-           f'<div style="block-size:26.25rem;background:#221A1C;display:flex;align-items:center;justify-content:center">'
-           f'<div style="text-align:center;padding:1.5rem">'
-           f'<div class="label" style="color:#7A6068;margin-block-end:.625rem">{E(c["screenshot_slot"])}</div>'
-           f'<div style="font-size:.84rem;color:#8E7880;max-inline-size:34ch">{E(c["screenshot_note"])}</div>'
-           f'</div></div>')
-        + '</div></section>'
-
-        f'<section class="wrap" style="padding-block-start:6.875rem">'
-        f'<div class="case-row"><h2>{E(c["case_problem"])}</h2><p>{E(d["problem"])}</p></div>'
-        f'<div class="case-row"><h2>{E(c["case_approach"])}</h2><ul class="bullets">{appr}</ul></div>'
+           f'</div></section>' if cs.get("screenshot") else '')
+        + f'<section class="wrap" style="padding-block-start:6.875rem">'
+        f'<div class="case-row" data-reveal data-reveal-group="caserow"><h2>{E(c["case_problem"])}</h2><p>{E(d["problem"])}</p></div>'
+        f'<div class="case-row" data-reveal data-reveal-group="caserow"><h2>{E(c["case_approach"])}</h2><ul class="bullets">{appr}</ul></div>'
         f'</section>'
 
         f'<section class="wrap" style="padding-block-start:4.75rem">'
@@ -406,12 +456,12 @@ def case_page(cs, lang):
         f'<div><div class="label" style="margin-block-end:.5625rem">{E(c["case_next"])}</div>'
         f'<a href="{nxt["slug"]}.html" style="font-family:var(--display);font-weight:300;font-size:2.125rem;'
         f'color:var(--ink)">{E(nxt["title"])} {"←" if rtl else "→"}</a></div>'
-        f'<a class="btn" href="{root}#contact">{E(c["cta_primary"])}</a>'
+        f'<a class="btn" href="{home}#contact">{E(c["cta_primary"])}</a>'
         f'</div></section>'
         '</main>')
     return page(lang=lang, title=f'{cs["title"]} — Elyoxe', description=d["tagline"],
                 canonical=f'{BASE}/{"ar/" if rtl else ""}work/{cs["slug"]}.html',
-                root=root, current="work", body=body,
+                root=root, home="../", current="work", body=body,
                 alternates={"en": f'{BASE}/work/{cs["slug"]}.html',
                             "ar": f'{BASE}/ar/work/{cs["slug"]}.html',
                             "x-default": f'{BASE}/work/{cs["slug"]}.html'},

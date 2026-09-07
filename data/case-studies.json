@@ -224,5 +224,88 @@
       ],
       "caveat": "تُعرض كمنهجية فقط. لا تُعرض أرقام أداء ولا ينبغي استنتاجها — عملية البحث تنتقل بين المجالات، أما السجل فلا."
     }
+  },
+  {
+    "slug": "ahlam",
+    "title": "أحلام",
+    "period": "2026",
+    "media": "browser",
+    "figures": [
+      {
+        "value": "2,665",
+        "accent": true,
+        "en": "symbols, each carrying its book and printed page",
+        "ar": "رمزاً، كلٌّ بكتابه وصفحته المطبوعة"
+      },
+      {
+        "value": "1,481",
+        "accent": false,
+        "en": "printed pages read from three books",
+        "ar": "صفحة مطبوعة مقروءة من ثلاثة كتب"
+      },
+      {
+        "value": "3",
+        "accent": false,
+        "en": "public-domain sources, credited per entry",
+        "ar": "مصادر ملكٌ عام، منسوبة في كل مدخل"
+      },
+      {
+        "value": "0",
+        "accent": false,
+        "en": "generated interpretations — retrieval only",
+        "ar": "تفسير مُولَّد — نقلٌ فقط"
+      },
+      {
+        "value": "$0",
+        "accent": false,
+        "en": "monthly infrastructure cost",
+        "ar": "تكلفة البنية شهرياً"
+      }
+    ],
+    "stack": [
+      "Python",
+      "Amazon S3",
+      "CloudFront",
+      "ACM",
+      "Route 53",
+      "Vanilla JS"
+    ],
+    "en": {
+      "kicker": "Arabic reference",
+      "status": "Live",
+      "role": "Research, engineering, editorial",
+      "link": {
+        "label": "ahlam.elyoxe.com",
+        "href": "https://ahlam.elyoxe.com"
+      },
+      "tagline": "A sourced dictionary of classical Arabic dream interpretation, where every line can be checked against the page it came from.",
+      "summary": "Three public-domain books on dream interpretation, parsed into one searchable dictionary in which every passage names its book, volume and printed page and links back to the scan.",
+      "problem": "Arabic dream interpretation online is dominated by content farms that reproduce classical material without attribution, merge incompatible sources into one anonymous voice, and headline the name of Ibn Sirin on a book whose attribution to him scholars reject. A reader who wants to know what a named scholar actually wrote has nowhere to check.",
+      "approach": [
+        "Sources are the primary books, not the sites that rewrite them: al-Nabulsi (d. 1143 AH), Ibn Shahin (d. 873 AH) and the text published as Muntakhab al-Kalam. All three are public domain by age; the digitisation is credited and every entry links back to the exact page.",
+        "The three books are shaped differently and are parsed differently — one is an alphabetical dictionary, one is organised by thematic sections, and the third has no in-text headings at all and is read chapter by chapter. Forcing one parser across all three silently produced nothing for the third, which is why each declares its own structure.",
+        "Nothing is generated. The site reports what named scholars wrote, flags the disputed attribution on every passage that carries it, and leaves an entry uncategorised rather than filing it under a category the evidence does not support."
+      ],
+      "caveat": "Published as a browsable reference with per-symbol pages still to come. It is a research and engineering piece, not a commercial product, and it makes no claim to interpret anyone's dream."
+    },
+    "ar": {
+      "kicker": "مرجع عربي",
+      "status": "منشور",
+      "role": "بحث، هندسة، تحرير",
+      "link": {
+        "label": "ahlam.elyoxe.com",
+        "href": "https://ahlam.elyoxe.com"
+      },
+      "tagline": "معجم مُسنَد لتفسير الأحلام من كتب التراث، كل سطر فيه يُراجَع على صفحته المطبوعة.",
+      "summary": "ثلاثة كتب في تعبير الرؤيا، ملكٌ عام، قُرئت وجُمعت في معجم واحد قابل للبحث، كل نصٍّ فيه بكتابه وجزئه وصفحته المطبوعة وموصولٌ بمصدره.",
+      "problem": "ما يُنشر عن تفسير الأحلام بالعربية تغلب عليه مواقع تنسخ كلام المتقدمين بلا إسناد، وتخلط مصادر متباينة في صوتٍ واحد مجهول، وتُصدِّر اسم ابن سيرين على كتابٍ ينفي المحققون نسبته إليه. فمن أراد أن يعرف ما قاله عالمٌ بعينه لم يجد أين يتحقق.",
+      "approach": [
+        "المصادر هي الكتب نفسها لا المواقع التي تعيد صياغتها: النابلسي (ت ١١٤٣ هـ)، وابن شاهين (ت ٨٧٣ هـ)، والمطبوع باسم «منتخب الكلام». وثلاثتها ملكٌ عام بحكم القِدَم، والرقمنة منسوبة إلى أهلها، وكل مدخل موصولٌ بصفحته.",
+        "الكتب الثلاثة مختلفة البناء فقُرئ كلٌّ منها ببنائه: أولها معجم أبجدي، والثاني مرتَّب على فصول موضوعية، والثالث لا عناوين لفصوله في نصه فيُقرأ باباً باباً. وتوحيد القراءة على نمطٍ واحد كان يُخرج الثالث فارغاً بلا خطأ ظاهر — ولهذا صار كل كتاب يُصرِّح ببنائه.",
+        "لا شيء مُولَّد. الموقع ينقل ما كتبه علماء بأعيانهم، ويضع على كل نصٍّ من الكتاب المتنازَع في نسبته علامةً تدلّ على ذلك، ويترك المدخل بلا قسمٍ إذا لم يترجّح، بدل أن يُلحقه بقسمٍ لا تسنده البيّنة."
+      ],
+      "caveat": "نُشر مرجعاً قابلاً للتصفّح، وصفحات الرموز المستقلة ما زالت قادمة. وهو عمل بحثي وهندسي لا منتج تجاري، ولا يدّعي تعبير رؤيا أحد."
+    },
+    "screenshot": "assets/work/ahlam.webp"
   }
 ]

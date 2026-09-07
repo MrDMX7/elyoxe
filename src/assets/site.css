@@ -68,12 +68,34 @@
 .card { background: var(--surface); border: 1px solid var(--rule-soft); border-radius: var(--radius); box-shadow: var(--lift-1); }
 .card-lg { border-radius: 1.5rem; box-shadow: var(--lift-2); overflow: hidden; }
 
-.services { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.125rem; }
-.service { padding: 1.75rem 1.625rem; }
-.service .n { font-family: var(--display); font-size: .75rem; color: var(--faintest); letter-spacing: .14em; margin-block-end: 1.25rem; }
-.service svg { margin-block-end: 1.125rem; }
-.service h3 { margin-block-end: .5625rem; }
-.service p { font-size: .84rem; color: var(--muted); margin: 0; max-inline-size: none; }
+/* Services are rows, not cards. A row has room for the one thing that makes
+   the section evidence instead of description: a number off a live system and
+   a link to go check it. */
+.services { display: flex; flex-direction: column; border-block-start: 1px solid var(--rule); }
+.service-row {
+  display: grid; grid-template-columns: 3.25rem minmax(0, 1fr) auto;
+  align-items: baseline; gap: 1.5rem;
+  padding-block: 1.9rem; border-block-end: 1px solid var(--rule);
+}
+.service-row .n { font-family: var(--display); font-size: .75rem; color: var(--faintest); letter-spacing: .14em; }
+.service-row h3 { margin: 0 0 .4rem; font-size: 1.3rem; }
+.service-row p { font-size: .9rem; color: var(--muted); margin: 0; max-inline-size: 52ch; }
+.svc-proof {
+  display: inline-flex; align-items: baseline; gap: .6rem;
+  padding: .5rem .9rem; border: 1px solid var(--rule); border-radius: 999px;
+  color: var(--ink-2); white-space: nowrap; transition: border-color .18s, background-color .18s;
+}
+.svc-proof:hover { border-color: var(--wine-line); background: var(--wine-tint); }
+.svc-proof b { font-family: var(--display); font-weight: 400; font-size: 1.05rem; color: var(--wine); }
+.svc-proof span:not(.svc-arrow) { font-size: .78rem; color: var(--muted); max-inline-size: 22ch; white-space: normal; }
+.svc-arrow { color: var(--faint); transition: transform .18s; }
+.svc-proof:hover .svc-arrow { transform: translateX(var(--arrow-x, .2rem)); }
+[dir="rtl"] .svc-proof:hover .svc-arrow { --arrow-x: -.2rem; }
+
+@media (max-width: 860px) {
+  .service-row { grid-template-columns: 2.5rem minmax(0, 1fr); gap: .75rem 1rem; padding-block: 1.5rem; }
+  .svc-proof { grid-column: 2; justify-self: start; margin-block-start: .9rem; }
+}
 
 /* work --------------------------------------------------------------------- */
 .work { display: grid; grid-template-columns: 1.5fr 1fr; gap: 1.25rem; }
@@ -154,8 +176,27 @@
   .case-meta { gap: 1.5rem; }
   .foot-grid { grid-template-columns: 1fr; gap: 2.25rem; }
   .section { padding-block-start: 4.5rem; }
-  .nav { display: none; }
+  /* The nav is a panel under the header, not a deleted element. It sits above
+     everything: sections below carry transforms, which create stacking
+     contexts that paint over an unlayered panel. */
+  .head { position: relative; }
+  .nav {
+    display: none;
+    position: absolute; inset-inline: 0; top: 100%;
+    z-index: 60;
+    flex-direction: column; align-items: stretch; gap: 0;
+    padding: .5rem 1.5rem 1.25rem;
+    background: var(--ground);
+    border-block-end: 1px solid var(--rule);
+    box-shadow: 0 18px 40px -28px rgba(74, 18, 38, .35);
+  }
+  .head.nav-open .nav { display: flex; }
+  .nav a { padding-block: .95rem; border-block-end: 1px solid var(--rule); font-size: 1rem; }
+  .nav a:last-child { border-block-end: 0; }
+  .nav a:hover, .nav a[aria-current="page"] { border-block-end-color: var(--rule); color: var(--wine); }
+  .nav .lang { color: var(--wine); }
   .nav-toggle { display: flex; margin-inline-start: auto; align-items: center; justify-content: center; inline-size: 46px; block-size: 46px; border: 1px solid #EFE0E4; border-radius: 12px; background: transparent; cursor: pointer; }
+  .nav-toggle[aria-expanded="true"] { background: var(--wine-tint); border-color: var(--wine-line); }
   .work-body { padding: 1.5rem 1.5rem 1.75rem; }
   .work-body h3 { font-size: 1.75rem; }
   .contact { padding: 2rem 1.5rem; }
@@ -183,3 +224,79 @@
 .form-status { font-size: .9rem; margin: .25rem 0 0; min-block-size: 1.4em; }
 .form-status.ok { color: var(--wine); }
 .form-status.err { color: #9A3B2E; }
+
+/* ── reveal ────────────────────────────────────────────────────────────────
+   Every rule below is scoped to .js-on, which motion.js sets on itself. With
+   no JS, a failed script, or prefers-reduced-motion, nothing here applies and
+   the page is simply complete — the enhancement can never hide content. */
+
+.js-on [data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  transition:
+    opacity .78s cubic-bezier(.16, 1, .3, 1) calc(var(--reveal-i, 0) * .085s),
+    transform .78s cubic-bezier(.16, 1, .3, 1) calc(var(--reveal-i, 0) * .085s);
+  will-change: opacity, transform;
+}
+.js-on [data-reveal].is-in { opacity: 1; transform: none; will-change: auto; }
+
+/* Headings rise out of a mask. The padding/negative-margin pair is not
+   decoration: an overflow-clipped line cuts the dots under ب and ي and the
+   descenders of ج and ع, and mid-animation Arabic looks like broken glyphs. */
+.js-on [data-reveal="line"] {
+  display: block;
+  overflow: hidden;
+  padding: .18em .12em;
+  margin: -.18em -.12em;
+  opacity: 1;
+  transform: none;
+}
+.js-on [data-reveal="line"] > span {
+  display: block;
+  transform: translate3d(0, 105%, 0);
+  transition: transform 1.05s cubic-bezier(.16, 1, .3, 1) calc(var(--reveal-i, 0) * .09s);
+}
+.js-on [data-reveal="line"].is-in > span { transform: none; }
+
+/* The signature move: the section rule draws from the leading edge, echoing
+   the rising stroke that carries the arrow in the mark. One idea, every
+   section, nothing else animated in the chrome. */
+.js-on [data-reveal="rule"] {
+  opacity: 1;
+  transform: none;
+  transform-origin: left center;
+  scale: 0 1;
+  transition: scale 1.15s cubic-bezier(.16, 1, .3, 1) .12s;
+}
+[dir="rtl"] .js-on [data-reveal="rule"],
+.js-on [dir="rtl"] [data-reveal="rule"] { transform-origin: right center; }
+.js-on [data-reveal="rule"].is-in { scale: 1 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .js-on [data-reveal],
+  .js-on [data-reveal="line"] > span,
+  .js-on [data-reveal="rule"] {
+    opacity: 1 !important; transform: none !important; scale: none !important;
+    transition: none !important;
+  }
+}
+
+/* The hero card is evidence, so it names where to check — but quietly: the
+   source line must not grow the card until it swamps the visual behind it. */
+.stat-note {
+  margin: .9rem 0 0;
+  padding-block-start: .8rem;
+  border-block-start: 1px solid var(--rule);
+  font-size: .72rem;
+  line-height: 1.55;
+  color: var(--faint);
+}
+
+/* Footer links measured 25px tall — under the 32px a thumb needs, and the
+   only failing tap targets on the page. Padding rather than font size, so the
+   footer keeps its quiet scale. */
+.foot-links a { padding-block: .45rem; }
+@media (max-width: 860px) {
+  .foot-links { gap: .15rem; }
+  .foot-links a { padding-block: .6rem; }
+}

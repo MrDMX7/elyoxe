@@ -16,9 +16,9 @@
     },
     "lang_switch": "عربي",
     "lang_switch_code": "ar",
-    "stat_label": "Production reference",
+    "stat_label": "Live, and checkable",
     "stat_1_label": "pages live",
-    "stat_2_label": "availability",
+    "stat_2_label": "sourced entries",
     "services_title": "Services",
     "work_title": "Selected work",
     "work_count": "Three of three",
@@ -57,7 +57,8 @@
     "form_done": "Received. A reply follows within one working day.",
     "form_fail": "That did not go through. Try again, or use the GitHub profile to get in touch.",
     "form_privacy": "Nothing is stored beyond the message itself.",
-    "foot_contact_form": "Contact form"
+    "foot_contact_form": "Contact form",
+    "stat_note": "invoiceready.ae and ahlam.elyoxe.com — both open right now."
   },
   "ar": {
     "brand": "Elyoxe",
@@ -76,9 +77,9 @@
     },
     "lang_switch": "EN",
     "lang_switch_code": "en",
-    "stat_label": "مرجع إنتاجي",
+    "stat_label": "حيٌّ وقابل للتحقّق",
     "stat_1_label": "صفحة منشورة",
-    "stat_2_label": "جاهزية التشغيل",
+    "stat_2_label": "مدخل مُسنَد",
     "services_title": "الخدمات",
     "work_title": "أعمال مختارة",
     "work_count": "ثلاثة من ثلاثة",
@@ -117,6 +118,7 @@
     "form_done": "وصلت الرسالة. الرد خلال يوم عمل واحد.",
     "form_fail": "لم تُرسل الرسالة. حاول مرة أخرى أو تواصل عبر حساب GitHub.",
     "form_privacy": "لا يُحفظ شيء سوى الرسالة نفسها.",
-    "foot_contact_form": "نموذج التواصل"
+    "foot_contact_form": "نموذج التواصل",
+    "stat_note": "invoiceready.ae و ahlam.elyoxe.com — كلاهما مفتوح الآن."
   }
 }

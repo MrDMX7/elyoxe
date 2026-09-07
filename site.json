@@ -10,7 +10,7 @@
   "generate": [
     "python3 build/generate.py"
   ],
-  "min_html_count": 9,
+  "min_html_count": 11,
   "aws": {
     "region": "ap-south-1",
     "bucket": "elyoxe-574771023173",
@@ -49,6 +49,14 @@
     {
       "path": "/robots.txt",
       "contains": "Sitemap"
+    },
+    {
+      "path": "/work/ahlam.html",
+      "contains": "ahlam.elyoxe.com"
+    },
+    {
+      "path": "/ar/work/ahlam.html",
+      "contains": "منتخب الكلام"
     }
   ],
   "contact_endpoint": "https://hybw54y21l.execute-api.ap-south-1.amazonaws.com/",
