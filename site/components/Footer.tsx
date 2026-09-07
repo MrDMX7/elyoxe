@@ -7,12 +7,19 @@ import { href, other, type Lang } from "@/content/i18n";
    into every emitted HTML file — so the date shown is the date this copy of
    the site was built. This component stays a server component for exactly
    that reason: there is no client evaluation to disagree with it. */
-const BUILT = new Date().toISOString().slice(0, 10);
 
 const T = {
-  build: { ar: "آخر بناء", en: "Last build" },
   sections: { ar: "أقسام الصفحة", en: "Sections" },
 };
+
+/* The flag, as a small inline SVG: four bands, nothing else. */
+function UaeFlag() {
+  return (
+    <svg viewBox="0 0 12 6" width="18" height="9" aria-hidden="true" style={{ display: "inline-block", verticalAlign: "-1px", marginInlineEnd: ".4rem" }}>
+      <rect width="12" height="2" fill="#00732F" /><rect y="2" width="12" height="2" fill="#F4F2ED" /><rect y="4" width="12" height="2" fill="#141A17" /><rect width="3" height="6" fill="#B0271E" />
+    </svg>
+  );
+}
 
 export default function Footer({ lang, switchPath = "" }: { lang: Lang; switchPath?: string }) {
   const home = href(lang);
@@ -43,8 +50,7 @@ export default function Footer({ lang, switchPath = "" }: { lang: Lang; switchPa
 
         <div className="ftr-bottom">
           <span className="ftr-c">© 2026 {copy.brand}</span>
-          <span>{copy.footer.place[lang]}</span>
-          <span className="ftr-built">{T.build[lang]} <span className="ftr-date">{BUILT}</span></span>
+          <span className="ftr-place"><UaeFlag /> {copy.footer.place[lang]}</span>
         </div>
       </div>
 

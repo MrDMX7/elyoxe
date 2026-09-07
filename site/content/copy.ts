@@ -25,8 +25,8 @@ export const copy = {
 
   hero: {
     lines: {
-      ar: ["برمجياتٌ تعمل الآن في الإنتاج.", "افتح الأرقام وتحقّق بنفسك."],
-      en: ["Software running in production right now.", "Open the numbers and check them yourself."],
+      ar: ["هدوءٌ في الواجهة، وهندسةٌ تحتها.", "البساطة آخر ما يُنجَز."],
+      en: ["Quiet on the surface, engineered underneath.", "Simplicity is the last thing built."],
     } as L<[string, string]>,
     lead: {
       ar: "Elyoxe استوديو هندسي في دبي يصمّم الأنظمة ويبنيها ويشغّلها: مواقع ثنائية اللغة، وخطوط ذكاء اصطناعي تعامل العربية لغةً أولى، وتطبيقات أندرويد أصلية، وبنية سحابية على AWS. ولا شيء هنا موصوفٌ من بعيد؛ كلّ رقمٍ في الصفحة له رابطٌ تفتحه أو صفحةٌ تقرأها.",
@@ -34,7 +34,7 @@ export const copy = {
     },
     cta: { ar: "ناقش مشروعك", en: "Discuss a project" },
     cta2: { ar: "شاهد الأعمال", en: "See the work" },
-    canvasLabel: { ar: "خريطة الأنظمة التي تشغّلها Elyoxe الآن", en: "A map of the systems Elyoxe runs right now" },
+    canvasLabel: { ar: "سطحٌ يُحلّ أمامك: خطوط كنتورية تتّضح مع الحركة", en: "A surface resolving in front of you: contour lines sharpening with motion" },
   },
 
   ledger: {
@@ -56,7 +56,7 @@ export const copy = {
       ar: "أربعة مجالات متوازية، لا مراحل. كلّ مجال يشير إلى عملٍ منشور يثبته.",
       en: "Four parallel fields, not stages. Each points to published work that proves it.",
     },
-    proof: { ar: "الدليل", en: "Proof" },
+    proof: { ar: "من أعمالنا", en: "From our work" },
   },
 
   work: {
@@ -123,13 +123,18 @@ export const copy = {
     done: { ar: "وصلت الرسالة. الردّ خلال يوم عمل واحد.", en: "Received. A reply follows within one working day." },
     fail: { ar: "لم تُرسل الرسالة. حاول مرة أخرى، أو تواصل عبر GitHub.", en: "That did not go through. Try again, or get in touch through GitHub." },
     privacy: { ar: "لا يُحفظ شيء سوى الرسالة نفسها.", en: "Nothing is stored but the message itself." },
+    pitch: { ar: "أرسل المشكلة كما هي، ولو بسطرين.", en: "Send the problem as it is, even in two lines." },
+    pitchBody: {
+      ar: "أول محادثة غالباً تفتح باباً لم يكن مطروحاً: طريق أقصر إلى النتيجة نفسها، أو نتيجة أوسع مما طُلب. ولا يتبيّن أيّهما قبل أن تُوصَف المشكلة على حقيقتها.",
+      en: "A first conversation usually opens a door that was not on the table: a shorter route to the same result, or a result wider than the one asked for. You only find out which once the problem is described as it actually is.",
+    },
   },
 
   footer: {
-    place: { ar: "دبي، الإمارات العربية المتحدة", en: "Dubai, United Arab Emirates" },
+    place: { ar: "الإمارات العربية المتحدة", en: "United Arab Emirates" },
     self: {
-      ar: "هذا الموقع نفسه ملفات ثابتة على S3 وCloudFront، يُبنى على GitHub Actions ويُخدَم بلا خادم.",
-      en: "This site is itself static files on S3 and CloudFront, built on GitHub Actions and served without a server.",
+      ar: "استوديو هندسي في الإمارات، يعمل بالعربية والإنجليزية معاً، ولا يعرض عملاً إلا وله رابط يُفتح أو رقم يُراجَع.",
+      en: "An engineering studio in the United Arab Emirates, working in Arabic and English alike, showing no work without a link to open or a number to check.",
     },
     github: "github.com/MrDMX7",
     rights: { ar: "Elyoxe", en: "Elyoxe" },

@@ -61,7 +61,7 @@ export const services: Service[] = [
     },
     "proof": {
       "slug": "ahlam",
-      "figure": 4
+      "figure": 1
     }
   }
 ];

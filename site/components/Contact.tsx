@@ -48,9 +48,8 @@ export default function Contact({ lang }: { lang: Lang }) {
           <p className="lead" data-reveal>{c.lead[lang]}</p>
           {/* the privacy sentence carries the section, so it is set like a statement */}
           <div className="ctc-privacy" data-reveal>
-            <p className="ctc-privacy-line">{c.privacy[lang]}</p>
-            <p className="ctc-path" aria-hidden="true">API Gateway <span>&rarr;</span> Lambda <span>&rarr;</span> SES</p>
-            <p className="ctc-privacy-note">{T.path[lang]}</p>
+            <p className="ctc-privacy-line">{c.pitch[lang]}</p>
+            <p className="ctc-privacy-note">{c.pitchBody[lang]}</p>
           </div>
         </div>
 
