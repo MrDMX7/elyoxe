@@ -58,6 +58,8 @@ jobs:
         if: always()
         run: |
           npm i --no-save lighthouse@12
+          # the first run of a cold server+browser is always slow; warm up on / and discard it
+          npx lighthouse "http://localhost:8080/" --quiet --chrome-flags="--headless --no-sandbox" --only-categories=performance --output=json --output-path=/tmp/warm.json || true
           for p in / "/?noscene" /en/; do
             npx lighthouse "http://localhost:8080$p" --quiet --chrome-flags="--headless --no-sandbox" --only-categories=performance,accessibility,best-practices,seo --output=json --output-path="shots/lh$(echo "$p" | tr '/?' '__').json" || true
           done
