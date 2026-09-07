@@ -56,7 +56,8 @@
     "form_fail": "That did not go through. Try again, or use the GitHub profile to get in touch.",
     "form_privacy": "Nothing is stored beyond the message itself.",
     "foot_contact_form": "Contact form",
-    "stat_note": "The two domains open in a browser right now. Every number is the same one its case study reports."
+    "stat_note": "The two domains open in a browser right now. Every number is the same one its case study reports.",
+    "not_found_lead": "The link is wrong, not you. Everything this site publishes is listed below, and all of it is open."
   },
   "ar": {
     "brand": "Elyoxe",

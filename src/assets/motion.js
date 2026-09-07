@@ -50,3 +50,54 @@
   if (reduced.addEventListener) reduced.addEventListener("change", onChange);
   else if (reduced.addListener) reduced.addListener(onChange);
 })();
+
+
+// ── pointer ring ────────────────────────────────────────────────────────────
+// The brief asks for a custom cursor. On a page whose first rule is
+// subtraction, the version that earns its place is a hairline that reports
+// what is interactive -- not a blob that trails the pointer and hides the
+// native one. It exists only where a real pointer does, never under reduced
+// motion, and it never replaces the system cursor.
+(function () {
+  "use strict";
+
+  if (!window.matchMedia("(pointer: fine)").matches) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (!document.body) return;
+
+  var ring = document.createElement("div");
+  ring.className = "ring";
+  ring.setAttribute("aria-hidden", "true");
+  ring.appendChild(document.createElement("i"));
+  document.body.appendChild(ring);
+
+  // Physical left/top, not logical: clientX is a physical coordinate, so an
+  // inset-inline-start here would put the ring on the wrong side of /ar/.
+  var x = -99, y = -99, rx = x, ry = y, live = false, raf = 0;
+
+  function tick() {
+    rx += (x - rx) * 0.2;
+    ry += (y - ry) * 0.2;
+    ring.style.transform = "translate3d(" + (rx - 13) + "px," + (ry - 13) + "px,0)";
+    raf = (Math.abs(x - rx) + Math.abs(y - ry) > 0.4) ? requestAnimationFrame(tick) : 0;
+  }
+
+  document.addEventListener("mousemove", function (e) {
+    x = e.clientX; y = e.clientY;
+    if (!live) { live = true; rx = x; ry = y; ring.classList.add("is-on"); }
+    if (!raf) raf = requestAnimationFrame(tick);
+  }, { passive: true });
+
+  document.addEventListener("mouseout", function (e) {
+    if (e.relatedTarget) return;          // still inside the document
+    live = false;
+    ring.classList.remove("is-on");
+  });
+
+  var HOT = "a, button, [role=button], input, textarea, summary, label";
+  document.addEventListener("mouseover", function (e) {
+    var el = e.target;
+    var hot = !!(el && el.closest && el.closest(HOT));
+    ring.classList.toggle("is-hot", hot);
+  }, { passive: true });
+})();

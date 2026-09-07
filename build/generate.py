@@ -43,7 +43,7 @@ def _find_kit(start):
         d = parent
 
 sys.path.insert(0, _find_kit(os.path.dirname(os.path.abspath(__file__))))
-from brand import mark, GOOGLE_FONTS
+from brand import mark
 
 PROJ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(PROJ, "data")
@@ -60,7 +60,16 @@ load = lambda n: json.load(open(os.path.join(DATA, n), encoding="utf-8"))
 COPY, SERVICES, APPROACH, CASES = (load("copy.json"), load("services.json"),
                                    load("approach.json"), load("case-studies.json"))
 
-FONTS = google_fonts(GOOGLE_FONTS)
+# Direction هـ «البَياض»: Schibsted Grotesk sets Latin bold and tight,
+# Alexandria sets Arabic thin and open. The contrast between those two IS the
+# type system, so both need their extremes — 700 for one, 200 for the other.
+# Deliberately NOT web/_kit's GOOGLE_FONTS: that list is shared with
+# ahlam.elyoxe.com and invoiceready.ae, which still carry the previous identity.
+SITE_FONTS = [
+    "Schibsted+Grotesk:wght@400;500;700",
+    "Alexandria:wght@200;300;500",
+]
+FONTS = google_fonts(SITE_FONTS)
 
 # Written into site.json by automation/contact-form/deploy.sh
 with open(os.path.join(PROJ, "site.json"), encoding="utf-8") as _fh:
@@ -172,7 +181,8 @@ def hero_visual(rtl):
                 name = f'<a href="{row["href"]}">{name}</a>'
             num = f'<b class="num">{E(figure(*row["num"]))}</b>' if row["num"] else ""
             rows.append(
-                f'<li><span class="sys-name">{name}</span>'
+                f'<li data-reveal data-reveal-group="map">'
+                f'<span class="sys-name">{name}</span>'
                 f'<span class="sys-fig">{num}<span>{E(row["unit"][lang])}</span></span></li>')
         groups.append(
             f'<div class="sys-group"><div class="sys-runtime">{E(g["runtime"])}</div>'
@@ -369,7 +379,8 @@ def home(lang):
         f'<a class="btn" href="#contact">{E(c["cta_primary"])}</a>'
         f'<a class="btn-text" href="#work">{E(c["cta_secondary"])}</a></div></div>'
         f'<div class="hero-visual" data-reveal data-reveal-group="herob">'
-        f'<div class="label" style="margin-block-end:.9375rem">{E(c["stat_label"])}</div>'
+        f'<div class="label" style="margin-block-end:.9375rem">'
+        f'<span class="live-dot" aria-hidden="true"></span>{E(c["stat_label"])}</div>'
         f'<div class="hero-frame">{hero_visual(rtl)}</div>'
         f'<p class="stat-note">{E(c["stat_note"])}</p>'
         f'</div></section>'
@@ -478,12 +489,24 @@ def case_page(cs, lang):
 
 
 def not_found():
+    """A 404 that routes instead of apologising. The numeral runs at display
+    scale in gold -- the one place on the site the accent is allowed to be
+    large -- and the destinations under it are generated from CASES, so a dead
+    link on the dead-link page is not possible."""
     c = COPY["en"]
-    body = ('<main><section class="wrap" style="padding-block:8rem">'
-            '<div class="label">404</div>'
-            f'<h1 style="margin-block-start:1rem">{E(c["not_found"])}</h1>'
-            f'<p style="margin-block-start:2rem"><a class="btn" href="{ROOT_PATH}">{E(c["not_found_cta"])}</a></p>'
-            '</section></main>')
+    links = "".join(
+        f'<li data-reveal data-reveal-group="nf">'
+        f'<a href="{ROOT_PATH}work/{cs["slug"]}.html">{E(cs["title"])}</a>'
+        f'<span>{E(cs["en"]["role"])}</span></li>' for cs in CASES)
+    body = (
+        '<main><section class="wrap nf">'
+        '<div class="nf-num" data-reveal data-reveal-group="nf">404</div>'
+        f'<h1 data-reveal data-reveal-group="nf">{E(c["not_found"])}</h1>'
+        f'<p class="nf-lead" data-reveal data-reveal-group="nf">{E(c["not_found_lead"])}</p>'
+        f'<ul class="nf-list">{links}</ul>'
+        f'<div data-reveal data-reveal-group="nf">'
+        f'<a class="btn" href="{ROOT_PATH}">{E(c["not_found_cta"])}</a></div>'
+        '</section></main>')
     return page(lang="en", title="Not found — Elyoxe", description=c["not_found"],
                 canonical=f"{BASE}/404.html", body=body)
 
