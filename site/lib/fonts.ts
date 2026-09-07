@@ -1,20 +1,12 @@
-import { IBM_Plex_Sans_Arabic, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { IBM_Plex_Sans_Arabic, IBM_Plex_Mono } from "next/font/google";
 
-/* One superfamily. The Arabic face leads; Latin and Mono are its siblings, so a
-   number set in mono is the same shape on the Arabic root and the English mirror. */
-/* Weights are deliberately few: every weight is a preloaded file on the LCP
-   path. Latin inside Arabic text falls through to Plex Sans (see --font-ar). */
+/* One family for both languages: IBM Plex Sans Arabic carries the Plex Sans
+   Latin glyphs, so the English mirror needs no second face. Two weights only —
+   every weight is a preloaded file on the LCP path. Mono carries the numbers. */
 export const plexArabic = IBM_Plex_Sans_Arabic({
   weight: ["400", "700"],
-  subsets: ["arabic"],
+  subsets: ["arabic", "latin"],
   variable: "--font-plex-arabic",
-  display: "swap",
-});
-export const plexSans = IBM_Plex_Sans({
-  weight: ["400", "500", "700"],
-  preload: true,
-  subsets: ["latin"],
-  variable: "--font-plex-sans",
   display: "swap",
 });
 export const plexMono = IBM_Plex_Mono({
@@ -23,4 +15,4 @@ export const plexMono = IBM_Plex_Mono({
   variable: "--font-plex-mono",
   display: "swap",
 });
-export const fontClass = `${plexArabic.variable} ${plexSans.variable} ${plexMono.variable}`;
+export const fontClass = `${plexArabic.variable} ${plexMono.variable}`;

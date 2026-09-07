@@ -12,6 +12,21 @@ import { reducedMotion } from "@/lib/useReveal";
 import Ledger, { ledgerRows } from "./Ledger";
 
 const HeroScene = dynamic(() => import("./HeroScene"), { ssr: false });
+const HeroStatic = dynamic(() => import("./HeroStatic"), { ssr: false });
+
+/* Machines without hardware GL (headless browsers, some VMs) get the static
+   map instead of the simulation, and never download three.js. */
+function hasHardwareGL(): boolean {
+  try {
+    const c = document.createElement("canvas");
+    const gl = (c.getContext("webgl2") || c.getContext("webgl")) as WebGLRenderingContext | null;
+    if (!gl) return false;
+    const ext = gl.getExtension("WEBGL_debug_renderer_info");
+    const r = ext ? String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL)) : "";
+    gl.getExtension("WEBGL_lose_context")?.loseContext();
+    return !/swiftshader|llvmpipe|softpipe|software|mesa offscreen|basic render/i.test(r);
+  } catch { return false; }
+}
 
 /* The signature moment. One timeline on load:
    1. the headline reveals line by line;
@@ -26,7 +41,7 @@ export default function Hero({ lang }: { lang: Lang }) {
   const labelsRef = useRef<HTMLDivElement>(null);
   const fragsRef = useRef<HTMLDivElement>(null);
   const rows = ledgerRows(lang);
-  const [sceneOn, setSceneOn] = useState(false);
+  const [sceneOn, setSceneOn] = useState<"" | "gl" | "static">("");
 
   // The scene is the heaviest thing on the page. It mounts after the document
   // has loaded and the main thread is idle, so the first paint and the headline
@@ -36,8 +51,9 @@ export default function Hero({ lang }: { lang: Lang }) {
     let idle = 0;
     const arm = () => {
       const ric = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
-      if (ric) idle = ric(() => setSceneOn(true), { timeout: 900 });
-      else idle = window.setTimeout(() => setSceneOn(true), 250);
+      const pick = () => setSceneOn(hasHardwareGL() ? "gl" : "static");
+      if (ric) idle = ric(pick, { timeout: 900 });
+      else idle = window.setTimeout(pick, 250);
     };
     if (document.readyState === "complete") arm();
     else window.addEventListener("load", arm, { once: true });
@@ -135,7 +151,8 @@ export default function Hero({ lang }: { lang: Lang }) {
   return (
     <section className="hero" ref={ref} aria-labelledby="hero-title">
       <div className="hero-canvas" aria-hidden="true">
-        {sceneOn && <HeroScene dir={dir} />}
+        {sceneOn === "gl" && <HeroScene dir={dir} />}
+        {sceneOn === "static" && <HeroStatic dir={dir} />}
         <div className="hero-labels" ref={labelsRef}>
           {nodes.map((n) => (
             <span key={n.id} data-node={n.id} className={`hero-label${n.kind === "anchor" ? " is-anchor" : ""}${n.live ? " is-live" : ""}`}>{n.label}</span>
