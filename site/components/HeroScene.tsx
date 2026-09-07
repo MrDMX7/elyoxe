@@ -61,14 +61,14 @@ const EDGE_GAIN = 1.1; // how much brighter the leading edge burns
 const EDGE_LAG = 0.35; // where the highlight sits inside the band (0 = its lip)
 
 /* the pen ------------------------------------------------------------------ */
-const INTERVAL = 0.115; // contour interval, in field-height units. ONE value —
+const INTERVAL = 0.165; // contour interval, in field-height units. ONE value —
 //                         resolve never moves a line, it only re-weights it
 const W_WIDE = 1.45; // unresolved half-width, device px
 const W_FINE = 0.52; // resolved half-width, device px (hairline)
 const SOFT_WIDE = 1.9; // unresolved edge softness, device px
 const SOFT_FINE = 0.55; // resolved edge softness, device px
-const A_WIDE = 0.16; // unresolved ink alpha
-const A_FINE = 0.6; // resolved ink alpha
+const A_WIDE = 0.12; // unresolved ink alpha
+const A_FINE = 0.42; // resolved ink alpha
 const DENS_LO = 2.2; // device px: contours closer than this are gone
 const DENS_HI = 5.6; // device px: contours wider than this are at full weight
 const RING_W = 0.8; // ring pen relative to the ink pen (finer)
@@ -96,11 +96,11 @@ const FADE_SCROLL = 0.72; // how much of the ink scroll takes back
 /* the field's amplitude AND its ink go to zero over the reading-start column's
  * lower half, so bare paper sits exactly where the headline is. Measured in
  * canvas fractions with x running from the READING START. */
-const MASK_X0 = 0.38; // fully masked at/below this x …
-const MASK_X1 = 0.56; // … fully open at/above it (0.47 midpoint: the brief's
+const MASK_X0 = 0.50; // fully masked at/below this x …
+const MASK_X1 = 0.68; // … fully open at/above it (0.47 midpoint: the brief's
 //                       0.45, widened just enough to clear a 7/12 copy column)
-const MASK_Y0 = 0.28; // fully open at/above this y …
-const MASK_Y1 = 0.44; // … fully masked at/below it (the brief's 0.35, softened)
+const MASK_Y0 = 0.20; // fully open at/above this y …
+const MASK_Y1 = 0.36; // … fully masked at/below it (the brief's 0.35, softened)
 
 /* the field ---------------------------------------------------------------- */
 /* Six directional sines. 0–3 are the body of the field, 4 is the fine term
@@ -114,8 +114,8 @@ const F_MAG = [5.2, 8.9, 13.7, 21.3, 34.0, 3.1]; // rad per plate unit
 const F_AMP = [1.0, 0.58, 0.34, 0.2, 0.26, 0.62];
 const F_SPD = [0.073, 0.0517, 0.1131, 0.0891, 0.1447, 0.0389]; // rad/s
 const F_PHI = [0.31, 2.17, 4.02, 5.51, 1.13, 3.44];
-const ANI_R = 1.7; // compressed along the reading axis
-const ANI_N = 0.55; // stretched across it
+const ANI_R = 1.35; // compressed along the reading axis
+const ANI_N = 0.7; // stretched across it
 const READ_TILT = 0.22; // the reading axis is tipped off horizontal by this much,
 //                         which is what makes RTL a different field, not a flip
 
