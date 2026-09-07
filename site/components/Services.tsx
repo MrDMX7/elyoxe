@@ -357,7 +357,7 @@ const NOTE: Record<string, L> = {
   web: { ar: "تخطيط واحد ينعكس بين RTL وLTR", en: "One layout, mirrored between LTR and RTL" },
   ai: { ar: "مستندات عربية ولاتينية في مسارٍ واحد", en: "Arabic and Latin documents in one lane" },
   software: { ar: "إشارة SIGKILL ثم استئناف بلا فجوة في البيانات", en: "SIGKILL, then resume with no gap in the data" },
-  cloud: { ar: "من S3 إلى CloudFront إلى الحافة، والعدّاد عند صفر", en: "S3 to CloudFront to the edge, the meter at zero" },
+  cloud: { ar: "من المصدر إلى الحافة الأقرب للزائر، والعدّاد ثابت", en: "From the origin to the edge nearest the visitor, the meter steady" },
 };
 
 /* ── proof figure: counts once, on enter ──────────────────────── */
