@@ -256,7 +256,8 @@ html[lang="ar"] .nav .switch { font-family: var(--font-en); }
 /* ── work ───────────────────────────────────────────────────── */
 .chapter { display: grid; gap: clamp(2rem, 3vw, 3.5rem); padding-block: clamp(3rem, 3rem + 3vw, 6rem); border-block-start: 1px solid var(--rule); }
 @media (min-width: 1024px) { .chapter { grid-template-columns: 5fr 7fr; column-gap: var(--gutter); align-items: start; } .chapter.is-flipped > .chapter-copy { order: 2; } }
-.chapter-copy { display: grid; gap: 1.25rem; align-content: start; position: sticky; top: 6rem; }
+.chapter-copy { display: grid; gap: 1.25rem; align-content: start; }
+@media (min-width: 1024px) { .chapter-copy { position: sticky; top: 6rem; } }
 .chapter-copy .kicker { display: flex; align-items: baseline; gap: .75rem; flex-wrap: wrap; }
 .chapter-copy .kicker .name { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-h2); line-height: 1.2; }
 .chapter-copy .kicker .status { font-size: var(--fs-small); color: var(--stone); }

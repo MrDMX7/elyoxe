@@ -31,6 +31,16 @@ for (const [name, ctxOpts] of [
     for (let y = 0; y < before.h; y += 600) { await page.mouse.wheel(0, 600); await page.waitForTimeout(90); }
     await page.waitForTimeout(1200);
     await page.screenshot({ path: `${out}/${slug}-full.png`, fullPage: true });
+    // full-page captures go blank past ~16k px on mobile (texture limit), so the
+    // home pages are also tiled viewport by viewport — those are the truth.
+    if (name === "mobile" && (path === "/" || path === "/en/")) {
+      const vh = await page.evaluate(() => window.innerHeight);
+      for (let i = 0, y = 0; y < before.h && i < 18; i++, y += vh) {
+        await page.evaluate((yy) => window.scrollTo(0, yy), y);
+        await page.waitForTimeout(450);
+        await page.screenshot({ path: `${out}/${slug}-tile-${String(i).padStart(2, "0")}.png` });
+      }
+    }
     const checks = await page.evaluate(() => {
       const hidden = [...document.querySelectorAll(".mask > span, [data-reveal]")].filter((e) => { const s = getComputedStyle(e); return s.opacity === "0" || /translate\(0px, [1-9]/.test(s.transform); }).length;
       return { hidden, lang: document.documentElement.lang, dir: document.documentElement.dir, title: document.title };
