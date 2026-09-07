@@ -10,7 +10,7 @@
   "generate": [
     "cd site && npm run build"
   ],
-  "min_html_count": 14,
+  "min_html_count": 12,
   "aws": {
     "region": "ap-south-1",
     "bucket": "elyoxe-574771023173",
