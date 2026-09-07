@@ -129,41 +129,55 @@ def footer(lang, root, home=""):
 
 
 # ── visuals ─────────────────────────────────────────────────────────────────
+# The hero visual is a map of what is actually running, not an ornament.
+# Each row is a live system, the group above it names the runtime it really
+# runs on, and every number is pulled from its case study by figure() so the
+# picture cannot drift from the work it cites. Only the two rows that open in
+# a browser are links; Khutwa installs on a phone and the research box is
+# private, and that asymmetry is itself information.
+DIAGRAM = [
+    {"runtime": "Amazon S3 · CloudFront · ACM", "rows": [
+        {"name": "elyoxe.com", "href": None, "num": None,
+         "unit": {"en": "this page", "ar": "هذه الصفحة"}},
+        {"name": "ahlam.elyoxe.com", "href": "https://ahlam.elyoxe.com",
+         "num": ("ahlam", 0), "unit": {"en": "symbols", "ar": "رمزاً"}},
+        {"name": "invoiceready.ae", "href": "https://invoiceready.ae",
+         "num": ("invoiceready", 0), "unit": {"en": "pages", "ar": "صفحة"}},
+    ]},
+    {"runtime": "Amazon EC2 · systemd", "rows": [
+        {"name": {"en": "Quantitative method", "ar": "المنهج الكمّي"}, "href": None,
+         "num": ("quantitative-method", 0), "unit": {"en": "falsified", "ar": "فرضية دُحضت"}},
+    ]},
+    {"runtime": "Android · Kotlin", "rows": [
+        {"name": {"en": "Khutwa", "ar": "خطوة"}, "href": None,
+         "num": ("khutwa", 1), "unit": {"en": "delta", "ar": "فرق"}},
+    ]},
+]
+
+
 def hero_visual(rtl):
-    """Node network echoing the circuitry in the mark. Redrawn mirrored for RTL
-    rather than CSS-flipped, so the arrowheads and text direction stay correct."""
-    if not rtl:
-        wires = ["M70 380 L70 300 L150 220 L260 220", "M150 220 L150 130 L250 130",
-                 "M260 220 L340 140 L440 140", "M260 220 L340 300 L430 300",
-                 "M430 300 L430 380 L340 380", "M250 130 L250 70 L410 70",
-                 "M70 300 L150 300 L150 380 L250 380"]
-        nodes = [(70,380),(150,220),(250,130),(440,140),(430,300),(340,380),(410,70),(250,380)]
-        hub = (260, 220)
-    else:
-        wires = ["M490 380 L490 300 L410 220 L300 220", "M410 220 L410 130 L310 130",
-                 "M300 220 L220 140 L120 140", "M300 220 L220 300 L130 300",
-                 "M130 300 L130 380 L220 380", "M310 130 L310 70 L150 70",
-                 "M490 300 L410 300 L410 380 L310 380"]
-        nodes = [(490,380),(410,220),(310,130),(120,140),(130,300),(220,380),(150,70),(310,380)]
-        hub = (300, 220)
-    w = "".join(f'<path d="{p}"/>' for p in wires)
-    n = "".join(f'<circle cx="{x}" cy="{y}" r="5"/>' for x, y in nodes)
-    hx, hy = hub
-    return (
-        '<svg viewBox="0 0 560 480" width="100%" height="100%" style="display:block" aria-hidden="true"><defs>'
-        f'<linearGradient id="hw" x1="{1 if rtl else 0}" y1="0" x2="{0 if rtl else 1}" y2="1">'
-        '<stop offset="0%" stop-color="#8E2547" stop-opacity=".85"/>'
-        '<stop offset="100%" stop-color="#C98BA0" stop-opacity=".5"/></linearGradient>'
-        '<linearGradient id="hf" x1="0" y1="0" x2="0" y2="1">'
-        '<stop offset="0%" stop-color="#FBF3F5"/><stop offset="100%" stop-color="#FFFFFF"/></linearGradient>'
-        '</defs><rect width="560" height="480" fill="url(#hf)"/>'
-        f'<g stroke="url(#hw)" fill="none" stroke-width="1.25" stroke-linecap="round">{w}</g>'
-        f'<g fill="#FFF" stroke="#8E2547" stroke-width="1.6">{n}</g>'
-        f'<circle cx="{hx}" cy="{hy}" r="12" fill="#8E2547"/>'
-        f'<circle cx="{hx}" cy="{hy}" r="21" fill="none" stroke="#8E2547" stroke-opacity=".3" stroke-width="1.25"/>'
-        f'<circle cx="{hx}" cy="{hy}" r="31" fill="none" stroke="#8E2547" stroke-opacity=".15" stroke-width="1.25"/>'
-        '</svg>'
-    )
+    """Markup, not SVG. An SVG scales as a single block, so at a 390px viewport
+    these labels came out near 10px; and text-anchor resolves against the
+    inherited `direction`, which the Arabic page sets to rtl and which silently
+    reversed every mirrored coordinate. A list mirrors itself under dir="rtl",
+    stays at its authored size, and lets the domains be real links."""
+    lang = "ar" if rtl else "en"
+    groups = []
+    for g in DIAGRAM:
+        rows = []
+        for row in g["rows"]:
+            n = row["name"]
+            name = E(n if isinstance(n, str) else n[lang])
+            if row["href"]:
+                name = f'<a href="{row["href"]}">{name}</a>'
+            num = f'<b class="num">{E(figure(*row["num"]))}</b>' if row["num"] else ""
+            rows.append(
+                f'<li><span class="sys-name">{name}</span>'
+                f'<span class="sys-fig">{num}<span>{E(row["unit"][lang])}</span></span></li>')
+        groups.append(
+            f'<div class="sys-group"><div class="sys-runtime">{E(g["runtime"])}</div>'
+            f'<ul class="sys-list">{"".join(rows)}</ul></div>')
+    return f'<div class="sysmap">{"".join(groups)}</div>'
 
 
 def media(kind, rtl, h=230):
@@ -354,16 +368,11 @@ def home(lang):
         f'<div class="hero-actions" data-reveal data-reveal-group="herob">'
         f'<a class="btn" href="#contact">{E(c["cta_primary"])}</a>'
         f'<a class="btn-text" href="#work">{E(c["cta_secondary"])}</a></div></div>'
-        f'<div class="hero-visual" data-reveal data-reveal-group="herob"><div class="hero-frame">{hero_visual(rtl)}</div>'
-        f'<div class="hero-card"><div class="label" style="margin-block-end:.9375rem">{E(c["stat_label"])}</div>'
-        f'<div class="stat-row">'
-        f'<div class="stat"><b class="num">{figure("invoiceready")}</b>'
-        f'<span>{E(c["stat_1_label"])}</span></div>'
-        f'<div class="stat-div"></div>'
-        f'<div class="stat"><b class="num accent">{figure("ahlam")}</b>'
-        f'<span>{E(c["stat_2_label"])}</span></div></div>'
+        f'<div class="hero-visual" data-reveal data-reveal-group="herob">'
+        f'<div class="label" style="margin-block-end:.9375rem">{E(c["stat_label"])}</div>'
+        f'<div class="hero-frame">{hero_visual(rtl)}</div>'
         f'<p class="stat-note">{E(c["stat_note"])}</p>'
-        f'</div></div></section>'
+        f'</div></section>'
 
         f'<section class="wrap section" id="services">'
         f'<div class="section-head">'

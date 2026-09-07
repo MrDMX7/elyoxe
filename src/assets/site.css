@@ -31,17 +31,34 @@
 
 .hero-visual { position: relative; }
 .hero-frame { background: var(--surface); border: 1px solid var(--rule-faint); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--lift-2); }
-.hero-card {
-  position: absolute; inset-block-end: -2.125rem; inset-inline-start: -2.625rem;
-  inline-size: 18.125rem; background: var(--surface); border: 1px solid var(--rule-faint);
-  border-radius: var(--radius); padding: 1.375rem 1.5625rem; box-shadow: var(--lift-2);
+/* The systems map. The rail is a border on the list and each node is a dot
+   sitting on it, so the circuitry motif of the mark survives without a second
+   drawing to keep in sync. Everything here is logical-direction: the Arabic
+   page mirrors by cascade, not by a mirrored copy of the geometry. */
+.sysmap { padding: 1.75rem 1.5rem 1.875rem; background: linear-gradient(var(--wine-tint), var(--surface)); }
+.sys-group + .sys-group { margin-block-start: 1.625rem; }
+.sys-runtime {
+  font-size: .66rem; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--wine); opacity: .85; margin-block-end: .55rem;
+  padding-inline-start: 1.375rem;
 }
-[dir="rtl"] .hero-card { inset-inline-start: auto; inset-inline-end: -2.625rem; }
-.stat-row { display: flex; align-items: flex-end; gap: 1.375rem; }
-.stat b { display: block; font-family: var(--display); font-weight: 200; font-size: 2.5rem; line-height: 1; color: var(--ink); }
-.stat b.accent { color: var(--wine); }
-.stat span { display: block; font-size: .78rem; color: var(--muted-2); margin-block-start: .3rem; }
-.stat-div { inline-size: 1px; block-size: 2.375rem; background: var(--rule-faint); }
+.sys-list { list-style: none; margin: 0; padding: 0; border-inline-start: 1px solid var(--wine-line); }
+.sys-list li {
+  position: relative; display: flex; align-items: baseline; justify-content: space-between;
+  gap: 1rem; padding: .5rem 0 .5rem 1.375rem;
+}
+[dir="rtl"] .sys-list li { padding: .5rem 1.375rem .5rem 0; }
+.sys-list li::before {
+  content: ""; position: absolute; inset-inline-start: -5px; inset-block-start: .72em;
+  inline-size: 9px; block-size: 9px; border-radius: 50%;
+  background: var(--surface); border: 1.6px solid var(--wine);
+}
+.sys-name { font-size: .95rem; color: var(--ink); }
+.sys-name a { color: inherit; text-decoration: none; border-block-end: 1px solid var(--wine-line); }
+.sys-name a:hover, .sys-name a:focus-visible { color: var(--wine); border-color: var(--wine); }
+.sys-fig { display: flex; align-items: baseline; gap: .4rem; white-space: nowrap; }
+.sys-fig b { font-family: var(--display); font-weight: 300; font-size: 1.05rem; color: var(--wine); }
+.sys-fig > span { font-size: .78rem; color: var(--muted-2); }
 
 /* buttons ------------------------------------------------------------------ */
 .btn {
@@ -169,7 +186,6 @@
 }
 @media (max-width: 860px) {
   .hero { grid-template-columns: 1fr; gap: 3rem; }
-  .hero-card { position: static; inline-size: auto; margin-block-start: -1.625rem; margin-inline: .875rem; }
   .work, .approach, .contact, .case-row, .case-meta { grid-template-columns: 1fr; }
   .approach, .contact { gap: 2rem; }
   .case-row { gap: .75rem; }
@@ -281,8 +297,8 @@
   }
 }
 
-/* The hero card is evidence, so it names where to check — but quietly: the
-   source line must not grow the card until it swamps the visual behind it. */
+/* The map is the evidence, so this line only says where to check it —
+   quietly, in the smallest type on the page. */
 .stat-note {
   margin: .9rem 0 0;
   padding-block-start: .8rem;
