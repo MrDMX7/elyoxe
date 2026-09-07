@@ -2,15 +2,15 @@
   "name": "elyoxe",
   "domain": "elyoxe.com",
   "base_url": "https://elyoxe.com",
-  "lang": "en",
-  "dir": "ltr",
+  "lang": "ar",
+  "dir": "rtl",
   "_comment_src_out": "src_dir != out_dir here, unlike invoiceready. src/ holds hand-authored assets, dist/ is pure build output, so deploy-site.sh may clean it before every build.",
   "src_dir": "src",
   "out_dir": "dist",
   "generate": [
     "python3 build/generate.py"
   ],
-  "min_html_count": 11,
+  "min_html_count": 16,
   "aws": {
     "region": "ap-south-1",
     "bucket": "elyoxe-574771023173",
@@ -20,27 +20,47 @@
   "verify": [
     {
       "path": "/",
-      "contains": "Elyoxe"
-    },
-    {
-      "path": "/ar/",
       "contains": "dir=\"rtl\""
     },
     {
+      "path": "/",
+      "contains": "أنظمة رقمية"
+    },
+    {
+      "path": "/en/",
+      "contains": "Digital systems"
+    },
+    {
       "path": "/work/invoiceready.html",
+      "contains": "غير معلن"
+    },
+    {
+      "path": "/work/ahlam.html",
+      "contains": "منتخب الكلام"
+    },
+    {
+      "path": "/en/work/invoiceready.html",
       "contains": "102"
     },
     {
-      "path": "/work/khutwa.html",
+      "path": "/en/work/khutwa.html",
       "contains": "Khutwa"
     },
     {
-      "path": "/work/quantitative-method.html",
+      "path": "/en/work/quantitative-method.html",
       "contains": "falsified"
     },
     {
-      "path": "/ar/work/invoiceready.html",
-      "contains": "غير معلن"
+      "path": "/en/work/ahlam.html",
+      "contains": "ahlam.elyoxe.com"
+    },
+    {
+      "path": "/ar/",
+      "contains": "noindex"
+    },
+    {
+      "path": "/ar/work/khutwa.html",
+      "contains": "noindex"
     },
     {
       "path": "/sitemap.xml",
@@ -49,16 +69,9 @@
     {
       "path": "/robots.txt",
       "contains": "Sitemap"
-    },
-    {
-      "path": "/work/ahlam.html",
-      "contains": "ahlam.elyoxe.com"
-    },
-    {
-      "path": "/ar/work/ahlam.html",
-      "contains": "منتخب الكلام"
     }
   ],
   "contact_endpoint": "https://hybw54y21l.execute-api.ap-south-1.amazonaws.com/",
-  "_comment_domain": "elyoxe.com registered at Namecheap 2026-09-06; DNS on Route53 (zone from new-site.sh --existing-domain). GitHub Pages copy at mrdmx7.github.io/elyoxe is now a mirror only."
+  "_comment_domain": "elyoxe.com registered at Namecheap 2026-09-06; DNS on Route53 (zone from new-site.sh --existing-domain). GitHub Pages copy at mrdmx7.github.io/elyoxe is now a mirror only.",
+  "_comment_langs": "Arabic is served from the root and English from /en/. The five /ar/* files are redirect pages for the previous layout: excluded from the sitemap and marked noindex, so they are never read as duplicates."
 }

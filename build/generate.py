@@ -56,6 +56,18 @@ BASE = SITE.base_url
 from urllib.parse import urlparse
 ROOT_PATH = (urlparse(BASE).path or "").rstrip("/") + "/"
 
+# Arabic is the site's default language: it is served from the root and English
+# lives under /en/. Everything that builds a path reads this one map, so the
+# two languages can never drift apart in the URL structure.
+LANGS = ("ar", "en")
+PREFIX = {"ar": "", "en": "en/"}
+
+
+def lang_url(lang, rel=""):
+    """Absolute URL of `rel` (a path under the language home) in `lang`."""
+    return f"{BASE}/{PREFIX[lang]}{rel}"
+
+
 load = lambda n: json.load(open(os.path.join(DATA, n), encoding="utf-8"))
 COPY, SERVICES, APPROACH, CASES = (load("copy.json"), load("services.json"),
                                    load("approach.json"), load("case-studies.json"))
@@ -91,14 +103,20 @@ def icon(name):
 
 
 # ── chrome ──────────────────────────────────────────────────────────────────
-def nav(lang, root, current="", home=""):
+def nav(lang, root, current="", home="", alt=""):
     """`root` reaches the SITE root; `home` reaches the current LANGUAGE's
     home page. Section anchors must use `home`: on /ar/ the site root is the
     English page, so "../#services" sent every Arabic visitor to the English
     site — nav, footer and all."""
     c = COPY[lang]
-    other_root = ("../" * root.count("../")) if False else root
-    lang_href = (root + "ar/") if lang == "en" else (root or "./")
+    # The switcher and the wordmark both target the CURRENT language's home,
+    # not the site root — the site root is now the Arabic page, so building the
+    # wordmark's href from `root` sent every English visitor to /.
+    # `alt` is the same document in the other language, when there is one.
+    # Without it the switcher dropped a reader from a case study onto a
+    # homepage, which is a worse answer than the page they were already on.
+    other = root + PREFIX["en" if lang == "ar" else "ar"]
+    lang_href = (other + alt) if alt else (other or "./")
     items = [(k, f'{home}#{k}') for k in ("services", "work", "approach", "contact")]
     links = "".join(
         '<a href="{}"{}>{}</a>'.format(h, ' aria-current="page"' if k == current else "", E(c["nav"][k]))
@@ -106,11 +124,11 @@ def nav(lang, root, current="", home=""):
     links += (f'<a class="lang" href="{lang_href}" hreflang="{c["lang_switch_code"]}">'
               f'{E(c["lang_switch"])}</a>')
     return (
-        f'<header class="wrap head"><a class="brand" href="{root or "./"}">{mark(42, "h")}'
+        f'<header class="wrap head"><a class="brand" href="{home or "./"}">{mark(42, "h")}'
         f'<span class="brand-name">Elyoxe</span></a>'
         f'<nav class="nav">{links}</nav>'
         f'<button class="nav-toggle" aria-label="Menu">'
-        f'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5E2138" '
+        f'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" '
         f'stroke-width="1.5" stroke-linecap="round"><path d="M3 7h18M3 12h18M3 17h18"/></svg>'
         f'</button></header>'
     )
@@ -240,7 +258,7 @@ def media(kind, rtl, h=230):
 
 
 # ── page assembly ───────────────────────────────────────────────────────────
-def page(*, lang, title, description, canonical, body, root="", current="", alternates=None, ldjson="", home=""):
+def page(*, lang, title, description, canonical, body, root="", current="", alternates=None, ldjson="", home="", alt_path=""):
     alt = "".join(f'<link rel="alternate" hreflang="{k}" href="{v}">'
                   for k, v in (alternates or {}).items())
     return render_page(
@@ -251,7 +269,7 @@ def page(*, lang, title, description, canonical, body, root="", current="", alte
         fonts=FONTS, head_extra=alt, ldjson=ldjson,
         favicon='<link rel="icon" href="assets/mark.svg" type="image/svg+xml">'.replace(
             'href="assets/', f'href="{root}assets/'),
-        nav=nav(lang, root, current, home), footer=footer(lang, root, home),
+        nav=nav(lang, root, current, home, alt_path), footer=footer(lang, root, home),
         og={"og:title": title, "og:description": description, "og:type": "website",
             "og:url": canonical, "og:locale": "ar_AE" if lang == "ar" else "en_AE"},
         body=body,
@@ -356,7 +374,7 @@ def figure(slug, index=0):
 
 
 def home(lang):
-    c, rtl, root = COPY[lang], lang == "ar", ("../" if lang == "ar" else "")
+    c, rtl, root = COPY[lang], lang == "ar", ("" if lang == "ar" else "../")
     ld = json.dumps({
         "@context": "https://schema.org", "@type": "ProfessionalService", "name": "Elyoxe",
         "url": BASE, "description": c["lead"], "areaServed": "AE",
@@ -402,17 +420,18 @@ def home(lang):
         f'<section class="wrap section" id="contact">{contact_block(lang)}</section>'
         '</main>')
     return page(lang=lang, title=f'Elyoxe — {c["tagline"]}', description=c["lead"],
-                canonical=f"{BASE}/" if lang == "en" else f"{BASE}/ar/",
+                canonical=lang_url(lang),
                 root=root, home="", current="services", body=body,
-                alternates={"en": f"{BASE}/", "ar": f"{BASE}/ar/", "x-default": f"{BASE}/"},
+                alternates={"ar": lang_url("ar"), "en": lang_url("en"),
+                            "x-default": lang_url("ar")},
                 ldjson=f'<script type="application/ld+json">{ld}</script>')
 
 
 def case_page(cs, lang):
     c, d = COPY[lang], cs[lang]
-    root = "../../" if lang == "ar" else "../"
+    root = "../" if lang == "ar" else "../../"
     # One level under the language home in both languages:
-    # /work/x.html -> /  and  /ar/work/x.html -> /ar/
+    # /work/x.html -> /  and  /en/work/x.html -> /en/
     home = "../"
     rtl = lang == "ar"
     figs = "".join(
@@ -427,7 +446,7 @@ def case_page(cs, lang):
     ld = json.dumps({"@context": "https://schema.org", "@type": "CreativeWork",
                      "name": cs["title"], "abstract": d["tagline"],
                      "author": {"@type": "Organization", "name": "Elyoxe"},
-                     "url": f'{BASE}/{"ar/" if rtl else ""}work/{cs["slug"]}.html'}, ensure_ascii=False)
+                     "url": lang_url(lang, f'work/{cs["slug"]}.html')}, ensure_ascii=False)
     body = (
         '<main>'
         f'<section class="wrap case-head">'
@@ -480,11 +499,12 @@ def case_page(cs, lang):
         f'</div></section>'
         '</main>')
     return page(lang=lang, title=f'{cs["title"]} — Elyoxe', description=d["tagline"],
-                canonical=f'{BASE}/{"ar/" if rtl else ""}work/{cs["slug"]}.html',
+                canonical=lang_url(lang, f'work/{cs["slug"]}.html'),
                 root=root, home="../", current="work", body=body,
-                alternates={"en": f'{BASE}/work/{cs["slug"]}.html',
-                            "ar": f'{BASE}/ar/work/{cs["slug"]}.html',
-                            "x-default": f'{BASE}/work/{cs["slug"]}.html'},
+                alt_path=f'work/{cs["slug"]}.html',
+                alternates={"ar": lang_url("ar", f'work/{cs["slug"]}.html'),
+                            "en": lang_url("en", f'work/{cs["slug"]}.html'),
+                            "x-default": lang_url("ar", f'work/{cs["slug"]}.html')},
                 ldjson=f'<script type="application/ld+json">{ld}</script>')
 
 
@@ -492,12 +512,16 @@ def not_found():
     """A 404 that routes instead of apologising. The numeral runs at display
     scale in gold -- the one place on the site the accent is allowed to be
     large -- and the destinations under it are generated from CASES, so a dead
-    link on the dead-link page is not possible."""
-    c = COPY["en"]
+    link on the dead-link page is not possible.
+
+    It is served in Arabic because Arabic is the site's default language, and a
+    404 can be reached at any depth, so every href here is site-absolute."""
+    lang = LANGS[0]
+    c = COPY[lang]
     links = "".join(
         f'<li data-reveal data-reveal-group="nf">'
-        f'<a href="{ROOT_PATH}work/{cs["slug"]}.html">{E(cs["title"])}</a>'
-        f'<span>{E(cs["en"]["role"])}</span></li>' for cs in CASES)
+        f'<a href="{ROOT_PATH}{PREFIX[lang]}work/{cs["slug"]}.html">{E(cs["title"])}</a>'
+        f'<span>{E(cs[lang]["role"])}</span></li>' for cs in CASES)
     body = (
         '<main><section class="wrap nf">'
         '<div class="nf-num" data-reveal data-reveal-group="nf">404</div>'
@@ -505,9 +529,9 @@ def not_found():
         f'<p class="nf-lead" data-reveal data-reveal-group="nf">{E(c["not_found_lead"])}</p>'
         f'<ul class="nf-list">{links}</ul>'
         f'<div data-reveal data-reveal-group="nf">'
-        f'<a class="btn" href="{ROOT_PATH}">{E(c["not_found_cta"])}</a></div>'
+        f'<a class="btn" href="{ROOT_PATH}{PREFIX[lang]}">{E(c["not_found_cta"])}</a></div>'
         '</section></main>')
-    return page(lang="en", title="Not found — Elyoxe", description=c["not_found"],
+    return page(lang=lang, title=f'{c["not_found"]} — Elyoxe', description=c["not_found"],
                 canonical=f"{BASE}/404.html", body=body)
 
 
@@ -529,13 +553,33 @@ def main():
         fh.write('<?xml version="1.0" encoding="UTF-8"?>\n' + mark(100, "i"))
 
     n = 0
-    for lang in ("en", "ar"):
-        pre = "ar/" if lang == "ar" else ""
+    for lang in LANGS:
+        pre = PREFIX[lang]
         write(f"{pre}index.html", home(lang)); n += 1
         for cs in CASES:
             write(f'{pre}work/{cs["slug"]}.html', case_page(cs, lang)); n += 1
     write("404.html", not_found()); n += 1
     print(f"Generated {n} pages ({len(CASES)} projects × 2 languages + 2 homepages + 404).")
+
+    # Arabic used to live under /ar/. Those URLs were published and sitemapped,
+    # so they redirect rather than 404. S3 behind OAC ignores website redirect
+    # metadata and the CloudFront function is shared by every site in the
+    # workspace, so the redirect is a page — kept out of the sitemap, and
+    # noindex so the pair is never read as duplicate content.
+    r = 0
+    moved = ["index.html"] + [f'work/{cs["slug"]}.html' for cs in CASES]
+    for rel in moved:
+        target = f"{ROOT_PATH}{rel}".replace("/index.html", "/")
+        write(f"ar/{rel}",
+              '<!doctype html><html lang="ar"><head><meta charset="utf-8">'
+              '<meta name="robots" content="noindex,follow">'
+              f'<link rel="canonical" href="{BASE}{target}">'
+              f'<meta http-equiv="refresh" content="0; url={target}">'
+              '<title>Elyoxe</title></head><body>'
+              f'<p><a href="{target}">{E(COPY["ar"]["not_found_cta"])}</a></p>'
+              '</body></html>')
+        r += 1
+    print(f"{r} redirects from the previous /ar/ paths")
 
     with open(os.path.join(OUT, "robots.txt"), "w", encoding="utf-8") as fh:
         fh.write(f"User-agent: *\nAllow: /\n\nSitemap: {BASE}/sitemap.xml\n")
@@ -544,18 +588,21 @@ def main():
 
     def alternates(rel):
         r = rel.replace(os.sep, "/")
-        if r in ("index.html", "ar/index.html"):
-            return {"en": f"{BASE}/", "ar": f"{BASE}/ar/", "x-default": f"{BASE}/"}
-        if r.startswith("work/") or r.startswith("ar/work/"):
+        if r in ("index.html", "en/index.html"):
+            return {"ar": lang_url("ar"), "en": lang_url("en"), "x-default": lang_url("ar")}
+        if r.startswith("work/") or r.startswith("en/work/"):
             slug = r.rsplit("/", 1)[-1]
-            return {"en": f"{BASE}/work/{slug}", "ar": f"{BASE}/ar/work/{slug}",
-                    "x-default": f"{BASE}/work/{slug}"}
+            return {"ar": lang_url("ar", f"work/{slug}"), "en": lang_url("en", f"work/{slug}"),
+                    "x-default": lang_url("ar", f"work/{slug}")}
         return None
 
+    # /ar/* is redirect pages, not content: it must never enter the sitemap or
+    # the two would be offered to search engines as duplicates of each other.
     xml = build_sitemap(SITE, ledger,
-        rules=[(r"^index\.html$", "weekly", "1.0"), (r"^ar/index\.html$", "weekly", "0.9"),
-               (r"^work/", "monthly", "0.8"), (r"^ar/work/", "monthly", "0.7")],
-        default=("monthly", "0.5"), alternates=alternates, exclude=[r"^404\.html$"])
+        rules=[(r"^index\.html$", "weekly", "1.0"), (r"^en/index\.html$", "weekly", "0.9"),
+               (r"^work/", "monthly", "0.8"), (r"^en/work/", "monthly", "0.7")],
+        default=("monthly", "0.5"), alternates=alternates,
+        exclude=[r"^404\.html$", r"^ar/"])
     _, count = write_sitemap(SITE, xml)
     print(f"sitemap.xml: {count} URLs")
 
