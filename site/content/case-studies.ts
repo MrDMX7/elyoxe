@@ -1,6 +1,6 @@
 import type { L } from "./i18n";
 
-export type Visual = "validator" | "sensor" | "ledger" | "citation";
+export type Visual = "validator" | "sensor" | "ledger" | "citation" | "agent";
 export type Figure = { value: string; accent: boolean; label: L };
 export type Ledger = { value: string; unit: L; href: string | null; label: string | L; live: boolean };
 export type CaseStudy = {
@@ -228,11 +228,19 @@ export const caseStudies: CaseStudy[] = [
     "period": "2026",
     "figures": [
       {
-        "value": "9",
+        "value": "0",
         "accent": true,
         "label": {
-          "ar": "فرضية تداول سُجّلت كتابةً قبل اختبارها، ودُحضت كلها",
-          "en": "trading hypotheses pre-registered in writing, every one falsified"
+          "ar": "استراتيجية شُغّلت بمال حقيقي بناءً على نتيجة لم تجتَز الفحص",
+          "en": "strategies run on real money on a result that had not passed the checks"
+        }
+      },
+      {
+        "value": "87",
+        "accent": false,
+        "label": {
+          "ar": "عقداً محجوزاً لم يدخل التطوير، ولم يُصرف عليه نظر",
+          "en": "held-out contracts never used in development, with no look spent on them"
         }
       },
       {
@@ -243,14 +251,6 @@ export const caseStudies: CaseStudy[] = [
           "en": "independent out-of-sample checks, one of them a holdout"
         }
       },
-      {
-        "value": "1",
-        "accent": false,
-        "label": {
-          "ar": "سياسة مكتوبة تحكم ما يُشغَّل",
-          "en": "written policy governing what may run"
-        }
-      }
     ],
     "stack": [
       "Python",
@@ -261,10 +261,10 @@ export const caseStudies: CaseStudy[] = [
     ],
     "visual": "ledger",
     "ledger": {
-      "value": "9",
+      "value": "0",
       "unit": {
-        "ar": "فرضيات دُحضت",
-        "en": "hypotheses falsified"
+        "ar": "شُغّل بمال حقيقي",
+        "en": "run on real money"
       },
       "href": null,
       "label": {
@@ -274,8 +274,8 @@ export const caseStudies: CaseStudy[] = [
       "live": false
     },
     "kicker": {
-      "ar": "تعلّم آلة وأسواق",
-      "en": "Machine learning and markets"
+      "ar": "التحقّق من أنظمة الذكاء الاصطناعي",
+      "en": "Verifying AI systems"
     },
     "status": {
       "ar": "مستمر",
@@ -286,31 +286,37 @@ export const caseStudies: CaseStudy[] = [
       "en": "Research and engineering"
     },
     "tagline": {
-      "ar": "تعلّم آلة يُختبر على فرضيات تداول، بمنصّة لحظية تعمل على مدار الساعة في سوق الكريبتو.",
-      "en": "Machine learning tested against trading hypotheses, on a real-time platform that runs around the clock on crypto markets."
+      "ar": "كل نظام يصحّح امتحانه بنفسه ينجح فيه. هذا منهج يجعل النتيجة السلبية ممكنة — بُني على سوق الكريبتو، ويُطبَّق على أنظمة الذكاء الاصطناعي التي نبنيها.",
+      "en": "Every system that grades its own exam passes it. This is a method that makes a negative result possible — built on crypto markets, applied to the AI systems we ship."
     },
     "summary": {
-      "ar": "منصّة لحظية تعمل على خادم سحابي بلا انقطاع: تمسح سوق الكريبتو على فترات دقائق، وتحسب السمات ووسوم تعلّم الآلة، وتختبر الاستراتيجيات. تُسجَّل كل فرضية كتابةً قبل اختبارها؛ سُجّلت تسع ودُحضت كلها. والمنهج نفسه هو المُنتَج.",
-      "en": "A real-time platform runs on a cloud server without interruption: it scans crypto markets on intervals of minutes, computes features and machine-learning labels, and tests strategies. Every hypothesis is registered in writing before it is tested; nine were registered and all nine falsified. The method itself is the product."
+      "ar": "منصّة لحظية تعمل على خادم سحابي بلا انقطاع: تمسح سوق الكريبتو على فترات دقائق، وتحسب السمات ووسوم تعلّم الآلة، وتختبر الاستراتيجيات. تُسجَّل كل فرضية كتابةً قبل اختبارها، ومعها الشرط الذي يُبطلها؛ وأكثرها سقط. والمنهج نفسه هو المُنتَج، ونطبّقه على أنظمة الذكاء الاصطناعي التي نبنيها ونسلّمها — فالمشكلة واحدة: نظامٌ يبدو ناجحاً ليس نظاماً ناجحاً.",
+      "en": "A real-time platform runs on a cloud server without interruption: it scans crypto markets on intervals of minutes, computes features and machine-learning labels, and tests strategies. Every hypothesis is registered in writing before it is tested, together with the condition that would falsify it; most of them have fallen. The method itself is the product, and we run it against the AI systems we build and hand over — the problem is the same one: a system that looks like it works is not a system that works."
     },
     "problem": {
-      "ar": "من السهل جعل نموذج تعلّم آلة على بيانات السوق يبدو مقنعاً، ومن الصعب الوثوق به. أغلب أنماط الفشل طرق لخداع النفس: ملاءمة الضجيج، أو الاختبار حتى ينجح شيء، أو القياس مقابل مرجع خاطئ. وسوق الكريبتو لا يغلق ويتحرّك في دقائق، فيتضاعف عدد المحاولات وتتضاعف معها فرص المصادفة. المسألة الهندسية هي بناء عملية تستطيع أن تعطي إجابة سلبية ويُوثق بها.",
-      "en": "A machine-learning model on market data is easy to make look convincing and hard to trust. Most failure modes are ways of fooling yourself: fitting noise, testing until something passes, or measuring against the wrong benchmark. Crypto markets never close and move in minutes, which multiplies the number of attempts and the coincidences that come with them. The engineering problem is a process that can return a negative answer and be believed."
+      "ar": "عشر رميات عملة تطلع كلها على وجه واحد ليست نادرة بما يكفي لتعني شيئاً؛ ومع ما يكفي من البيانات والمحاولات ستجد دائماً قاعدة تبدو صحيحة على الماضي. العشوائية تصنع أنماطاً مقنعة، وهذا ليس خطأ حساب بل خاصيّة فيها. لذلك أغلب أنماط الفشل طرق لخداع النفس: ملاءمة الضجيج، أو الاختبار حتى ينجح شيء، أو القياس مقابل مرجع خاطئ. وسوق الكريبتو لا يغلق ويتحرّك في دقائق، فيتضاعف عدد المحاولات وتتضاعف معها فرص المصادفة. والمسألة ليست خاصّة بالأسواق: أي نظام — نموذج تعلّم آلة، أو بوابة جودة، أو نموذج لغوي — يُقاس بمرجع مأخوذ من نفسه سينجح في امتحانه دائماً. المسألة الهندسية هي بناء عملية تستطيع أن تعطي إجابة سلبية ويُوثق بها.",
+      "en": "Ten coin flips landing the same way is not rare enough to mean anything, and with enough data and enough attempts you will always find a rule that looks true about the past. Randomness manufactures convincing patterns; that is a property of it, not a mistake. So most failure modes are ways of fooling yourself: fitting noise, testing until something passes, or measuring against the wrong benchmark. Crypto markets never close and move in minutes, which multiplies the number of attempts and the coincidences that come with them. And the problem is not particular to markets: any system — a machine-learning model, a quality gate, a language model — measured against a benchmark drawn from itself will always pass its own exam. The engineering problem is a process that can return a negative answer and be believed."
     },
     "approach": {
       "ar": [
-        "الأدوات مبنيّة في الاستوديو: خوارزميات، وبرمجيات، وبوتات، ومنصّة مؤتمتة تعمل لحظياً على خادم سحابي بلا انقطاع. تمسح سوق الكريبتو على فترات دقائق، وتحسب السمات ووسوم تعلّم الآلة، وتختبر الاستراتيجيات، وترسل التنبيهات إلى بوت مراسلة.",
-        "تُسجَّل كل فرضية كتابةً قبل اختبارها، فلا يمكن إعادة تفسير النتيجة بعد ظهورها. سُجّلت تسع فرضيات متتالية ودُحضت جميعها، وبقيت مكتوبة كما سُجّلت.",
+        "تُسجَّل كل فرضية كتابةً قبل اختبارها — السكّان والأفق والسمة والاتجاه المتوقَّع، ومعها الشرط الذي يُبطلها — فلا يمكن إعادة تفسير النتيجة بعد ظهورها. وتُسجَّل أزواجاً متعارضة، لأن ذراعاً منفردة تبدو جيدة لا يمكن دحضها أصلاً. وحين تسقط فرضية يبقى نصّها حرفياً كما كُتب ويُنشر دحضها، بدل أن يُحرَّر النصّ.",
+        "من السجل، بنصّه: فرضية توقّعت أن تكون احتمالية فرط الملاءمة فوق 0.5 على شبكتَي الخروج والوقف، بحجّة أن «المتغيّرات شبه المتطابقة تجعل الفائز داخل العيّنة رمية عملة» — دُحضت، وحصل العكس تماماً. وفرضية ثانية توقّعت أن يتجاوز تمييز نموذج التصنيف 0.55 — دُحضت كذلك: جاء 0.5357، داخل توزيع الصدفة نفسه.",
+        "قبل الوثوق بأي نتيجة إيجابية، يُحدَّد شكل النتيجة الإيجابية الكاذبة: ضابط عدم تجريبي يُشغَّل على الخط نفسه ليُعرف ما الذي يُنتجه هذا المسار حين لا يكون هناك شيء يُكتشف. فحصٌ لا يُعرف ما الذي يُفشِله ليس فحصاً.",
         "يجري التحقّق خارج العيّنة بثلاث طرق مستقلة، إحداها عيّنة محجوزة من أدوات لم تدخل التطوير إطلاقاً.",
-        "ضابط عدم تجريبي يحدّد شكل النتيجة الإيجابية الكاذبة في هذا الخط قبل الوثوق بأي نتيجة إيجابية حقيقية.",
-        "سياسة مكتوبة تحكم ما يُسمح بتشغيله حياً، وفي المنفّذ قاطع إيقاف وسقوف للمخاطرة، وسجلّ أمامي يقيّد كل إشارة من لحظة صدورها فما بعد — فما يُقاس لاحقاً لا يُنتقى من الماضي."
+        "وما ينطبق على قاعدة تداول ينطبق على نموذج تعلّم آلة بالحرف. نماذج التصنيف داخل المنصّة تُقاس بتقاطع طبقي مُطهَّر مع حظر زمني يمنع تسرّب المستقبل إلى التدريب، ويسبقها ضابط تسميات مُبعثَرة يُشغَّل أولاً ليُعرف ما الذي يُنتجه المسار حين لا يكون هناك شيء يُكتشف. وهذا هو الفحص نفسه الذي نُخضع له أي نظام ذكاء اصطناعي نسلّمه: يُحدَّد شكل النتيجة الكاذبة قبل أن تُصدَّق نتيجة حقيقية.",
+        "والمنهج يُمسك أخطاءه هو أولاً. رقمٌ وصفته ثلاث وثائق في المشروع بأنه «غير مفلتر» تبيّن أنه ذراع مفلترة مرّتين على عيّنة أصغر بكثير — أمسكته إعادة تشغيل مستقلة، وطابقها مساران برمجيان منفصلان حتى الخانة الأخيرة. ورقمٌ آخر — أن 1% من الصفقات تحمل 55% من الربح — صحيحٌ بالنسبة المئوية وخاطئ في وحدة السجل نفسها؛ فالذيل السمين كان أثراً لوحدة القياس، لا خاصيّةً في النتيجة.",
+        "سياسة مكتوبة تحكم ما يُسمح بتشغيله حياً، وفي المنفّذ قاطع إيقاف وسقوف للمخاطرة، وسجلّ أمامي يقيّد كل إشارة من لحظة صدورها فما بعد — فما يُقاس لاحقاً لا يُنتقى من الماضي.",
+        "الأدوات مبنيّة في الاستوديو: خوارزميات، وبرمجيات، وبوتات، ومنصّة مؤتمتة تعمل لحظياً على خادم سحابي بلا انقطاع. تمسح سوق الكريبتو على فترات دقائق، وتحسب السمات ووسوم تعلّم الآلة، وتختبر الاستراتيجيات، وترسل التنبيهات إلى بوت مراسلة."
       ],
       "en": [
-        "The tooling is built in the studio: algorithms, software, bots, and an automated platform that runs in real time on a cloud server without interruption. It scans crypto markets on intervals of minutes, computes features and machine-learning labels, tests strategies, and sends alerts to a messaging bot.",
-        "Each hypothesis is registered in writing before it is tested, so a result cannot be reinterpreted once it appears. Nine consecutive hypotheses have been registered and every one falsified, and each stands on the record as written.",
+        "Each hypothesis is registered in writing before it is tested — population, horizon, feature, predicted direction, and the condition that would falsify it — so a result cannot be reinterpreted once it appears. They are registered as opposed pairs, because a single arm that looks good cannot be falsified at all. When one falls, its statement stands verbatim and the falsification is published rather than the statement edited.",
+        "From the record, in its own words: one hypothesis predicted the probability of backtest overfitting would exceed 0.5 on the exit and stop grids, on the grounds that \"near-identical variants make the in-sample winner a coin flip\" — falsified, and the opposite happened. A second predicted a classifier AUC above 0.55 — also falsified: it came in at 0.5357, inside the null distribution itself.",
+        "Before any positive result is trusted, the shape of a false positive is established: an empirical null control is run through the same pipeline to see what it produces when there is nothing there to find. A check whose failure mode is unknown is not a check.",
         "Validation runs out of sample in three independent ways, one of them a holdout of instruments never used during development.",
-        "An empirical null control establishes what a false positive looks like in this pipeline before any true positive is trusted.",
-        "A written policy governs what may run live, the executor carries a kill switch and risk caps, and a forward ledger records every signal from the moment it fires onward — so what gets measured later cannot be selected out of the past."
+        "What holds for a trading rule holds literally for a machine-learning model. Classifiers inside the platform are measured with purged cross-validation and a time embargo that stops the future leaking into training, preceded by a shuffled-label control run first to establish what the pipeline produces when there is nothing there to find. That is the same audit we put any AI system through before we hand it over: the shape of a false result is fixed before a real one is believed.",
+        "The method catches its own errors first. A number that three documents in the project described as \"unfiltered\" turned out to be a doubly-filtered arm on a much smaller sample — caught by an independent replay that two separate code paths reproduced to the last digit. Another — that 1% of trades carry 55% of the profit — is true in percent and false in the ledger's own unit; the fat tail was an artefact of the measure, not a property of the result.",
+        "A written policy governs what may run live, the executor carries a kill switch and risk caps, and a forward ledger records every signal from the moment it fires onward — so what gets measured later cannot be selected out of the past.",
+        "The tooling is built in the studio: algorithms, software, bots, and an automated platform that runs in real time on a cloud server without interruption. It scans crypto markets on intervals of minutes, computes features and machine-learning labels, tests strategies, and sends alerts to a messaging bot."
       ]
     },
     "caveat": {
@@ -418,6 +424,118 @@ export const caseStudies: CaseStudy[] = [
     "link": {
       "label": "ahlam.elyoxe.com",
       "href": "https://ahlam.elyoxe.com"
+    }
+  },
+  {
+    "slug": "wa-agent",
+    "name": {
+      "ar": "موظف الردّ",
+      "en": "Reply desk"
+    },
+    "period": "2026 — present",
+    "figures": [
+      {
+        "value": "0.07",
+        "accent": true,
+        "label": {
+          "ar": "درهماً كلفة محادثة كاملة من ستة ردود",
+          "en": "dirhams for a complete six-reply conversation"
+        }
+      },
+      {
+        "value": "5/5",
+        "accent": false,
+        "label": {
+          "ar": "أسئلة خارج نطاق المنشأة رُفضت كما ينبغي",
+          "en": "out-of-scope questions refused as they should be"
+        }
+      },
+      {
+        "value": "2.0",
+        "accent": false,
+        "label": {
+          "ar": "ثانية وسيط زمن الردّ على ثمانية عشر ردّاً مقيساً",
+          "en": "seconds median reply time over eighteen measured replies"
+        }
+      },
+      {
+        "value": "0",
+        "accent": false,
+        "label": {
+          "ar": "رسالة من هذا الديمو تُحفَظ",
+          "en": "messages from this demo are stored"
+        }
+      },
+      {
+        "value": "150",
+        "accent": false,
+        "label": {
+          "ar": "رداً في اليوم سقفاً لإنفاق الصفحة",
+          "en": "replies a day, the page's spending ceiling"
+        }
+      }
+    ],
+    "stack": [
+      "Python",
+      "AWS Lambda",
+      "DynamoDB",
+      "Claude Haiku 4.5",
+      "Claude Sonnet 5"
+    ],
+    "link": null,
+    "visual": "agent",
+    "ledger": {
+      "value": "0",
+      "unit": {
+        "ar": "رسالة محفوظة من الديمو",
+        "en": "demo messages stored"
+      },
+      "href": null,
+      "label": {
+        "ar": "كلّمه على هذه الصفحة",
+        "en": "Talk to it on this page"
+      },
+      "live": true
+    },
+    "kicker": {
+      "ar": "وكيل خدمة عملاء",
+      "en": "Customer-service agent"
+    },
+    "status": {
+      "ar": "المحرّك حيّ",
+      "en": "Engine live"
+    },
+    "role": {
+      "ar": "هندسة، تصميم حوار، ضبط التكلفة",
+      "en": "Engineering, conversation design, cost control"
+    },
+    "tagline": {
+      "ar": "وكيل يردّ على زبائن منشأة واحدة بلهجة إماراتية، محصوراً في ملفها وحده — والصفحة تفتح له باباً تكلّمه منه.",
+      "en": "An agent that answers one business's customers in Emirati Arabic, confined to that business's own file — and this page opens a door to talk to it."
+    },
+    "summary": {
+      "ar": "محرّك ردّ يعمل على واتساب لحساب منشأة واحدة: يقرأ ملفها، ويردّ بلهجتها، ويرفض ما ليس فيه، ويحوّل إلى إنسان حين يلزم. الديمو على هذه الصفحة هو المحرّك نفسه، لا نسخة منه.",
+      "en": "A reply engine that works over WhatsApp for a single business: it reads that business's file, answers in its dialect, refuses what the file does not contain, and hands over to a person when it should. The demo on this page is that engine, not a copy of it."
+    },
+    "problem": {
+      "ar": "المنشأة الصغيرة هنا تُدار من واتساب، وأكثر ما يصلها سؤال مكرّر: كم السعر، ومتى تفتحون، وفي موعد بكرة؟ الردّ يتأخّر ساعات، وحين يأتي يأتي بفصحى مكتبية لا تشبه من سأل. وما يُباع جاهزاً يردّ بخليجي عامّ أو بفصحى، ويخترع سعراً ليس في القائمة حين لا يعرف — وهذا أسوأ من الصمت.",
+      "en": "Small businesses here are run from WhatsApp, and most of what reaches them is the same handful of questions: how much, when do you open, is tomorrow free? The answer takes hours, and when it comes it arrives in a formal register that sounds nothing like the person who asked. Off-the-shelf bots answer in generic Gulf Arabic or in formal Arabic, and invent a price that is not on the list when they do not know — which is worse than silence."
+    },
+    "approach": {
+      "ar": [
+        "الوكيل محصور في ملف منشأة واحدة: خدماتها وأسعارها وأوقاتها وموقعها. وأي سؤال خارج ذلك يُرفض بأدب ويُعاد صاحبه إلى الموضوع. القيد ليس تجميلاً: سياسة ميتا تمنع الأرقام التي استخدامها الأساسي محادثة عامة، وفقدان الرقم أسوأ من سؤال بلا جواب. والملف وحده هو ما يتبدّل: الصفحة تنقل الوكيل بين صالون وعيادة، فيسعّر ويحجز في الأول، ويرفض أن يشخّص أو يسمّي دواءً في الثاني — بالنصّ نفسه والقواعد نفسها.",
+        "نموذجان يفصل بينهما حاجز ثقة: هايكو يجيب، وإذا نزلت ثقته في إجابته تحت 0.7 أعاد سونيت الإجابة نفسها. والردّ يعود JSON يحمل النيّة والثقة وقرار التحويل إلى إنسان، فالتصعيد قرارٌ مقيس لا انطباع.",
+        "كل رسالة تمرّ على حارسَين قبل أن تكلّف فلساً: منعٌ للتكرار على معرّف الرسالة، لأن ميتا تعيد إرسال ما لم تستلم له ردّاً سريعاً، وحدٌّ يومي يُستهلك بعملية ذرّية واحدة لا بقراءةٍ ثم كتابة. والصفحة التي تقرأها الآن تمرّ على الحارسَين نفسيهما."
+      ],
+      "en": [
+        "The agent is confined to one business's file: its services, prices, hours and location. Anything outside that is refused politely and the customer is returned to the subject. The constraint is not decoration: Meta's policy bars numbers whose primary use is open-ended conversation, and losing the number is worse than an unanswered question. Only the file changes: the page moves the agent between a salon and a dental clinic, where it quotes and books for one and refuses to diagnose or name a medicine for the other — same prompt, same rules.",
+        "Two models separated by a confidence gate: Haiku answers, and when its own confidence in that answer falls below 0.7, Sonnet answers again. The reply comes back as JSON carrying the intent, the confidence and the hand-to-a-human decision, so escalation is a measured call rather than an impression.",
+        "Every message passes two guards before it costs a fils: a dedupe on the message id, because Meta re-sends anything it did not get a fast acknowledgement for, and a daily cap consumed in one atomic operation rather than a read followed by a write. The page you are reading passes the same two guards."
+      ]
+    },
+    "caveat": {
+      "ar": "القناة نفسها لم تردّ على زبون حقيقي بعد: واتساب ينتظر أسرار ميتا وتوكناً دائماً، والحيّ اليوم هو المحرّك وهذا الديمو. والديمو يشتري ردوده بالمال، فله سقف يومي؛ إذا نفد عادت الصفحة إلى أمثلة النبرة المكتوبة في ملف المنشأة، وهي نصّ مالكها لا نصّ النموذج. والأرقام تحت كلّ ردّ مقروءة من فاتورة الرموز التي يعيدها النموذج نفسه، لا من تقدير — وهي كلفة بلا تخزين مؤقت: أقصر بادئة يخزّنها هذا النموذج 4096 رمزاً، وبادئتنا 2365، فالتخزين لا ينعقد أصلاً وقد قِيس صفراً.",
+      "en": "The channel itself has not yet answered a real customer: WhatsApp is waiting on Meta's secrets and a permanent token, and what is live today is the engine and this demo. The demo buys its replies, so it has a daily ceiling; when that is spent the page falls back to the tone examples written into the business file, which are the owner's text and not the model's. The numbers under each reply are read from the token bill the model itself returns, not estimated — and they are uncached costs: the shortest prefix this model will cache is 4,096 tokens and ours is 2,365, so caching never engages, measured at zero."
     }
   }
 ];

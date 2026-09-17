@@ -5,6 +5,7 @@ import { href, type Lang } from "@/content/i18n";
 import Nav from "./Nav";
 import Footer from "./Footer";
 import CaseVisual from "./visuals";
+import UblCheck from "./visuals/UblCheck";
 
 export default function CasePage({ lang, c }: { lang: Lang; c: CaseStudy }) {
   const w = copy.work;
@@ -28,6 +29,10 @@ export default function CasePage({ lang, c }: { lang: Lang; c: CaseStudy }) {
             </dl>
           </header>
           <CaseVisual visual={c.visual} lang={lang} />
+          {/* A case study may carry a working tool under its diagram. The
+              diagram is the argument; the tool is the proof, and it only
+              belongs on the case page — the work list stays a list. */}
+          {c.slug === "invoiceready" && <UblCheck lang={lang} />}
           <section className="case-body">
             <h2>{w.problem[lang]}</h2>
             <p className="prose">{c.problem[lang]}</p>

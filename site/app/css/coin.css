@@ -1,0 +1,107 @@
+/* The visitor's own coin, above the ledger. Deliberately plain: it is an
+   instrument, not a graphic — the argument is the two numbers disagreeing,
+   and any decoration competes with that. */
+.coin {
+  margin-block: 1.25rem 1.6rem;
+  padding: 1.05rem 1.15rem 1.15rem;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: var(--paper-2);
+}
+
+.coin-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .6rem 1rem;
+  margin-block-end: .95rem;
+}
+.coin-title {
+  margin: 0;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--ink);
+}
+.coin-btns { display: flex; gap: .45rem; flex-wrap: wrap; }
+.coin-btns button {
+  padding: .34rem .78rem;
+  border: 1px solid var(--rule-ink, var(--ink));
+  border-radius: 2px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: calc(var(--fs-small) * .95);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background .18s ease, color .18s ease, opacity .18s ease;
+}
+.coin-btns button:hover:not(:disabled) { background: var(--ink); color: var(--paper); }
+.coin-btns button:disabled { opacity: .35; cursor: default; }
+.coin-reset { border-color: var(--rule) !important; color: var(--stone) !important; }
+
+.coin-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .85rem 1.1rem;
+}
+@media (min-width: 620px) { .coin-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+.coin-stat { display: flex; flex-direction: column; gap: .12rem; min-width: 0; }
+.coin-v {
+  font-size: 1.5rem;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+  /* Latin digits in an RTL block need their own direction or the minus and
+     the decimal point migrate to the wrong end. */
+  direction: ltr;
+  unicode-bidi: isolate;
+  text-align: start;
+  color: var(--ink);
+}
+.coin[data-dir="rtl"] .coin-v { text-align: right; }
+.coin-stat.is-accent .coin-v { color: var(--saffron); }
+.coin-k {
+  font-size: calc(var(--fs-small) * .88);
+  line-height: 1.45;
+  color: var(--stone);
+  text-wrap: pretty;
+}
+
+/* Deviation of the ratio from 0.5, clamped at +/-0.1. The centre tick is the
+   value the ratio is walking towards; the dot is where this run actually is. */
+.coin-dev {
+  position: relative;
+  block-size: 3px;
+  margin-block-start: 1.1rem;
+  background: var(--paper-3);
+  border-radius: 2px;
+}
+.coin-mid {
+  position: absolute;
+  inset-block: -3px;
+  inset-inline-start: 50%;
+  inline-size: 1px;
+  background: var(--stone);
+  opacity: .5;
+}
+.coin-dot {
+  position: absolute;
+  inset-block-start: -3px;
+  inset-inline-start: calc(50% - 4.5px);
+  inline-size: 9px;
+  block-size: 9px;
+  border-radius: 50%;
+  background: var(--saffron);
+  transition: transform .28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (prefers-reduced-motion: reduce) { .coin-dot { transition: none; } }
+
+.coin-note {
+  margin-block: .95rem 0;
+  max-width: 62ch;
+  font-size: var(--fs-small);
+  line-height: 1.65;
+  color: var(--stone);
+  text-wrap: pretty;
+}

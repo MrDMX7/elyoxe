@@ -9,3 +9,6 @@ __pycache__/
 .infra-state.json
 contacts.json
 *.pem
+
+# internal audit notes — never in a public repo
+notes/

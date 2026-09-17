@@ -10,7 +10,7 @@
   "generate": [
     "cd site && npm run build"
   ],
-  "min_html_count": 12,
+  "min_html_count": 16,
   "aws": {
     "region": "ap-south-1",
     "bucket": "elyoxe-574771023173",
@@ -57,6 +57,14 @@
     {
       "path": "/404/",
       "contains": "404"
+    },
+    {
+      "path": "/writing/the-rule-that-looks-true/",
+      "contains": "القاعدة التي تبدو صحيحة"
+    },
+    {
+      "path": "/en/writing/the-rule-that-looks-true/",
+      "contains": "The rule that looks true"
     }
   ],
   "contact_endpoint": "https://hybw54y21l.execute-api.ap-south-1.amazonaws.com/",

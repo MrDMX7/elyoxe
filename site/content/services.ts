@@ -2,7 +2,9 @@ import type { L } from "./i18n";
 
 export type Service = { slug: string; title: L; body: L; proof: { slug: string; figure: number } };
 
-/* Four parallel fields. They are not a sequence, so nothing here is numbered. */
+/* Five parallel fields. They are not a sequence, so nothing here is numbered.
+   The audit is last on purpose: it is the one bought after something has
+   already been built, often by whoever built it. */
 export const services: Service[] = [
   {
     "slug": "web",
@@ -47,6 +49,21 @@ export const services: Service[] = [
     "proof": {
       "slug": "khutwa",
       "figure": 1
+    }
+  },
+  {
+    "slug": "ai-audit",
+    "title": {
+      "ar": "تدقيق أنظمة الذكاء الاصطناعي",
+      "en": "AI system audits"
+    },
+    "body": {
+      "ar": "نظام يصحّح امتحانه بنفسه ينجح فيه دائماً. نحدّد أولاً شكل النتيجة الكاذبة، ثم نقيس نظامك عليها — سواء بنيناه نحن أو اشتريته جاهزاً.",
+      "en": "A system that grades its own exam always passes. We establish what a false result looks like first, then measure yours against it — whether we built it or you bought it."
+    },
+    "proof": {
+      "slug": "quantitative-method",
+      "figure": 2
     }
   },
   {

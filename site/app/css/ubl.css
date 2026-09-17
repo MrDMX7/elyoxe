@@ -1,0 +1,120 @@
+/* owned by the invoice checker — classes prefixed `ubl` to avoid collisions
+ *
+ * The working half of the InvoiceReady case: the visitor's own file, twenty-four
+ * checks, and the three numbers that describe the run. Same system as the rest —
+ * paper-2 ground, one hairline, no radius, no card inside a card.
+ *
+ * Colour carries verdicts and nothing else: زنجار for a file that passed (its one
+ * job, a live state), زعفران for a warning, and plain ink for a failure, because
+ * a failed check is the ordinary case this product exists to catch and should not
+ * read as an alarm. The glyph, not the colour, is what a colour-blind reader uses.
+ */
+
+.ubl {
+  display: grid;
+  gap: clamp(1rem, 1.8vw, 1.5rem);
+  padding: clamp(1.25rem, 2.2vw, 2rem);
+  max-inline-size: min(100%, 44rem);
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: 0;
+}
+
+.ubl-head { display: grid; gap: .4rem; }
+.ubl-title { margin: 0; }
+.ubl-lead { margin: 0; font-size: var(--fs-small); color: var(--stone); max-inline-size: var(--measure); }
+
+/* ── the drop zone ────────────────────────────────────────── */
+.ubl-drop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .6rem;
+  padding: clamp(.9rem, 2vw, 1.4rem);
+  border: 1px dashed var(--rule);
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+.ubl-drop.is-over { border-color: var(--ink); background: var(--paper-3); }
+.ubl-pick {
+  font-size: var(--fs-small);
+  padding: .5rem 1.1rem;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+}
+.ubl-or { color: var(--stone); }
+.ubl-sample {
+  font-size: var(--fs-small);
+  padding: .45rem .85rem;
+  border: 1px solid var(--rule);
+  transition: border-color var(--dur) var(--ease);
+}
+.ubl-sample:hover { border-color: var(--ink); }
+
+.ubl-error { margin: 0; font-size: var(--fs-small); color: var(--saffron); }
+
+/* ── the verdict ──────────────────────────────────────────── */
+.ubl-result { display: grid; gap: clamp(.9rem, 1.6vw, 1.25rem); }
+.ubl-verdict {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .5rem 1rem;
+  border-block-start: 1px solid var(--rule);
+  padding-block-start: 1rem;
+}
+.ubl-mark { margin: 0; font-size: var(--fs-h3); font-weight: 600; display: inline-flex; align-items: center; gap: .5rem; }
+.ubl-dot { inline-size: .55rem; block-size: .55rem; background: var(--ink); display: inline-block; }
+.ubl-mark.is-ok { color: var(--verdigris); }
+.ubl-mark.is-ok .ubl-dot { background: var(--verdigris); }
+.ubl-counts { display: flex; flex-wrap: wrap; gap: .2rem 1rem; margin: 0; font-size: var(--fs-micro); color: var(--stone); }
+.ubl-counts .is-warn { color: var(--saffron); }
+
+.ubl-meta { display: flex; flex-wrap: wrap; gap: .2rem 1.25rem; margin: 0; font-size: var(--fs-micro); color: var(--saffron); }
+
+/* ── what was read ────────────────────────────────────────── */
+.ubl-read {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: .7rem 1.25rem;
+  margin: 0;
+  padding-block: .9rem;
+  border-block: 1px solid var(--rule);
+}
+.ubl-read dt { font-size: var(--fs-micro); color: var(--stone); }
+.ubl-read dd { margin: 0; font-size: var(--fs-small); }
+
+/* ── the twenty-four ──────────────────────────────────────── */
+.ubl-checks { list-style: none; margin: 0; padding: 0; display: grid; gap: .35rem; }
+.ubl-checks li {
+  display: grid;
+  grid-template-columns: 1.2rem 1fr auto;
+  align-items: baseline;
+  gap: .5rem;
+  font-size: var(--fs-small);
+  padding-block-end: .35rem;
+  border-block-end: 1px solid var(--rule-soft);
+}
+.ubl-glyph { font-size: var(--fs-small); color: var(--stone); }
+.is-pass .ubl-glyph { color: var(--verdigris); }
+.is-warn .ubl-glyph { color: var(--saffron); }
+.is-bad .ubl-glyph { color: var(--ink); }
+.is-pass .ubl-name { color: var(--stone); }
+.ubl-detail { grid-column: 2; font-size: var(--fs-micro); color: var(--stone); }
+.ubl-sev { font-size: var(--fs-micro); color: var(--stone); }
+.is-bad .ubl-sev { color: var(--ink); }
+.is-warn .ubl-sev { color: var(--saffron); }
+
+.ubl-again {
+  justify-self: start;
+  font-size: var(--fs-small);
+  border-block-end: 1px solid currentColor;
+  color: var(--stone);
+}
+.ubl-again:hover { color: var(--ink); }
+
+@media (max-width: 600px) {
+  .ubl-checks li { grid-template-columns: 1.2rem 1fr; }
+  .ubl-sev { grid-column: 2; }
+}

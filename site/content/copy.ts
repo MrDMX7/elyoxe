@@ -77,13 +77,11 @@ export const copy = {
     built: { ar: "الأدوات", en: "Built with" },
     caveat: { ar: "بصراحة", en: "Stated plainly" },
     next: { ar: "المشروع التالي", en: "Next project" },
-    hypothesis: { ar: "فرضية", en: "Hypothesis" },
-    registered: { ar: "مسجَّلة مسبقاً", en: "Pre-registered" },
-    falsified: { ar: "دُحضت", en: "Falsified" },
-    ledgerFoot: {
-      ar: "تسع فرضيات سُجّلت قبل اختبارها، وتسع نتائج سلبية، ولا واحدة أُعيد تفسيرها بعد ظهور النتيجة. بهذا وحده يُوثق بالفحص.",
-      en: "Nine hypotheses pre-registered, nine negative results, and not one reinterpreted afterwards. That is the only thing that makes a check worth trusting.",
-    },
+    /* The ledger no longer counts falsified hypotheses — the count was never
+       sourced and goes stale weekly. Its rows are standing rules now, and a
+       row is a route that is either still open or closed by one. */
+    openRoute: { ar: "مفتوح", en: "Open" },
+    closedRoute: { ar: "مُغلَق", en: "Closed" },
     checks: { ar: "فحصاً لكل فاتورة", en: "checks per invoice" },
     stored: { ar: "مجموع السجلّ المخزَّن", en: "Stored history, summed" },
     liveCounter: { ar: "العدّاد الحي", en: "Live counter" },

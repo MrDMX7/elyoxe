@@ -28,6 +28,20 @@
 .hyl[data-dir="rtl"] { --hyl-origin: right; }
 
 /* ── head: what the ledger withholds, and the gate every line passed ── */
+/* The reason, before the record. The ledger's own rows are deliberately
+   content-free, so this is the only place a first-time reader is told why
+   nine struck lines are an achievement and not a tally of failures. */
+.hyl-why {
+  max-width: 54ch;
+  margin-block-end: 1.15rem;
+  padding-block-end: 1.05rem;
+  border-block-end: 1px solid var(--rule);
+  font-size: var(--fs-small);
+  line-height: 1.7;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
 .hyl-head {
   display: grid;
   gap: .3rem 2rem;
@@ -112,6 +126,20 @@
 .hyl-row:last-child .hyl-strike { block-size: 2px; }
 
 /* ── end column: the shared gate, then the verdict ── */
+/* The rule that closes the route above it. Quieter than the route on
+   purpose: the visitor reads the mistake first, then what prevents it. */
+.hyl-rule {
+  grid-column: 1 / -1;
+  max-width: 62ch;
+  margin-block-start: .3rem;
+  font-size: calc(var(--fs-small) * .95);
+  line-height: 1.6;
+  color: var(--stone);
+  text-wrap: pretty;
+  transition: opacity .35s ease;
+}
+.hyl-row.is-pending .hyl-rule { opacity: .45; }
+
 .hyl-end {
   display: flex;
   align-items: baseline;
@@ -157,26 +185,6 @@
 @media (min-width: 520px) {
   .hyl-foot { grid-template-columns: auto minmax(0, 1fr); align-items: start; }
 }
-.hyl-tally {
-  display: flex;
-  align-items: baseline;
-  font-family: var(--font-mono);
-  font-variant-numeric: tabular-nums;
-  font-size: clamp(2.5rem, 1.7rem + 2.4vw, 3.5rem);
-  font-weight: 500;
-  line-height: .95;
-  color: var(--saffron);
-  direction: ltr;
-  unicode-bidi: isolate;
-}
-.hyl-tally .n { display: inline-block; transform-origin: 50% 62%; }
-.hyl-word {
-  display: block;
-  margin-block-start: .4rem;
-  font-family: var(--hyl-mono);
-  font-size: var(--fs-small);
-  color: var(--stone);
-}
 .hyl-foot-note {
   font-size: var(--fs-small);
   line-height: 1.7;
@@ -201,4 +209,11 @@
   .hyl-name,
   .hyl-verdict > span,
   .hyl-foot-note { transition: none !important; }
+}
+
+/* The ledger states the rules; the piece argues them. One link, at the end,
+   for the visitor who wants the reasoning rather than the summary. */
+.hyl-foot-link {
+  margin-block-start: .7rem;
+  font-size: var(--fs-small);
 }

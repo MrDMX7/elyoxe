@@ -4,6 +4,7 @@ import Validator from "./Validator";
 import Sensor from "./Sensor";
 import Hypotheses from "./Hypotheses";
 import Citation from "./Citation";
+import Agent from "./Agent";
 
 /* Each project has its own visual language; a new project declares which. */
 export default function CaseVisual({ visual, lang }: { visual: Visual; lang: Lang }) {
@@ -12,5 +13,6 @@ export default function CaseVisual({ visual, lang }: { visual: Visual; lang: Lan
     case "sensor": return <Sensor lang={lang} />;
     case "ledger": return <Hypotheses lang={lang} />;
     case "citation": return <Citation lang={lang} />;
+    case "agent": return <Agent lang={lang} />;
   }
 }

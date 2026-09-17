@@ -1,0 +1,148 @@
+/* owned by the agent demo — classes prefixed `agt` to avoid collisions
+ *
+ * The reply engine, live on the page. Same rules as the rest of the site: a
+ * ground of paper-2, one hairline border, no radius, no shadow, no bubble. The
+ * two speakers are told apart by which edge their hairline sits on and by the
+ * mono label above them — not by colour, and pointedly not by the green of the
+ * channel this engine usually answers on.
+ *
+ * Verdigris appears exactly once, on the live dot, which is its only job in this
+ * system. Saffron carries the measured numbers under each reply. Everything the
+ * page claims about a reply — its seconds, its model, its fils — is read from
+ * the response body, so when the engine is down the numbers are absent rather
+ * than stale.
+ */
+
+.agt {
+  display: grid;
+  gap: clamp(1rem, 1.8vw, 1.5rem);
+  padding: clamp(1.25rem, 2.2vw, 2rem);
+  max-inline-size: min(100%, 44rem);
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: 0;
+}
+
+/* ── head ─────────────────────────────────────────────────── */
+.agt-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .75rem;
+  padding-block-end: .9rem;
+  border-block-end: 1px solid var(--rule);
+}
+.agt-who { display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap; }
+.agt-name { font-weight: 600; font-size: var(--fs-h3); }
+.agt-tag { font-size: var(--fs-micro); color: var(--stone); }
+.agt-state { font-size: var(--fs-micro); color: var(--stone); display: inline-flex; align-items: center; gap: .45rem; margin: 0; }
+.agt-dot { inline-size: .5rem; block-size: .5rem; background: var(--stone); display: inline-block; }
+.agt-state.is-live { color: var(--verdigris); }
+.agt-state.is-live .agt-dot { background: var(--verdigris); }
+
+.agt-intro { margin: 0; font-size: var(--fs-small); color: var(--stone); max-inline-size: var(--measure); }
+
+/* ── transcript ───────────────────────────────────────────── */
+.agt-log {
+  display: grid;
+  gap: 1.15rem;
+  min-block-size: 5rem;
+  max-block-size: 26rem;
+  overflow-y: auto;
+  padding-inline: .1rem;
+}
+.agt-turn { display: grid; gap: .3rem; max-inline-size: min(100%, 30rem); }
+.agt-turn.is-user { justify-self: end; text-align: end; border-inline-end: 2px solid var(--ink); padding-inline-end: .8rem; }
+.agt-turn.is-agent,
+.agt-turn.is-profile { justify-self: start; border-inline-start: 2px solid var(--rule); padding-inline-start: .8rem; }
+.agt-role { font-size: var(--fs-micro); color: var(--stone); text-transform: lowercase; }
+.agt-text { margin: 0; line-height: 1.75; }
+.agt-q { color: var(--stone); }
+
+.agt-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .2rem 1rem;
+  margin: .25rem 0 0;
+  font-size: var(--fs-micro);
+  color: var(--saffron);
+}
+.agt-meta .is-note { color: var(--stone); }
+
+.agt-typing { margin: 0; font-size: var(--fs-micro); color: var(--stone); }
+
+.agt-fallback { display: grid; gap: 1.15rem; }
+.agt-fallback-note { margin: 0; font-size: var(--fs-small); color: var(--stone); max-inline-size: var(--measure); }
+
+/* ── input ────────────────────────────────────────────────── */
+.agt-form { display: flex; gap: .75rem; align-items: end; border-block-start: 1px solid var(--rule); padding-block-start: 1rem; }
+.agt-field { flex: 1 1 auto; display: block; }
+.agt-sr { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.agt-field input {
+  inline-size: 100%;
+  font: inherit;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  border-block-end: 1px solid var(--ink);
+  border-radius: 0;
+  padding: .45rem 0;
+}
+.agt-field input::placeholder { color: var(--stone); }
+.agt-field input:disabled { border-block-end-color: var(--rule); color: var(--stone); }
+.agt-send {
+  font-size: var(--fs-small);
+  padding: .5rem 1.1rem;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  transition: opacity var(--dur) var(--ease);
+}
+.agt-send:disabled { opacity: .35; cursor: default; }
+
+/* ── suggestions ──────────────────────────────────────────── */
+.agt-chips { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+.agt-chips-label { font-size: var(--fs-micro); color: var(--stone); }
+.agt-chip {
+  font-size: var(--fs-small);
+  padding: .35rem .75rem;
+  border: 1px solid var(--rule);
+  background: transparent;
+  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.agt-chip:hover:not(:disabled) { border-color: var(--ink); }
+.agt-chip:disabled { color: var(--stone); cursor: default; }
+
+.agt-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .3rem 1rem;
+  margin: 0;
+  font-size: var(--fs-micro);
+  color: var(--stone);
+  border-block-start: 1px solid var(--rule);
+  padding-block-start: .9rem;
+}
+.agt-left { color: var(--saffron); }
+
+@media (max-width: 600px) {
+  .agt-log { max-block-size: 20rem; }
+  .agt-turn { max-inline-size: 100%; }
+}
+
+/* ── the business switch ──────────────────────────────────── */
+/* Two files, one engine. Set as a line of choices, not tabs: nothing here is a
+   container, and the chosen one is marked by ink weight and a rule rather than
+   by a filled shape. */
+.agt-switch { display: flex; flex-wrap: wrap; align-items: baseline; gap: .5rem .75rem; }
+.agt-switch-label { font-size: var(--fs-micro); color: var(--stone); }
+.agt-biz {
+  font-size: var(--fs-small);
+  color: var(--stone);
+  padding-block-end: .15rem;
+  border-block-end: 1px solid transparent;
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.agt-biz:hover { color: var(--ink); }
+.agt-biz.is-on { color: var(--ink); font-weight: 600; border-block-end-color: var(--ink); }

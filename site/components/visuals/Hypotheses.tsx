@@ -1,57 +1,116 @@
 "use client";
 import { useCallback, useEffect, useRef } from "react";
+import Link from "next/link";
 import { useScrub, reducedMotion } from "@/lib/useReveal";
-import type { Lang } from "@/content/i18n";
+import { href, type Lang } from "@/content/i18n";
 import { copy } from "@/content/copy";
+import CoinRun from "./CoinRun";
 
-/* The quantitative method: nine hypotheses, written down before they were
-   tested, and every one falsified.
+/* The method, as a ledger of closed exits.
  *
- * The resting state of this component — the static HTML, no-JS, reduced motion,
- * a ScrollTrigger that never fires — is the FINISHED record: nine lines struck,
- * the verdict on every one of them, the tally at 9/9. Script only ever takes
- * that away (`is-running`, `is-pending`) to replay how the record was made.
- * A negative result is the deliverable here, so it is what the DOM says first.
+ * This component used to count falsified hypotheses — nine of nine. That
+ * number was never sourced: the record on the box says ten dead, one
+ * explicitly NOT falsified, one unrefuted result on a forward book, and six
+ * more registered under a no-look clause until 2026-10-01. A tally is also a
+ * maintenance debt: it goes stale the moment the research moves. So the count
+ * is gone and the rows are the standing rules instead, which do not move.
  *
- * Per row, three beats: registered (the rule is drawn, the entry is written),
- * tested (the mono goes from stone to ink), struck (a saffron rule pulled
- * through the entry from the reading start, then the verdict flips). Rows
- * overlap so the sequence is continuous — which is what makes the hold before
- * the ninth read as a hold and not as the rhythm.
+ * Each row is one way to fool yourself, and the rule from the written policy
+ * that closes it. The strike is what closes the route — so the resting state,
+ * the static HTML with no JS, is every route already struck: the method as it
+ * stands. Script only ever winds that back to replay how each one was closed.
  *
- * The three marks at the end of every row are the shared gate — three
- * independent out-of-sample checks that each line passed through. They are
- * static and identical on every row on purpose: the record is one process
- * applied nine times, not nine sets of per-row results, and nothing here may
- * imply data we do not have. */
+ * The three marks on every row are the shared gate — three independent
+ * out-of-sample checks. They are identical on every row on purpose: one
+ * process applied throughout, not per-row results, and nothing here may imply
+ * data we do not have. */
 
-const N = 9;
-
-const ORD: Record<Lang, string[]> = {
-  ar: ["الأولى", "الثانية", "الثالثة", "الرابعة", "الخامسة", "السادسة", "السابعة", "الثامنة", "التاسعة"],
-  en: ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"],
-};
-
-/* Local strings — candidates for content/copy.ts, see the report. */
 const T = {
   label: {
-    ar: "سجلّ الفرضيات: تسع فرضيات سُجّلت قبل اختبارها",
-    en: "Hypothesis ledger: nine hypotheses registered before they were tested",
+    ar: "سجلّ المنهج: كل طريق لخداع النفس، والقاعدة التي تغلقه",
+    en: "The method as a ledger: each way of fooling yourself, and the rule that closes it",
   },
-  withheld: {
-    ar: "نصّ الفرضيات غير منشور؛ المسجَّل هنا ترتيبها وحالتها.",
-    en: "The statements are not published. Their order and their status are.",
+  source: {
+    ar: "قواعد قائمة، مكتوبة في سياسة المشروع قبل أي تشغيل — لا حصيلة نتائج.",
+    en: "Standing rules, written into the project's policy before any run — not a tally of results.",
   },
   gate: {
     ar: "ثلاثة فحوص مستقلة خارج العيّنة، يمرّ بها كل سطر.",
     en: "Three independent out-of-sample checks, on every line.",
   },
+  why: {
+    ar: "عشر رميات عملة على وجه واحد ليست نادرة، ومع بيانات كافية ستجد دائماً قاعدة تبدو صحيحة. لهذا وحده يوجد هذا السجل: كل سطر فيه طريق كان يمكن أن نخدع فيه أنفسنا، وقاعدةٌ كُتبت مسبقاً لتغلقه.",
+    en: "Ten coin flips the same way is not rare, and in enough data you will always find a rule that looks true. That alone is why this ledger exists: every line is a way we could have fooled ourselves, and a rule written in advance that closes it.",
+  },
+  readOn: {
+    ar: "الحجّة كاملة: القاعدة التي تبدو صحيحة",
+    en: "The argument in full: the rule that looks true",
+  },
+  foot: {
+    ar: "لا يوجد عدّاد هنا عمداً. عدد النتائج السلبية يتغيّر كل أسبوع، أما ما يجعل النتيجة جديرة بالتصديق فهو هذه القواعد، وهي لا تتغيّر.",
+    en: "There is deliberately no counter here. The number of negative results changes every week; what makes a result worth believing is these rules, and they do not.",
+  },
 } satisfies Record<string, Record<Lang, string>>;
 
-/* Scroll timeline, in beats. Rows are struck on a 0.70 stride while each row's
-   own act runs 1.00, so a strike lands while the next line is still being
-   written. The ninth waits GAP beats in silence and then takes half again as
-   long as the others. */
+/* Route → the rule that closes it. Every rule is in the written policy; none
+   of them is a claim about a result, so none of them goes stale. */
+const ROWS: { route: Record<Lang, string>; rule: Record<Lang, string> }[] = [
+  {
+    route: { ar: "نُجرّب حتى ينجح شيء", en: "Test until something passes" },
+    rule: {
+      ar: "تُسجَّل الفرضية كتابةً قبل تشغيلها: السكّان، والأفق، والسمة، والاتجاه المتوقَّع — ومعها الشرط الذي يُبطلها.",
+      en: "The hypothesis is registered in writing before it runs: population, horizon, feature, predicted direction — and the condition that would falsify it.",
+    },
+  },
+  {
+    route: { ar: "نُفسّر النتيجة بعد ظهورها", en: "Interpret the result after seeing it" },
+    rule: {
+      ar: "يبقى النصّ حرفياً كما كُتب، ويُنشر الدحض بدل أن يُحرَّر النصّ.",
+      en: "The statement stands verbatim as written, and the falsification is reported rather than edited away.",
+    },
+  },
+  {
+    route: { ar: "ذراعٌ واحدة تبدو جيدة", en: "A single arm that looks good" },
+    rule: {
+      ar: "تُسجَّل الفرضيات أزواجاً متعارضة — ذراع منفردة تبدو جيدة لا يمكن دحضها أصلاً.",
+      en: "Hypotheses are registered as opposed pairs — a single arm that looks good cannot be falsified at all.",
+    },
+  },
+  {
+    route: { ar: "لا نعرف كيف تبدو الصدفة", en: "Not knowing what chance looks like" },
+    rule: {
+      ar: "ضابط عدم يُشغَّل على المسار نفسه: مسارٌ يجد ميزة في بيانات مُبعثرة مسارٌ معطوب، ويجب أن يُكتشف قبل أن يكلّف مالاً.",
+      en: "A null control runs through the same pipeline: one that finds an edge in shuffled data is broken, and that has to be found before it costs money.",
+    },
+  },
+  {
+    route: { ar: "نُطالع البيانات كلّما زادت", en: "Look again every time the data grows" },
+    rule: {
+      ar: "لا نظرة قبل التاريخ المسجَّل ولا قبل بلوغ العدد المطلوب، أيّهما أبعد — وأي نظرة أبكر تُكتب أولاً.",
+      en: "No look before the registered date or the required count, whichever is later — and any earlier look is written down first.",
+    },
+  },
+  {
+    route: { ar: "نختبر على ما طوّرنا عليه", en: "Test on what you developed on" },
+    rule: {
+      ar: "عيّنة محجوزة من أدوات لم تدخل التطوير إطلاقاً، ولا تُحلَّل ولا يُصرف عليها نظر.",
+      en: "A holdout of instruments never used in development, not analysed and with no look spent on it.",
+    },
+  },
+  {
+    route: { ar: "نُشغّل ما أعجبنا", en: "Run whatever looks good" },
+    rule: {
+      ar: "بوابة مكتوبة تحكم ما يعمل حياً، ومعها قاطع إيقاف وسقوف مخاطرة وسجلّ أمامي يقيّد كل إشارة من لحظتها.",
+      en: "A written gate governs what runs live, with a kill switch, risk caps, and a forward ledger that records every signal from the moment it fires.",
+    },
+  },
+];
+
+const N = ROWS.length;
+
+/* Scroll timeline, in beats. Rows close on a 0.70 stride while each row's own
+   act runs 1.00, so one route is struck while the next is still being written.
+   The last waits GAP beats in silence and then takes half again as long. */
 const STRIDE = 0.7;
 const DUR = 1;
 const GAP = 1.1;
@@ -61,7 +120,7 @@ const START = Array.from({ length: N }, (_, i) => (i < N - 1 ? i * STRIDE : (N -
 const TOTAL = START[N - 1] + DUR_LAST + TAIL;
 
 /* Phases inside one row's act, as a fraction of its own duration. */
-const P_REG = 0.2; // registered by here
+const P_REG = 0.2; // written by here
 const P_TEST = 0.3; // under test from here
 const P_STRIKE = 0.44; // the rule starts moving
 const P_STRIKE_D = 0.34; // …and lands 0.34 later
@@ -79,7 +138,6 @@ export default function Hypotheses({ lang }: { lang: Lang }) {
   const rtl = lang === "ar";
   const el = useRef({
     root: null as HTMLDivElement | null,
-    tally: null as HTMLSpanElement | null,
     rows: [] as (HTMLLIElement | null)[],
     entries: [] as (HTMLSpanElement | null)[],
     ends: [] as (HTMLSpanElement | null)[],
@@ -94,7 +152,7 @@ export default function Hypotheses({ lang }: { lang: Lang }) {
     done: -1,
   });
   /* The sequence only runs if it was wound back before the visitor reached it.
-     Otherwise every update is ignored and the finished record simply stands. */
+     Otherwise every update is ignored and the finished ledger simply stands. */
   const armed = useRef(false);
 
   const apply = useCallback(
@@ -141,17 +199,7 @@ export default function Hypotheses({ lang }: { lang: Lang }) {
         }
       }
       if (c.done !== done) {
-        const prev = c.done;
         c.done = done;
-        if (d.tally) {
-          d.tally.textContent = String(done);
-          if (prev >= 0 && done > prev && !reducedMotion()) {
-            d.tally.animate(
-              [{ transform: "scale(1.16)" }, { transform: "scale(1)" }],
-              { duration: 300, easing: "cubic-bezier(0.16,1,0.3,1)" },
-            );
-          }
-        }
         d.root?.classList.toggle("is-running", done < N);
       }
     },
@@ -179,13 +227,16 @@ export default function Hypotheses({ lang }: { lang: Lang }) {
 
   return (
     <div className="hyl" data-dir={rtl ? "rtl" : "ltr"} ref={scrub}>
+      <p className="hyl-why">{T.why[lang]}</p>
+      <CoinRun lang={lang} />
+
       <div className="hyl-head">
-        <p className="hyl-withheld">{T.withheld[lang]}</p>
+        <p className="hyl-withheld">{T.source[lang]}</p>
         <p className="hyl-gate">{marks}{T.gate[lang]}</p>
       </div>
 
       <ol className="hyl-list" aria-label={T.label[lang]}>
-        {ORD[lang].map((ord, i) => (
+        {ROWS.map((r, i) => (
           <li
             className="hyl-row"
             key={i}
@@ -199,10 +250,7 @@ export default function Hypotheses({ lang }: { lang: Lang }) {
                 el.current.entries[i] = node;
               }}
             >
-              <span className="hyl-id">H-{String(i + 1).padStart(2, "0")}</span>
-              <span className="hyl-name">
-                {rtl ? `ال${copy.work.hypothesis.ar} ${ord}` : `${copy.work.hypothesis.en} ${ord}`}
-              </span>
+              <span className="hyl-name">{r.route[lang]}</span>
               <span
                 className="hyl-strike"
                 aria-hidden="true"
@@ -211,6 +259,7 @@ export default function Hypotheses({ lang }: { lang: Lang }) {
                 }}
               />
             </span>
+            <span className="hyl-rule">{r.rule[lang]}</span>
             <span
               className="hyl-end"
               ref={(node) => {
@@ -219,8 +268,8 @@ export default function Hypotheses({ lang }: { lang: Lang }) {
             >
               {marks}
               <span className="hyl-verdict">
-                <span className="hyl-v-reg" aria-hidden="true">{copy.work.registered[lang]}</span>
-                <span className="hyl-v-fal">{copy.work.falsified[lang]}</span>
+                <span className="hyl-v-reg" aria-hidden="true">{copy.work.openRoute[lang]}</span>
+                <span className="hyl-v-fal">{copy.work.closedRoute[lang]}</span>
               </span>
             </span>
             <span
@@ -235,21 +284,12 @@ export default function Hypotheses({ lang }: { lang: Lang }) {
       </ol>
 
       <div className="hyl-foot">
-        <p className="hyl-count">
-          <span className="hyl-tally">
-            <span
-              className="n"
-              ref={(node) => {
-                el.current.tally = node;
-              }}
-            >
-              9
-            </span>
-            <span className="of">/9</span>
-          </span>
-          <span className="hyl-word">{copy.work.falsified[lang]}</span>
+        <p className="hyl-foot-note">{T.foot[lang]}</p>
+        <p className="hyl-foot-link">
+          <Link className="ulink" href={href(lang, "writing/the-rule-that-looks-true")}>
+            {T.readOn[lang]}
+          </Link>
         </p>
-        <p className="hyl-foot-note">{copy.work.ledgerFoot[lang]}</p>
       </div>
     </div>
   );

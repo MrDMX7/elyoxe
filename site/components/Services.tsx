@@ -340,6 +340,86 @@ function buildCloud(root: SVGSVGElement): gsap.core.Timeline {
   return tl;
 }
 
+/* ── instrument 5 · ai-audit — the gate that passes noise ─────── */
+
+/* The argument the audit sells, performed rather than illustrated: a specimen
+   of real work goes through the gate and every check lights. Then a specimen
+   of pure noise goes through the same gate — and every check lights again.
+   The gate never fails anything, which is exactly why its PASS meant nothing.
+   The accent cross lands last, on the gate, not on the work. */
+
+const AUD_Y = [40, 66, 92, 118, 144];
+const AUD_NOISE = [
+  [34, 82], [46, 96], [39, 91], [52, 84], [30, 97], [48, 89],
+];
+
+function AuditView({ ar }: { ar: boolean }) {
+  return (
+    <g transform={mirror(ar)}>
+      <line className="svc-rule svc-aud-lane" x1={24} y1={90} x2={236} y2={90} />
+      <line className="svc-stone svc-aud-gate" x1={236} y1={28} x2={236} y2={152} />
+      {AUD_Y.map((y) => (
+        <line className="svc-stone svc-aud-row" key={y} x1={288} y1={y} x2={420} y2={y} />
+      ))}
+      {AUD_Y.map((y) => (
+        <path className="svc-ink svc-aud-tick" key={y} d={`M434 ${y - 1} l5 6 l11 -12`} />
+      ))}
+      <g className="svc-aud-work">
+        <rect className="svc-ink" x={28} y={78} width={30} height={24} />
+        <line className="svc-stone" x1={33} y1={86} x2={53} y2={86} />
+        <line className="svc-stone" x1={33} y1={94} x2={46} y2={94} />
+      </g>
+      <g className="svc-aud-noise">
+        {AUD_NOISE.map(([x, y]) => (
+          <circle className="svc-stone" key={`${x}-${y}`} cx={x} cy={y} r={2.2} />
+        ))}
+      </g>
+      <g className="svc-aud-blind">
+        <line className="svc-acc" x1={228} y1={82} x2={244} y2={98} />
+        <line className="svc-acc" x1={244} y1={82} x2={228} y2={98} />
+      </g>
+    </g>
+  );
+}
+
+function buildAudit(root: SVGSVGElement): gsap.core.Timeline {
+  const tl = gsap.timeline({ paused: true });
+  const lane = one(root, ".svc-aud-lane");
+  const gate = one(root, ".svc-aud-gate");
+  const work = root.querySelector<SVGGElement>(".svc-aud-work");
+  const noise = root.querySelector<SVGGElement>(".svc-aud-noise");
+  const blind = root.querySelector<SVGGElement>(".svc-aud-blind");
+  const ticks = all(root, ".svc-aud-tick");
+
+  if (lane) drawIn(tl, [lane], 0, 0.45);
+  if (gate) drawIn(tl, [gate], 0.1, 0.4);
+  drawIn(tl, all(root, ".svc-aud-row"), 0.2, 0.4, 0.05);
+
+  /* Pass one: real work. */
+  if (noise) tl.set(noise, { opacity: 0 }, 0);
+  if (work) tl.fromTo(work, { x: 0, opacity: 1 }, { x: 168, duration: 0.6, ease: "power1.in" }, 0.5);
+  ticks.forEach((t, i) => drawIn(tl, [t], 0.95 + i * 0.08, 0.26));
+  if (work) tl.to(work, { opacity: 0, duration: 0.2 }, 1.12);
+
+  /* Pass two: the same gate, fed noise. Every check lights again. */
+  if (noise) tl.to(noise, { opacity: 1, duration: 0.2 }, 1.45);
+  if (noise) tl.fromTo(noise, { x: 0 }, { x: 168, duration: 0.6, ease: "power1.in" }, 1.6);
+  ticks.forEach((t, i) =>
+    tl.fromTo(t, { opacity: 0.18 }, { opacity: 1, duration: 0.26 }, 2.05 + i * 0.08),
+  );
+  if (noise) tl.to(noise, { opacity: 0, duration: 0.2 }, 2.24);
+
+  /* The verdict is on the gate. */
+  if (blind)
+    tl.fromTo(
+      blind,
+      { scale: 0, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.34, ease: "back.out(2)", svgOrigin: "236 90" },
+      2.5,
+    );
+  return tl;
+}
+
 /* ── registry ─────────────────────────────────────────────────── */
 
 type Instrument = { view: (ar: boolean) => ReactNode; build: (root: SVGSVGElement) => gsap.core.Timeline };
@@ -349,6 +429,7 @@ const INSTRUMENTS: Record<string, Instrument> = {
   ai: { view: (ar) => <AiView ar={ar} />, build: buildAi },
   software: { view: (ar) => <SoftwareView ar={ar} />, build: buildSoftware },
   cloud: { view: (ar) => <CloudView ar={ar} />, build: buildCloud },
+  "ai-audit": { view: (ar) => <AuditView ar={ar} />, build: buildAudit },
 };
 
 /* Captions written for this section only — they name what the instrument does,
@@ -358,6 +439,10 @@ const NOTE: Record<string, L> = {
   ai: { ar: "مستندات عربية ولاتينية في مسارٍ واحد", en: "Arabic and Latin documents in one lane" },
   software: { ar: "إشارة SIGKILL ثم استئناف بلا فجوة في البيانات", en: "SIGKILL, then resume with no gap in the data" },
   cloud: { ar: "من المصدر إلى الحافة الأقرب للزائر، والعدّاد ثابت", en: "From the origin to the edge nearest the visitor, the meter steady" },
+  "ai-audit": {
+    ar: "البوابة نفسها تمرّر الضجيج كما مرّرت العمل — فنجاحها لم يكن يعني شيئاً",
+    en: "The same gate passes noise exactly as it passed the work — so its PASS meant nothing",
+  },
 };
 
 /* ── proof figure: counts once, on enter ──────────────────────── */
