@@ -59,15 +59,26 @@ const browser = await chromium.launch({ channel });
       : `the middle of the page reads ${mean.toFixed(0)}/255 - ink, not paper: something covers it`;
   });
 
-  await check("hero canvas is mounted and sized", async () => {
-    const box = await page.evaluate(() => {
+  await check("the hero renders, with or without WebGL", async () => {
+    // Hero.tsx probes WEBGL_debug_renderer_info and declines to mount the scene when
+    // there is no usable renderer - ?noscene does the same by hand. A headless runner
+    // has no GPU, so demanding a canvas asserts something the site deliberately does
+    // not promise, and this check failed its first CI run for that reason alone.
+    // What the site DOES promise is a hero with words in it either way.
+    const state = await page.evaluate(() => {
       const c = document.querySelector("canvas");
-      if (!c) return null;
-      const r = c.getBoundingClientRect();
-      return { w: Math.round(r.width), h: Math.round(r.height) };
+      const title = document.querySelector(".hero-title, h1");
+      const r = c?.getBoundingClientRect();
+      return {
+        canvas: c ? { w: Math.round(r.width), h: Math.round(r.height) } : null,
+        titleText: (title?.textContent || "").trim().length,
+      };
     });
-    if (!box) return "no canvas - the R3F hero did not mount";
-    return box.w > 100 && box.h > 100 ? null : `canvas is ${box.w}x${box.h}`;
+    if (state.titleText < 4) return "the hero has no heading text";
+    if (state.canvas && (state.canvas.w < 100 || state.canvas.h < 100))
+      return `a canvas mounted at ${state.canvas.w}x${state.canvas.h}`;
+    console.log(`        (canvas ${state.canvas ? `${state.canvas.w}x${state.canvas.h}` : "absent - no GPU here"})`);
+    return null;
   });
 
   await check("skip link reaches a real target", async () => {
@@ -101,7 +112,7 @@ const browser = await chromium.launch({ channel });
     let sent = null;
     // The handler from the previous check is still registered and would answer first,
     // so this would report "no request" for a form that works. Routes accumulate.
-    await page.unroute("**/execute-api.*.amazonaws.com/**");
+    await page.unroute("**execute-api**");
     await page.route("**execute-api**", (route) => {
       sent = route.request().postData();
       route.fulfill({ status: 200, contentType: "application/json", body: '{"ok":true}' });
@@ -110,10 +121,15 @@ const browser = await chromium.launch({ channel });
     await page.fill("#f-email", "test@example.com");
     const msg = page.locator("form.ctc-form textarea").first();
     if (await msg.count()) await msg.fill("رسالة اختبار من interact.mjs");
+    // Wait for the request, do not sleep and hope. A fixed 1500ms passed on this laptop
+    // and failed on the runner, which is a slow machine, not a broken form.
+    const waiting = page.waitForRequest((r) => r.url().includes("execute-api"), { timeout: 15000 })
+      .catch(() => null);
     await page.locator('form.ctc-form button[type="submit"]').click();
-    await page.waitForTimeout(1500);
-    if (!sent) return "submit produced no request";
-    return sent.includes("test@example.com") ? null : "the request carried no email field";
+    const req = await waiting;
+    if (!req) return "submit produced no request within 15s";
+    return (sent || req.postData() || "").includes("test@example.com")
+      ? null : "the request carried no email field";
   });
 
   await ctx.close();
