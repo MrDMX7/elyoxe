@@ -8,7 +8,12 @@ import { mkdirSync, writeFileSync } from "node:fs";
 const base = (process.argv[2] || "http://localhost:8080").replace(/\/$/, "");
 const out = process.argv[3] || "shots";
 mkdirSync(out, { recursive: true });
-const browser = await chromium.launch();
+// Same escape hatch interact.mjs has: cdn.playwright.dev times out from the owner's
+// connection, so there is no bundled chromium on the laptop and this gate could only
+// ever run in CI - a 7-to-9 minute round trip to learn a screenshot is wrong.
+// PW_CHANNEL=msedge runs it locally; unset, CI uses the bundled browser as before.
+const channel = process.env.PW_CHANNEL || undefined;
+const browser = await chromium.launch({ channel });
 const report = { base, when: new Date().toISOString(), pages: {}, blocking: [] };
 const targets = ["/", "/en/", "/work/quantitative-method/", "/en/work/invoiceready/", "/404/"];
 
