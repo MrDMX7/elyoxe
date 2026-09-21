@@ -1,0 +1,7 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": ["app/**/{page,layout,not-found,route}.tsx", "app/**/*.ts", "scripts/*.mjs", "next.config.ts"],
+  "project": ["app/**/*.{ts,tsx}", "components/**/*.{ts,tsx}", "lib/**/*.{ts,tsx}", "content/**/*.ts", "scripts/*.mjs"],
+  "ignore": ["out/**", ".next/**"],
+  "ignoreDependencies": ["lygia", "@types/*"]
+}
