@@ -37,39 +37,26 @@ npm run lint:rtl
 
 **الميزانية على Iris Xe:** ابدأ بـBloom وحده وقِس. كل تأثير إضافي يكلّف.
 
-## 🎞️ الجسر من After Effects إلى الويب
+## 🎞️ Lottie على الويب — بلا أدوبي
 
-`@lottiefiles/dotlottie-react` — يشغّل مخرجات **Bodymovin**:
+`@lottiefiles/dotlottie-react` يشغّل أي Lottie:
 
 ```tsx
 <DotLottieReact src="/anim.lottie" autoplay loop />
 ```
-الطباعة التي تصمّمها في AE تصير مكوّن React بلا إعادة بناء. (Bodymovin منصَّب في AE عندك.)
 
-## 🧹 الكود الميت والاعتمادات غير المستعملة
+**ومصدر الـLottie صار كوداً لا واجهة.** Bodymovin (مصدّر AE) **غير منصَّب ولا ينبني**: مصدره React 15 وwebpack 1 من 2017 ويسقط على Node 24، والنسخة الجاهزة `.zxp` خلف تسجيل دخول أدوبي. البديل المعتمد **`lottie` لبايثون** (`pip install lottie`، 0.7.2):
 
-```bash
-npm run lint:dead      # knip
+```python
+from lottie.parsers.svg import parse_svg_file
+from lottie.exporters.core import export_lottie
+anim = parse_svg_file("mark.svg"); anim.frame_rate = 30; anim.out_point = 60
+export_lottie(anim, "mark.lottie.json")
 ```
-**أول تشغيل 2026-09-21 وجد أربع اعتمادات ميتة فعلاً:** `drizzle-orm` و`drizzle-kit` (لا قاعدة بيانات في تصدير ثابت) و`shiki` و`skia-canvas` — لا ذكر لأيّ منها في `app/` أو `components/` أو `lib/` أو `scripts/`. و`lib/asset.ts` ملف يتيم.
 
-**ولا تصدّق كل ما يقوله.** knip يعدّ `@react-three/drei` و`postprocessing` و`motion` و`opentype.js` و`@lottiefiles/dotlottie-react` «غير مستعملة» — وهي **قدرة مقصودة** مثبّتة لهذه الوصفات، ولم تُستدعَ بعد. «غير مستعمل» ≠ «احذف».
+**مُختبَر من طرف لطرف 2026-09-21:** شعار Elyoxe SVG → Lottie 2 كيلوبايت → شُغّل في `lottie-web` نفسه (المحرّك الذي يلفّه المكوّن أعلاه): `loaded=yes frames=60 svg=yes paths=2`، والحرفان ظهرا بلونيهما.
 
-## 🧪 اختبارات الوحدة
-
-```bash
-npm test         # vitest run
-```
-`content/i18n.test.ts` يقفل **عقد الروابط ثنائي اللغة**: العربية في الجذر، الإنجليزية تحت `/en/`، و**كل رابط ينتهي بشرطة مائلة** — التصدير الثابت بلا خادم يعيد التوجيه، فالشرطة الناقصة = 404. ويمنع الشرطة المزدوجة في أي تركيبة.
-
-الطبقة الأخرى (متصفّح حقيقي، تجاوز أفقي، أخطاء الكونسول) في `scripts/shots.mjs` وتعمل في CI. هذي للمنطق الخالص وحده.
-
-## 🖼️ SVG إلى مكوّن React
-
-```bash
-npm run svg -- path/to/icon.svg        # → components/icons/Icon.tsx مكتوب وبلا أبعاد ثابتة
-```
-`--no-dimensions` يشيل `width`/`height` من الجذر فيرث المكوّن حجمه من CSS — وهذا ما تريده مع الخصائص المنطقية. **مصدر العلامة يبقى `components/Mark.tsx` المكتوب بيدك** — لا تولّده.
+**الفرق عن Bodymovin مهم:** Bodymovin يصدّر ما رسمته بيدك في AE. هذا **يولّد من كود** — أي قابل للأتمتة كاملةً، وهذا ما نريده. لو احتجت تصدير تركيبة AE موجودة فعلاً، عندها فقط ثبّت Bodymovin يدوياً من aescripts.
 
 ## 🌀 الحركة — أيّهما متى
 
