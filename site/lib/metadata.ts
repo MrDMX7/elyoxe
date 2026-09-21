@@ -5,6 +5,15 @@ import { copy } from "@/content/copy";
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const PREVIEW = !!process.env.NEXT_PUBLIC_PREVIEW;
 
+/* One card per page, built by studio/og_site.py and committed under public/og/. These
+   do nothing for ranking - og:image is not a ranking signal - but the image is most of
+   a shared link's card in WhatsApp, X and LinkedIn, and every page used to share one.
+   404 has no card of its own and falls back to the home one. */
+const ogPath = (lang: Lang, path: string) => {
+  const slug = path.replace(/^\/+|\/+$/g, "").replace(/\//g, "-");
+  return `/og/${lang}-${slug && slug !== "404" ? slug : "home"}.png`;
+};
+
 export function pageMetadata(lang: Lang, opts: { path?: string; title?: string; description?: string } = {}): Metadata {
   const path = opts.path ?? "";
   const title = opts.title ?? copy.meta.title[lang];
@@ -23,7 +32,7 @@ export function pageMetadata(lang: Lang, opts: { path?: string; title?: string; 
       title, description, type: "website", siteName: "Elyoxe",
       locale: lang === "ar" ? "ar_AE" : "en_AE",
       url: abs(lang, path),
-      images: [{ url: `${BASE}/og-${lang}.png`, width: 1200, height: 630 }],
+      images: [{ url: `${BASE}${ogPath(lang, path)}`, width: 1200, height: 630, alt: title }],
     },
     twitter: { card: "summary_large_image" },
   };
