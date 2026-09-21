@@ -51,9 +51,26 @@ jobs:
         with: { node-version: 22 }
       - uses: actions/download-artifact@v4
         with: { name: site, path: site/out }
-      - run: npm i --no-save playwright@1.55 serve@14 && npx playwright install --with-deps chromium
+      # This job never runs npm ci - it pulls only what it needs, so the comparator
+      # has to be named here too or visual-diff.mjs cannot import it.
+      - run: npm i --no-save playwright@1.55 serve@14 pixelmatch@7 pngjs@7 && npx playwright install --with-deps chromium
       - run: npx serve -l 8080 out & sleep 2
       - run: node scripts/shots.mjs http://localhost:8080 shots
+      # shots.mjs proves nothing is broken; it cannot say the page still looks the same.
+      # Compare the above-the-fold captures with the last build that passed - the same
+      # runner and the same browser, so the only difference left is ours.
+      - name: visual diff against the last passing build
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          id=$(gh run list --workflow=build.yml --status=success --branch=main                  --limit=1 --json databaseId -q '.[0].databaseId' 2>/dev/null || true)
+          if [ -n "$id" ]; then
+            gh run download "$id" -n critique -D prev 2>/dev/null               || echo "run $id kept no critique artifact - nothing to compare"
+          else
+            echo "no previous successful run on main"
+          fi
+          node scripts/visual-diff.mjs prev shots --max=2
       - name: lighthouse (mobile)
         if: always()
         run: |
