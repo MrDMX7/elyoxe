@@ -47,7 +47,7 @@
 }
 @media (min-width: 620px) { .coin-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 
-.coin-stat { display: flex; flex-direction: column; gap: .12rem; min-width: 0; }
+.coin-stat { display: flex; flex-direction: column; gap: .12rem; min-inline-size: 0; }
 .coin-v {
   font-size: 1.5rem;
   line-height: 1.15;
@@ -59,7 +59,7 @@
   text-align: start;
   color: var(--ink);
 }
-.coin[data-dir="rtl"] .coin-v { text-align: right; }
+.coin[data-dir="rtl"] .coin-v { text-align: end; }   /* end == right: .coin-v is direction: ltr */
 .coin-stat.is-accent .coin-v { color: var(--saffron); }
 .coin-k {
   font-size: calc(var(--fs-small) * .88);
@@ -99,7 +99,7 @@
 
 .coin-note {
   margin-block: .95rem 0;
-  max-width: 62ch;
+  max-inline-size: 62ch;
   font-size: var(--fs-small);
   line-height: 1.65;
   color: var(--stone);

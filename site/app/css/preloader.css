@@ -22,8 +22,8 @@
    viewport centre: -6vw + 112vw/2 = 50vw, -10vh + 120vh/2 = 50vh. */
 .pl {
   position: fixed;
-  left: -6vw;
-  top: -10vh;
+  inset-inline-start: -6vw;
+  inset-block-start: -10vh;
   inline-size: 112vw;
   block-size: 120vh;
   z-index: 9000;
@@ -86,9 +86,8 @@ html.pl-lock { overflow: hidden; scrollbar-gutter: stable; }
    and trailing edge of the ink while it sweeps. */
 .pt-panel {
   position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
+  inset-inline: 0;
+  inset-block-start: 0;
   block-size: 100vh;
   block-size: 100dvh;
   z-index: 9000;

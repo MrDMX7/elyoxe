@@ -32,7 +32,7 @@
    content-free, so this is the only place a first-time reader is told why
    nine struck lines are an achievement and not a tally of failures. */
 .hyl-why {
-  max-width: 54ch;
+  max-inline-size: 54ch;
   margin-block-end: 1.15rem;
   padding-block-end: 1.05rem;
   border-block-end: 1px solid var(--rule);
@@ -130,7 +130,7 @@
    purpose: the visitor reads the mistake first, then what prevents it. */
 .hyl-rule {
   grid-column: 1 / -1;
-  max-width: 62ch;
+  max-inline-size: 62ch;
   margin-block-start: .3rem;
   font-size: calc(var(--fs-small) * .95);
   line-height: 1.6;

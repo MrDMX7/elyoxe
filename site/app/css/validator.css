@@ -90,7 +90,7 @@ html[dir="rtl"] .vld { --vld-x: right; }
   padding: 0;                        /* the scan head measures this box */
   overflow: hidden;
   direction: ltr;
-  text-align: left;
+  text-align: start;
   font-family: var(--font-mono);
   font-size: clamp(9.5px, 2cqi, 12px);
   line-height: 1.85;

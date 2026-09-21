@@ -30,9 +30,9 @@ html[lang="ar"] .ctc-privacy-line { line-height: 1.8; }
 .ctc-path {
   font-family: var(--font-mono); font-size: var(--fs-small);
   color: var(--stone); direction: ltr; unicode-bidi: isolate;
-  text-align: left;
+  text-align: start;
 }
-html[dir="rtl"] .ctc-path { text-align: right; }
+html[dir="rtl"] .ctc-path { text-align: end; }   /* end == right: .ctc-path is direction: ltr */
 .ctc-path span { color: var(--saffron); }
 
 .ctc-privacy-note { font-size: var(--fs-small); color: var(--stone); }

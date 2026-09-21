@@ -1,7 +1,13 @@
 {
   "plugins": ["stylelint-plugin-logical-css"],
   "rules": {
-    "plugin/use-logical-properties-and-values": [true, { "severity": "error" }]
+    "plugin/use-logical-properties-and-values": [
+      true,
+      {
+        "severity": "error",
+        "ignore": ["overflow-x", "overflow-y", "resize"]
+      }
+    ]
   },
   "ignoreFiles": ["out/**", ".next/**", "node_modules/**", "public/**"]
 }
