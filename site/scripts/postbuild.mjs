@@ -3,7 +3,7 @@
 //  · sitemap.xml with hreflang pairs, robots.txt
 //  · a check that every /en/ page really carries lang="en" dir="ltr"
 import { readFileSync, writeFileSync, existsSync, readdirSync, statSync, copyFileSync } from "node:fs";
-import { join } from "node:path";
+import { join, sep } from "node:path";
 
 const out = "out";
 const site = process.env.SITE_URL || "https://elyoxe.com";
@@ -26,7 +26,10 @@ if (existsSync(nf)) copyFileSync(nf, join(out, "404.html"));
 let bad = 0;
 for (const p of pages) {
   const html = readFileSync(p, "utf8");
-  const en = p.includes(`${out}/en/`);
+  // walk() builds paths with the platform separator, so a hard-coded "/en/" test never matches on
+  // Windows and every English page gets graded against the Arabic rule — the build then exits 1 on
+  // the laptop while passing on the phone. Split on the real separator instead.
+  const en = p.split(sep).includes("en");
   const ok = en ? /<html[^>]*lang="en"[^>]*dir="ltr"/.test(html) : /<html[^>]*lang="ar"[^>]*dir="rtl"/.test(html);
   if (!ok) { console.error("wrong lang/dir:", p); bad++; }
 }
