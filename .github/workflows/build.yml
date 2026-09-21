@@ -56,6 +56,11 @@ jobs:
       - run: npm i --no-save playwright@1.55 serve@14 pixelmatch@7 pngjs@7 && npx playwright install --with-deps chromium
       - run: npx serve -l 8080 out & sleep 2
       - run: node scripts/shots.mjs http://localhost:8080 shots
+      # Behaviour, not pixels: the preloader lifting, the drawer opening, the form
+      # refusing an empty submit. A static export can pass every other gate with the
+      # page under a black rectangle.
+      - run: node scripts/interact.mjs http://localhost:8080
+        if: always()
       # shots.mjs proves nothing is broken; it cannot say the page still looks the same.
       # Compare the above-the-fold captures with the last build that passed - the same
       # runner and the same browser, so the only difference left is ours.
