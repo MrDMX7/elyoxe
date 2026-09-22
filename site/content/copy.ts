@@ -62,10 +62,12 @@ export const copy = {
   work: {
     title: { ar: "الأعمال", en: "Work" },
     lead: {
-      ar: "مشاريع حقيقية، لكلٍّ منها أرقامه وحدوده المكتوبة ورسمٌ تفاعلي بُني له وحده.",
-      en: "Real projects, each with its own numbers, its own limits in writing, and an interactive diagram built for it alone.",
+      ar: "مشاريع حقيقية، لكلٍّ منها رسمٌ تفاعلي بُني له وحده، ورقمٌ واحد يخصّك أنت.",
+      en: "Real projects, each with an interactive diagram built for it alone, and one number that is about you.",
     },
-    caseStudy: { ar: "دراسة الحالة", en: "Case study" },
+    /* Not «case study». That is the language of showing a manager what you
+       finished; a visitor is deciding whether we can build their thing. */
+    caseStudy: { ar: "كيف بنيناه", en: "How we built it" },
     visit: { ar: "زيارة", en: "Visit" },
     back: { ar: "الأعمال", en: "Work" },
     role: { ar: "الدور", en: "Role" },

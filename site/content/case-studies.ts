@@ -21,6 +21,14 @@ export const caseStudies: CaseStudy[] = [
     "period": "2026 — present",
     "figures": [
       {
+        "value": "24",
+        "accent": true,
+        "label": {
+          "ar": "فحصاً تمرّ عليها فاتورتك قبل ما ترسلها",
+          "en": "checks your invoice passes before you send it"
+        }
+      },
+      {
         "value": "102",
         "accent": false,
         "label": {
@@ -34,14 +42,6 @@ export const caseStudies: CaseStudy[] = [
         "label": {
           "ar": "كتلة بيانات منظَّمة",
           "en": "structured-data blocks"
-        }
-      },
-      {
-        "value": "24",
-        "accent": false,
-        "label": {
-          "ar": "فحصاً لكل فاتورة",
-          "en": "validation checks per invoice"
         }
       },
       {
@@ -123,19 +123,19 @@ export const caseStudies: CaseStudy[] = [
     "period": "2026",
     "figures": [
       {
+        "value": "0",
+        "accent": true,
+        "label": {
+          "ar": "خطوة تضيع لو انقفل التطبيق",
+          "en": "steps lost when the app is killed"
+        }
+      },
+      {
         "value": "7,600",
         "accent": false,
         "label": {
           "ar": "سطر Kotlin في 42 ملفاً",
           "en": "lines of Kotlin across 42 files"
-        }
-      },
-      {
-        "value": "0",
-        "accent": true,
-        "label": {
-          "ar": "فرق بين السجل المخزَّن والعدّاد الحي",
-          "en": "delta between stored history and the live counter"
         }
       },
       {
@@ -231,8 +231,8 @@ export const caseStudies: CaseStudy[] = [
         "value": "0",
         "accent": true,
         "label": {
-          "ar": "استراتيجية شُغّلت بمال حقيقي بناءً على نتيجة لم تجتَز الفحص",
-          "en": "strategies run on real money on a result that had not passed the checks"
+          "ar": "نتيجة عُمل بها قبل ما تجتاز الفحص",
+          "en": "results acted on before they passed the checks"
         }
       },
       {
@@ -337,8 +337,8 @@ export const caseStudies: CaseStudy[] = [
         "value": "2,665",
         "accent": true,
         "label": {
-          "ar": "رمزاً، كلٌّ بكتابه وصفحته المطبوعة",
-          "en": "symbols, each carrying its book and printed page"
+          "ar": "رمزاً، وكل تفسير معاه صورة صفحته من الكتاب",
+          "en": "symbols, every reading shown on a scan of its printed page"
         }
       },
       {
@@ -438,8 +438,8 @@ export const caseStudies: CaseStudy[] = [
         "value": "0.07",
         "accent": true,
         "label": {
-          "ar": "درهماً كلفة محادثة كاملة من ستة ردود",
-          "en": "dirhams for a complete six-reply conversation"
+          "ar": "درهماً تكلفة محادثة كاملة مع زبونك",
+          "en": "dirhams for a complete conversation with your customer"
         }
       },
       {

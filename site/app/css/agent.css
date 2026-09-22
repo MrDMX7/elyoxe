@@ -53,8 +53,6 @@
   padding-inline: .1rem;
 }
 .agt-turn { display: grid; gap: .3rem; max-inline-size: min(100%, 30rem); }
-.agt-turn.is-user { justify-self: end; text-align: end; border-inline-end: 2px solid var(--ink); padding-inline-end: .8rem; }
-.agt-turn.is-agent,
 .agt-turn.is-profile { justify-self: start; border-inline-start: 2px solid var(--rule); padding-inline-start: .8rem; }
 .agt-role { font-size: var(--fs-micro); color: var(--stone); text-transform: lowercase; }
 .agt-text { margin: 0; line-height: 1.75; }

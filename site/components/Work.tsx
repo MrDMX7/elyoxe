@@ -1,13 +1,32 @@
 "use client";
+import { useRef } from "react";
 import Link from "next/link";
 import { copy } from "@/content/copy";
-import { caseStudies } from "@/content/case-studies";
+import { caseStudies, type CaseStudy } from "@/content/case-studies";
 import { href, type Lang } from "@/content/i18n";
 import { useReveal } from "@/lib/useReveal";
+import { useCountUp } from "@/lib/useCountUp";
 import CaseVisual from "./visuals";
 
-/* Chapters, not cards. Each project gets its own visual language, its figures,
-   and the live link when there is one. The list grows from the content file. */
+/* Chapters, not cards. Each project gets its own visual language, one figure,
+   and the live link when there is one. The list grows from the content file.
+ *
+ * One figure, not three. A visitor deciding whether we can build their thing
+ * does not buy our line count or our page count — those measure our effort,
+ * not their result. The rest of the measurements are still published; they
+ * live on the project's own page, which is where someone goes to check. */
+function Figure({ f, lang }: { f: CaseStudy["figures"][number]; lang: Lang }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  useCountUp(ref, f.value);
+  return (
+    <div className="figs">
+      <div className={`fig${f.accent ? " is-accent" : ""}`} data-reveal>
+        <span className="value" ref={ref}>{f.value}</span>
+        <span className="label">{f.label[lang]}</span>
+      </div>
+    </div>
+  );
+}
 export default function Work({ lang }: { lang: Lang }) {
   const ref = useReveal<HTMLElement>();
   return (
@@ -25,14 +44,7 @@ export default function Work({ lang }: { lang: Lang }) {
                 <span className={`status${c.ledger.live ? " is-live" : ""}`}>{c.status[lang]} · {c.kicker[lang]}</span>
               </div>
               <p className="tagline" data-reveal>{c.tagline[lang]}</p>
-              <div className="figs">
-                {c.figures.slice(0, 3).map((f, j) => (
-                  <div className={`fig${f.accent ? " is-accent" : ""}`} key={j} data-reveal>
-                    <span className="value">{f.value}</span>
-                    <span className="label">{f.label[lang]}</span>
-                  </div>
-                ))}
-              </div>
+              <Figure f={c.figures[0]} lang={lang} />
               <div className="chapter-actions" data-reveal>
                 <Link className="link" href={href(lang, `work/${c.slug}`)}>{copy.work.caseStudy[lang]}</Link>
                 {c.link && <a className="ulink" href={c.link.href} target="_blank" rel="noopener" data-cursor="open"><span className="mono">{c.link.label}</span></a>}

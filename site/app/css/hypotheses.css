@@ -2,11 +2,14 @@
 
 /* The hypothesis ledger (quantitative method).
  *
- * Everything below describes the FINISHED record: nine entries struck, the
- * verdict written on each, the tally at 9/9. That is the resting state, so the
- * static export, a browser without JS, a misfiring trigger and reduced motion
- * all render the truth. The script adds `.is-running` / `.is-pending` to take
- * the record apart and replay it as you scroll; it never has to put it back.
+ * Everything below describes the FINISHED record: every route struck and its
+ * verdict written. That is the resting state, so the static export, a browser
+ * without JS, a misfiring trigger and reduced motion all render the truth. The
+ * script adds `.is-running` / `.is-pending` to take the record apart and
+ * replay it as you scroll; it never has to put it back.
+ *
+ * There is no tally and no numbering: the rows are standing rules, not a count
+ * of results. Anything here that still counts something is a leftover.
  *
  * Direction: the strike and every rule are absolutely positioned with
  * `inset-inline: 0`, so they span the full width in both directions, and only
@@ -15,7 +18,7 @@
  * which comes off the `lang` prop, so the component is correct even if it is
  * rendered outside its own document direction.
  *
- * Saffron is the strike and the tally only. No verdigris: nothing here is live.
+ * Saffron is the strike only. No verdigris: nothing here is live.
  */
 
 .hyl {
@@ -30,7 +33,7 @@
 /* ── head: what the ledger withholds, and the gate every line passed ── */
 /* The reason, before the record. The ledger's own rows are deliberately
    content-free, so this is the only place a first-time reader is told why
-   nine struck lines are an achievement and not a tally of failures. */
+   a page of struck lines is an achievement and not a list of failures. */
 .hyl-why {
   max-inline-size: 54ch;
   margin-block-end: 1.15rem;
@@ -87,30 +90,21 @@
 }
 .hyl-row:last-child .hyl-line { background: var(--ink); } /* the ledger closes */
 
-/* ── the entry: id, statement, and the rule pulled through both ── */
+/* ── the entry: the route, with the strike laid through it ── */
+/* Not a grid. It held two tracks while an `H-01` id sat in the first one; when
+   the numbering went, the route name inherited that 3.1rem track and wrapped
+   to four lines inside 49.6px with the rest of the row empty beside it. The
+   strike is absolute, so there is nothing left to lay out in columns. */
 .hyl-entry {
   position: relative;
-  display: grid;
-  grid-template-columns: 3.1rem minmax(0, 1fr);
-  column-gap: .85rem;
-  align-items: baseline;
+  display: block;
   line-height: 1.5; /* a ledger line, not a paragraph — and it fixes where the strike falls */
-}
-.hyl-id {
-  font-family: var(--font-mono);
-  font-variant-numeric: tabular-nums;
-  font-size: var(--fs-small);
-  color: var(--stone);
-  direction: ltr;
-  unicode-bidi: isolate;
-  transition: color 320ms var(--ease);
 }
 .hyl-name {
   color: var(--stone);
   transition: color 420ms var(--ease);
 }
 .hyl-row.is-pending .hyl-name { color: var(--ink); }
-.hyl-row.is-tested .hyl-id,
 .hyl-row.is-tested .hyl-v-reg { color: var(--ink); }
 
 .hyl-strike {
@@ -175,7 +169,7 @@
 .hyl-row.is-pending .hyl-v-reg { opacity: 1; }
 .hyl-row.is-pending .hyl-v-fal { opacity: 0; }
 
-/* ── foot: the count, and what it is worth ── */
+/* ── foot: what the record is worth, and where the argument is made ── */
 .hyl-foot {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -192,7 +186,7 @@
   max-inline-size: 44ch;
   transition: opacity 700ms var(--ease-out), transform 700ms var(--ease-out);
 }
-/* held back until the ninth strike lands */
+/* held back until the last strike lands */
 .hyl.is-running .hyl-foot-note { opacity: 0; transform: translate3d(0, 8px, 0); }
 
 /* compositor hints only while the sequence is actually running */
@@ -205,7 +199,6 @@
   .hyl-entry,
   .hyl-line,
   .hyl-strike,
-  .hyl-id,
   .hyl-name,
   .hyl-verdict > span,
   .hyl-foot-note { transition: none !important; }

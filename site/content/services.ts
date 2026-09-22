@@ -1,10 +1,14 @@
 import type { L } from "./i18n";
 
-export type Service = { slug: string; title: L; body: L; proof: { slug: string; figure: number } };
+export type Service = { slug: string; title: L; body: L; proof: string };
 
-/* Five parallel fields. They are not a sequence, so nothing here is numbered.
-   The audit is last on purpose: it is the one bought after something has
-   already been built, often by whoever built it. */
+/* Four parallel fields. They are not a sequence, so nothing here is numbered.
+ *
+ * Verification is not a fifth field. It used to be — «AI system audits» sat
+ * here as its own row and pointed at the same case study as this one, so the
+ * quantitative method was named twice in a single screen and a third time in
+ * the work section below. It is a property of how we build AI, so it is the
+ * second half of that row's paragraph and nothing else changed. */
 export const services: Service[] = [
   {
     "slug": "web",
@@ -16,10 +20,7 @@ export const services: Service[] = [
       "ar": "مواقع تسويقية وأدوات داخلية وتطبيقات للعملاء، ثنائية اللغة من أول سطر لا بالترجمة لاحقاً.",
       "en": "Marketing sites, internal tools and customer-facing applications, bilingual from the first commit rather than translated afterwards."
     },
-    "proof": {
-      "slug": "invoiceready",
-      "figure": 0
-    }
+    "proof": "invoiceready"
   },
   {
     "slug": "ai",
@@ -28,13 +29,10 @@ export const services: Service[] = [
       "en": "Artificial intelligence"
     },
     "body": {
-      "ar": "معالجة المستندات وتصنيفها ومراجعتها في خطوط إنتاج، والعربية فيها لغة أولى لا طبقة ترجمة.",
-      "en": "Document processing, classification and review pipelines, with Arabic as a first language rather than a translation layer."
+      "ar": "معالجة المستندات وتصنيفها ومراجعتها في خطوط إنتاج، والعربية فيها لغة أولى لا طبقة ترجمة. وأي نظام يصحّح امتحانه بنفسه ينجح فيه — فنحدّد شكل النتيجة الكاذبة أولاً، ثم نقيس نظامك عليها، سواء بنيناه نحن أو اشتريته جاهزاً.",
+      "en": "Document processing, classification and review pipelines, with Arabic as a first language rather than a translation layer. And a system that grades its own exam always passes — so we establish what a false result looks like first, then measure yours against it, whether we built it or you bought it."
     },
-    "proof": {
-      "slug": "quantitative-method",
-      "figure": 0
-    }
+    "proof": "quantitative-method"
   },
   {
     "slug": "software",
@@ -46,25 +44,7 @@ export const services: Service[] = [
       "ar": "أندرويد أصلي وخدمات خلفية وتكاملات، تُقاس بالموثوقية لا بعدد الميزات.",
       "en": "Native Android, backend services and integrations, measured by reliability rather than feature count."
     },
-    "proof": {
-      "slug": "khutwa",
-      "figure": 1
-    }
-  },
-  {
-    "slug": "ai-audit",
-    "title": {
-      "ar": "تدقيق أنظمة الذكاء الاصطناعي",
-      "en": "AI system audits"
-    },
-    "body": {
-      "ar": "نظام يصحّح امتحانه بنفسه ينجح فيه دائماً. نحدّد أولاً شكل النتيجة الكاذبة، ثم نقيس نظامك عليها — سواء بنيناه نحن أو اشتريته جاهزاً.",
-      "en": "A system that grades its own exam always passes. We establish what a false result looks like first, then measure yours against it — whether we built it or you bought it."
-    },
-    "proof": {
-      "slug": "quantitative-method",
-      "figure": 2
-    }
+    "proof": "khutwa"
   },
   {
     "slug": "cloud",
@@ -76,9 +56,6 @@ export const services: Service[] = [
       "ar": "معمارية AWS وأتمتة النشر وهندسة التكلفة، لأنظمة لا تحتمل التوقّف.",
       "en": "AWS architecture, deployment automation and cost engineering for systems that have to stay running."
     },
-    "proof": {
-      "slug": "ahlam",
-      "figure": 1
-    }
+    "proof": "ahlam"
   }
 ];

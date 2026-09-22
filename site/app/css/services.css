@@ -37,30 +37,15 @@
 .svc-copy h3 { margin: 0; }
 .svc-body { max-inline-size: 38ch; }
 
+/* Only the pointer to the work is left here. The proof figure that used to
+   set the two tracks moved to the work chapter, where the project is actually
+   presented — a number repeated in both places is a number read in neither. */
 .svc-proof {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  column-gap: 1.1rem;
-  row-gap: .25rem;
-  align-items: baseline;
   margin-block-start: .9rem;
   padding-block-start: .95rem;
   border-block-start: 1px solid var(--rule-soft);
 }
-.svc-figure {
-  grid-row: span 2;
-  align-self: start;
-  font-family: var(--font-mono);
-  font-variant-numeric: tabular-nums;
-  font-weight: 500;
-  font-size: clamp(1.75rem, 1.4rem + 1vw, 2.25rem);
-  line-height: 1.1;
-  color: var(--saffron);
-  direction: ltr;
-  unicode-bidi: isolate;
-}
-.svc-what { font-size: var(--fs-small); color: var(--stone); line-height: 1.5; }
-.svc-link { font-size: var(--fs-small); font-weight: 500; justify-self: start; }
+.svc-link { font-size: var(--fs-small); font-weight: 500; }
 
 /* ── instrument column ────────────────────────────────────────── */
 

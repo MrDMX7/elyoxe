@@ -25,16 +25,6 @@ html[dir="rtl"] .ctc { --origin-start: right; --dir: -1; }
 .ctc-privacy-line { font-size: var(--fs-lead); line-height: 1.5; color: var(--ink); text-wrap: balance; }
 html[lang="ar"] .ctc-privacy-line { line-height: 1.8; }
 
-/* the delivery path, named. It reads left-to-right in both languages —
-   it is a technical string — but sits flush against the reading edge. */
-.ctc-path {
-  font-family: var(--font-mono); font-size: var(--fs-small);
-  color: var(--stone); direction: ltr; unicode-bidi: isolate;
-  text-align: start;
-}
-html[dir="rtl"] .ctc-path { text-align: end; }   /* end == right: .ctc-path is direction: ltr */
-.ctc-path span { color: var(--saffron); }
-
 .ctc-privacy-note { font-size: var(--fs-small); color: var(--stone); }
 
 /* ── the form ───────────────────────────────────────────────── */
@@ -157,7 +147,6 @@ html[dir="rtl"] .ctc-path { text-align: end; }   /* end == right: .ctc-path is d
   inline-size: 7px; block-size: 7px; border-radius: 50%;
   background: var(--verdigris);
 }
-.ctc-status.is-err { color: var(--saffron-deep); }
 
 /* ── footer ─────────────────────────────────────────────────────────────────
  * The footer's rules live here because approach.css and contact.css are the
@@ -211,11 +200,6 @@ html[lang="en"] .footer .ftr-nav a[lang] { font-family: var(--font-ar); }
   font-size: var(--fs-small); color: var(--stone-lit);
 }
 .ftr-c { direction: ltr; unicode-bidi: isolate; }
-.ftr-built { display: inline-flex; align-items: baseline; gap: .5rem; }
-.ftr-date {
-  font-family: var(--font-mono); font-variant-numeric: tabular-nums;
-  direction: ltr; unicode-bidi: isolate; color: var(--paper);
-}
 
 /* the last beat: the wordmark, quiet enough to read as ground, not a headline */
 .ftr-wordmark {
