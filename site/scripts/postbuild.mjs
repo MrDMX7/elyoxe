@@ -53,5 +53,5 @@ ${urls.map((u) => {
 </urlset>
 `;
 writeFileSync(join(out, "sitemap.xml"), xml);
-writeFileSync(join(out, "robots.txt"), preview ? "User-agent: *\nDisallow: /\n" : `User-agent: *\nAllow: /\nSitemap: ${site}/sitemap.xml\n`);
+writeFileSync(join(out, "robots.txt"), preview ? "User-agent: *\nDisallow: /\n" : `User-agent: *\nAllow: /\nSitemap: ${site}/sitemap.xml\nSitemap: ${site}/tools/sitemap.xml\nSitemap: ${site}/quran/sitemap.xml\n`);
 console.log(`postbuild: ${pages.length} pages, ${urls.length} in sitemap${preview ? " (preview, noindex)" : ""}`);
