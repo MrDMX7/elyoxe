@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Mark from "./Mark";
 import { copy } from "@/content/copy";
-import { href, other, type Lang } from "@/content/i18n";
+import { href, other, studio, type Lang } from "@/content/i18n";
 
 /* Evaluated once, in the Node process that runs the static export, and baked
    into every emitted HTML file — so the date shown is the date this copy of
@@ -22,7 +22,7 @@ function UaeFlag() {
 }
 
 export default function Footer({ lang, switchPath = "" }: { lang: Lang; switchPath?: string }) {
-  const home = href(lang);
+  const home = href(lang), sections = studio(lang);
   const alt = other(lang);
   return (
     <footer className="footer on-ink">
@@ -36,10 +36,10 @@ export default function Footer({ lang, switchPath = "" }: { lang: Lang; switchPa
           </div>
 
           <nav className="ftr-nav" aria-label={T.sections[lang]}>
-            <a href={`${home}#services`}>{copy.nav.services[lang]}</a>
-            <a href={`${home}#work`}>{copy.nav.work[lang]}</a>
-            <a href={`${home}#approach`}>{copy.nav.approach[lang]}</a>
-            <a href={`${home}#contact`}>{copy.nav.contact[lang]}</a>
+            <a href={`${sections}#services`}>{copy.nav.services[lang]}</a>
+            <a href={`${sections}#work`}>{copy.nav.work[lang]}</a>
+            <a href={`${sections}#approach`}>{copy.nav.approach[lang]}</a>
+            <a href={`${sections}#contact`}>{copy.nav.contact[lang]}</a>
           </nav>
 
           <nav className="ftr-nav" aria-label={copy.brand}>

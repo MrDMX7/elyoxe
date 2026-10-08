@@ -3,14 +3,14 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Mark from "./Mark";
 import { copy } from "@/content/copy";
-import { href, other, type Lang } from "@/content/i18n";
+import { href, other, studio, type Lang } from "@/content/i18n";
 
 /* Header plus a drawer that is a sibling of the header, not a child: the
    header's backdrop-filter would otherwise trap a fixed drawer inside it. */
 export default function Nav({ lang, switchPath = "" }: { lang: Lang; switchPath?: string }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const home = href(lang);
+  const home = href(lang), sections = studio(lang);
   const alt = other(lang);
   const items = [
     ["services", copy.nav.services[lang]],
@@ -38,7 +38,7 @@ export default function Nav({ lang, switchPath = "" }: { lang: Lang; switchPath?
         <div className="wrap">
           <Link href={home} className="brand" aria-label="Elyoxe"><Mark size={32} /><span>Elyoxe</span></Link>
           <nav className="nav" aria-label={copy.nav.menu[lang]}>
-            {items.map(([id, label]) => <a key={id} href={`${home}#${id}`}>{label}</a>)}
+            {items.map(([id, label]) => <a key={id} href={`${sections}#${id}`}>{label}</a>)}
             <a className="switch" href={href(alt, switchPath)} hrefLang={alt} lang={alt}>{copy.nav.switch[lang]}</a>
           </nav>
           <button className="nav-toggle" aria-expanded={open} aria-controls="drawer" onClick={() => setOpen(true)}>
@@ -52,7 +52,7 @@ export default function Nav({ lang, switchPath = "" }: { lang: Lang; switchPath?
           <button onClick={() => setOpen(false)} className="nav-toggle" style={{ display: "inline-flex" }}>{copy.nav.close[lang]}</button>
         </div>
         <nav aria-label={copy.nav.menu[lang]}>
-          {items.map(([id, label]) => <a key={id} href={`${home}#${id}`} onClick={() => setOpen(false)}>{label}</a>)}
+          {items.map(([id, label]) => <a key={id} href={`${sections}#${id}`} onClick={() => setOpen(false)}>{label}</a>)}
           <a className="switch" href={href(alt, switchPath)} hrefLang={alt} lang={alt}>{copy.nav.switch[lang]}</a>
         </nav>
         <div className="drawer-foot">{copy.footer.place[lang]}</div>

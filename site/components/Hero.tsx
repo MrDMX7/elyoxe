@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import gsap from "gsap";
 import { copy } from "@/content/copy";
-import { dirOf, href, type Lang } from "@/content/i18n";
+import { dirOf, studio, type Lang } from "@/content/i18n";
 import { reducedMotion } from "@/lib/useReveal";
 
 const HeroScene = dynamic(() => import("./HeroScene"), { ssr: false });
@@ -91,8 +91,8 @@ export default function Hero({ lang }: { lang: Lang }) {
           </h1>
           <p className="lead hero-lead">{copy.hero.lead[lang]}</p>
           <div className="hero-actions" data-soft>
-            <a className="btn" href={`${href(lang)}#contact`}>{copy.hero.cta[lang]}</a>
-            <a className="link" href={`${href(lang)}#work`}>{copy.hero.cta2[lang]}</a>
+            <a className="btn" href={`${studio(lang)}#contact`}>{copy.hero.cta[lang]}</a>
+            <a className="link" href={`${studio(lang)}#work`}>{copy.hero.cta2[lang]}</a>
           </div>
         </div>
       </div>

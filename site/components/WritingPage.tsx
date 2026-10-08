@@ -2,7 +2,7 @@ import Link from "next/link";
 import { copy } from "@/content/copy";
 import { bySlug } from "@/content/case-studies";
 import { type Piece } from "@/content/writing";
-import { href, type Lang } from "@/content/i18n";
+import { href, studio, type Lang } from "@/content/i18n";
 import Nav from "./Nav";
 import Footer from "./Footer";
 
@@ -23,7 +23,7 @@ export default function WritingPage({ lang, p }: { lang: Lang; p: Piece }) {
         <div className="wrap">
           <header className="case-head">
             <p className="crumb">
-              <Link href={`${href(lang)}#work`} className="ulink">{w.back[lang]}</Link> · {p.kicker[lang]}
+              <Link href={`${studio(lang)}#work`} className="ulink">{w.back[lang]}</Link> · {p.kicker[lang]}
             </p>
             <h1 className="display h1">{p.title[lang]}</h1>
             <p className="lead">{p.lead[lang]}</p>

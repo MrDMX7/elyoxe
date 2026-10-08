@@ -11,10 +11,10 @@ const PREVIEW = !!process.env.NEXT_PUBLIC_PREVIEW;
    404 has no card of its own and falls back to the home one. */
 const ogPath = (lang: Lang, path: string) => {
   const slug = path.replace(/^\/+|\/+$/g, "").replace(/\//g, "-");
-  return `/og/${lang}-${slug && slug !== "404" ? slug : "home"}.png`;
+  return `/og/${lang}-${slug && slug !== "404" && slug !== "about" ? slug : "home"}.png`;   // about: the old home, same card
 };
 
-export function pageMetadata(lang: Lang, opts: { path?: string; title?: string; description?: string } = {}): Metadata {
+export function pageMetadata(lang: Lang, opts: { path?: string; title?: string; description?: string; twin?: string } = {}): Metadata {
   const path = opts.path ?? "";
   const title = opts.title ?? copy.meta.title[lang];
   const description = opts.description ?? copy.meta.description[lang];
@@ -25,7 +25,9 @@ export function pageMetadata(lang: Lang, opts: { path?: string; title?: string; 
     robots: PREVIEW ? { index: false, follow: false } : { index: true, follow: true },
     alternates: {
       canonical: abs(lang, path),
-      languages: { ar: abs("ar", path), en: abs("en", path), "x-default": abs("ar", path) },
+      languages: lang === "ar"
+        ? { ar: abs("ar", path), en: abs("en", opts.twin ?? path), "x-default": abs("ar", path) }
+        : { ar: abs("ar", opts.twin ?? path), en: abs("en", path), "x-default": abs("ar", opts.twin ?? path) },
     },
     icons: { icon: [{ url: `${BASE}/favicon.svg`, type: "image/svg+xml" }], apple: `${BASE}/apple-touch-icon.png` },
     openGraph: {

@@ -13,6 +13,11 @@ export const href = (lang: Lang, path = "") => {
 
 export const other = (lang: Lang): Lang => (lang === "ar" ? "en" : "ar");
 
+/** The studio page: the sections (services, work, approach, contact) every "#work"-style link points at.
+ *  Since 2026-10-09 the Arabic root is the products portal and the studio page lives at /about/;
+ *  the English mirror keeps it at /en/ until its own portal is built. */
+export const studio = (lang: Lang) => (lang === "ar" ? href("ar", "about") : href("en"));
+
 /** Absolute URL for metadata. */
 export const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://elyoxe.com";
 export const abs = (lang: Lang, path = "") => `${SITE}${href(lang, path)}`;

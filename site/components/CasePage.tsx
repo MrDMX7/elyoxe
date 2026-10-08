@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { copy } from "@/content/copy";
 import { caseStudies, type CaseStudy } from "@/content/case-studies";
-import { href, type Lang } from "@/content/i18n";
+import { href, studio, type Lang } from "@/content/i18n";
 import Nav from "./Nav";
 import Footer from "./Footer";
 import CaseVisual from "./visuals";
@@ -18,7 +18,7 @@ export default function CasePage({ lang, c }: { lang: Lang; c: CaseStudy }) {
       <main id="main">
         <div className="wrap">
           <header className="case-head">
-            <p className="crumb"><Link href={`${href(lang)}#work`} className="ulink">{w.back[lang]}</Link> · {c.kicker[lang]}</p>
+            <p className="crumb"><Link href={`${studio(lang)}#work`} className="ulink">{w.back[lang]}</Link> · {c.kicker[lang]}</p>
             <h1 className="display h1">{c.name[lang]}</h1>
             <p className="lead">{c.tagline[lang]}</p>
             <dl className="case-meta">

@@ -39,9 +39,15 @@ if (bad) process.exit(1);
 const toUrl = (p) => site + p.slice(out.length).replace(/index\.html$/, "").replace(/^\/?/, "/");
 const isPublic = (p) => !/\/(404)\//.test(p) && !p.endsWith("404.html");
 const urls = pages.filter(isPublic).map(toUrl);
+// a page's other-language twin, when it has one: /about/ (the studio page, 2026-10-09) is Arabic-only for now,
+// and its English is still /en/, so a twin that was not built is never claimed
+const TWIN = { "/about/": "/en/", "/en/": "/about/" };
+const built = new Set(urls);
 const mirror = (u) => {
   const path = u.slice(site.length);
-  return path.startsWith("/en/") ? site + path.slice(3) : site + "/en" + path;
+  if (TWIN[path]) return site + TWIN[path];
+  const m = path.startsWith("/en/") ? site + path.slice(3) : site + "/en" + path;
+  return built.has(m) ? m : u;
 };
 const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
