@@ -30,6 +30,9 @@ function tiles(p: Pulse): Tile[] {
       num: t ? (live ? t.live : t.today) : null, label: live ? "مباراة شغّالة الحين" : "مباراة اليوم", live },
     { id: "meylis", name: "الميلس", en: "Meylis", url: "https://meylis.elyoxe.com/", line: "غرف صوت تسولف فيها مع الربع",
       num: rooms > 0 ? rooms : null, label: "غرفة مفتوحة الحين", live: rooms > 0, empty: "افتح أول غرفة" },
+    // owner 2026-10-09: «مربع حق بطاقات الدعوة وخلها مجانية»; Cards has no price anywhere, so its figure is that: 0 درهم
+    { id: "cards", name: "دعوات", en: "Invitations", url: "https://cards.elyoxe.com/", line: "بطاقة دعوة لأي مناسبة، وترسلها لكل ضيف على الواتساب",
+      num: 0, label: "درهم، مجانية بالكامل", live: false },
   ];
 }
 
@@ -68,6 +71,19 @@ function Sign({ id }: { id: string }) {
         <rect x="1" y="17" width="22" height="30" />
         <rect x="217" y="17" width="22" height="30" />
         <circle className="ball" r="3.5" cx="0" cy="0" />
+      </svg>
+    );
+  if (id === "cards")
+    return (
+      <svg className="pt-sig sig-cards" viewBox="0 0 240 64" aria-hidden="true">
+        {[0, 1, 2, 3, 4].map((i) => (
+          <g key={i} className="card" style={{ animationDelay: `${i * 0.5}s` }}>
+            <rect x={i * 48 + 10} y="6" width="30" height="52" />
+            <line x1={i * 48 + 16} y1="40" x2={i * 48 + 34} y2="40" />
+            <line x1={i * 48 + 19} y1="46" x2={i * 48 + 31} y2="46" />
+            <circle cx={i * 48 + 25} cy="22" r="5" />
+          </g>
+        ))}
       </svg>
     );
   return (
@@ -137,7 +153,7 @@ export default function Portal({ pulse }: { pulse: Pulse }) {
       </header>
 
       <main id="main" className="pt-main">
-        <h1 className="pt-title">استوديو إماراتي صغير،<br />وهذا اللي شغّال عنده الحين.</h1>
+        <h1 className="pt-title">Elyoxe: سينما، أدوات، تيفو، الميلس، دعوات</h1>
         <ul className="pt-grid">
           {tiles(p).map((t) => (
             <li key={t.id} className={`pt-tile pt-${t.id}`}>

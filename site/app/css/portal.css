@@ -26,21 +26,14 @@
   padding-block: clamp(2rem, 6vh, 4.5rem);
 }
 
-.pt-title {
-  font-size: var(--fs-h2);
-  font-weight: 500;
-  line-height: 1.25;
-  letter-spacing: -.01em;
-  margin: 0 0 clamp(1.75rem, 5vh, 3.25rem);
-  max-inline-size: 22ch;
-  color: var(--paper);
-}
+/* the page's heading is for search engines and screen readers: the strip speaks for itself */
+.pt-title { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; margin: 0; }
 
 /* the strip: one outline, the squares split by its rules */
 .pt-grid {
   list-style: none; margin: 0; padding: 0;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   border: 1px solid var(--rule-ink);
 }
 .pt-tile { border-inline-start: 1px solid var(--rule-ink); }
@@ -69,7 +62,7 @@
 /* the signs: line drawings in the square's middle, stone at rest, ink once the square turns to paper */
 .pt-sigbox { margin-block: auto; padding-block: 1rem; color: var(--rule-ink); }
 .pt-link:hover .pt-sigbox, .pt-link:focus-visible .pt-sigbox { color: var(--paper-3); }
-.pt-sig { display: block; inline-size: 100%; block-size: auto; max-block-size: 4.5rem; overflow: hidden; }
+.pt-sig { display: block; inline-size: 100%; max-inline-size: 22rem; block-size: auto; max-block-size: 4.5rem; overflow: hidden; }
 .pt-sig rect, .pt-sig line, .pt-sig circle { fill: none; stroke: currentColor; stroke-width: 1.5; vector-effect: non-scaling-stroke; }
 
 .sig-film { color: var(--stone-lit); opacity: .55; }
@@ -90,6 +83,11 @@
   58% { transform: translate(226px, 32px); } 72% { transform: translate(150px, 22px); } 100% { transform: translate(40px, 30px); }
 }
 
+.sig-cards { color: var(--stone-lit); opacity: .6; }
+.sig-cards .card { animation: card-lift 2.5s ease-in-out infinite; }
+.sig-cards .card circle { stroke: var(--saffron-lit); }
+@keyframes card-lift { 0%, 70%, 100% { transform: translateY(0); } 20%, 45% { transform: translateY(-5px); } }
+
 .sig-voice rect { fill: var(--stone-lit); stroke: none; opacity: .55; transform-box: fill-box; transform-origin: center; animation: voice 1.3s ease-in-out infinite alternate; }
 .is-live .sig-voice rect { fill: var(--verdigris-lit); opacity: 1; }
 @keyframes voice { from { transform: scaleY(.12); } to { transform: scaleY(.85); } }
@@ -99,7 +97,8 @@
 .pt-link:hover .sig-voice rect, .pt-link:focus-visible .sig-voice rect { stroke: var(--stone); }
 .pt-link:hover .sig-voice rect, .pt-link:focus-visible .sig-voice rect { fill: var(--stone); }
 
-.pt-fig { display: flex; flex-direction: column; gap: .35rem; }
+/* the figure's slot keeps its height when a square has no number (Meylis with no room open), so the five line up */
+.pt-fig { display: flex; flex-direction: column; justify-content: flex-end; gap: .35rem; min-block-size: calc(var(--fs-num) + 1.75rem); }
 .pt-num {
   font-family: var(--font-mono);
   font-size: var(--fs-num);
@@ -132,10 +131,13 @@
 .pt-foot a { color: inherit; text-decoration: none; }
 .pt-foot a:hover { color: var(--paper); }
 
-@media (max-width: 960px) {
+/* five in a row needs the room; under it, two by two with the fifth across the bottom */
+@media (max-width: 1180px) {
   .pt-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .pt-tile:nth-child(odd) { border-inline-start: 0; }
   .pt-tile:nth-child(n + 3) { border-block-start: 1px solid var(--rule-ink); }
+  .pt-tile:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .pt-tile:last-child:nth-child(odd) .pt-link { aspect-ratio: auto; min-block-size: 13.5rem; }
 }
 @media (max-width: 520px) {
   .pt-link { aspect-ratio: auto; min-block-size: 13.5rem; padding: 1rem; }
@@ -143,7 +145,7 @@
   .pt-line { font-size: var(--fs-micro); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .pt-dot, .sig-film .film-run, .sig-grid rect, .sig-pitch .ball, .sig-voice rect { animation: none; }
+  .pt-dot, .sig-film .film-run, .sig-grid rect, .sig-pitch .ball, .sig-voice rect, .sig-cards .card { animation: none; }
   .sig-pitch .ball { transform: translate(120px, 32px); }
   .sig-voice rect { transform: scaleY(.5); }
   .pt-link { transition: none; }

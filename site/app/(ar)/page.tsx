@@ -6,8 +6,8 @@ import { readPulse } from "@/lib/pulse";
 
 /* The products portal (2026-10-09). The studio page that was here is at /about/. */
 export const metadata = pageMetadata("ar", {
-  title: "Elyoxe — سينما، أدوات، تيفو، الميلس",
-  description: "استوديو إماراتي صغير وأربعة منتجات شغّالة: مواعيد السينما وأسعارها، أدوات مجانية بالعربي، نتايج الكورة، وغرف صوت.",
+  title: "Elyoxe — سينما، أدوات، تيفو، الميلس، دعوات",
+  description: "مواعيد السينما وأسعارها، أدوات مجانية بالعربي، نتايج الكورة، غرف صوت، وبطاقات دعوة مجانية لأي مناسبة.",
 });
 
 export default async function Page() {
