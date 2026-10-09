@@ -36,9 +36,14 @@ for (const p of pages) {
 if (bad) process.exit(1);
 
 // sitemap: one URL per public page, with hreflang to its mirror
-const toUrl = (p) => site + p.slice(out.length).replace(/index\.html$/, "").replace(/^\/?/, "/");
-const isPublic = (p) => !/\/(404)\//.test(p) && !p.endsWith("404.html");
+// paths go through "/" first: on Windows walk() returns out\en\work\…, which once shipped a sitemap of
+// https://elyoxe.com/\en\work\ahlam\ and let the 404 page through
+const rel = (p) => p.slice(out.length).split(sep).join("/");
+const toUrl = (p) => site + rel(p).replace(/index\.html$/, "").replace(/^\/?/, "/");
+const isPublic = (p) => !/\/404\//.test(rel(p)) && !rel(p).endsWith("404.html");
 const urls = pages.filter(isPublic).map(toUrl);
+const broken = urls.filter((u) => /\\|\/\/|\s/.test(u.replace(/^https?:\/\//, "")));
+if (broken.length) { console.error("sitemap: malformed URLs", broken.slice(0, 5)); process.exit(1); }
 // a page's other-language twin, when it has one: /about/ (the studio page, 2026-10-09) is Arabic-only for now,
 // and its English is still /en/, so a twin that was not built is never claimed
 const TWIN = { "/about/": "/en/", "/en/": "/about/" };
