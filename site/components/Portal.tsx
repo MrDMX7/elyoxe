@@ -143,9 +143,9 @@ export default function Portal({ pulse }: { pulse: Pulse }) {
   }, []);
 
   return (
-    <div className="pt on-ink">
+    <div className="pt">
       <header className="pt-top">
-        <Link href="/" className="brand" aria-label="Elyoxe"><Mark size={34} onInk /><span>Elyoxe</span></Link>
+        <Link href="/" className="brand" aria-label="Elyoxe"><Mark size={34} /><span>Elyoxe</span></Link>
         <nav className="pt-nav" aria-label="روابط">
           <Link href="/about/">عنّا</Link>
           <Link href="/en/" hrefLang="en" lang="en">English</Link>
