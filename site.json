@@ -19,6 +19,18 @@
   },
   "verify": [
     {
+      "path": "/about/",
+      "contains": "#work"
+    },
+    {
+      "path": "/",
+      "contains": "cards.elyoxe.com"
+    },
+    {
+      "path": "/",
+      "contains": "pt-grid"
+    },
+    {
       "path": "/",
       "contains": "dir=\"rtl\""
     },
