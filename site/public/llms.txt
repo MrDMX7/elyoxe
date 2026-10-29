@@ -1,0 +1,16 @@
+# Elyoxe
+
+> Elyoxe is a studio in the UAE that builds free, Arabic-first web products: everyday tools, UAE cinema showtimes and prices, football results for Arab fans, the Quran, and digital invitations. Every product is in Arabic; the tools and Cinema are also in English.
+
+## Products
+
+- [Elyoxe Tools — English index](https://elyoxe.com/en/tools/llms.txt): 200+ free tools (PDF, images, Arabic text, dates and prayer, UAE work and daily life). No sign-up, no ads; most run entirely in the browser.
+- [Elyoxe Tools — Arabic index](https://elyoxe.com/tools/llms.txt): the same tools in Arabic.
+- [Cinema](https://cinema.elyoxe.com/en/): today's showtimes in every UAE cinema, the ticket price of each hall, and the cheapest show.
+- [Tifo](https://tifo.elyoxe.com/): live football results in Arabic, in the reader's own time zone — ADNOC Pro League, the UAE national team, the Gulf Cup, the AFC Champions League and the major leagues.
+- [Quran](https://elyoxe.com/quran/): the full Mushaf in Uthmani script, by page (604 pages) or by surah and ayah.
+- [Elyoxe Cards](https://cards.elyoxe.com/): free digital invitations for weddings and occasions, a link per guest over WhatsApp, and RSVP.
+
+## Contact
+
+- hello@elyoxe.com
