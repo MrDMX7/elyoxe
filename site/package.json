@@ -11,23 +11,24 @@
     "lint:rtl": "stylelint \"app/**/*.css\" \"components/**/*.css\"",
     "test": "vitest run",
     "lint:dead": "knip --no-progress",
-    "svg": "svgr --typescript --no-dimensions --out-dir components/icons --"
+    "svg": "svgr --typescript --no-dimensions --out-dir components/icons --",
+    "lint": "oxlint"
   },
   "dependencies": {
-    "@lottiefiles/dotlottie-react": "^0.19.16",
+    "@lottiefiles/dotlottie-react": "^0.22.3",
     "@react-three/drei": "^10.7.8",
     "@react-three/fiber": "^9.1.0",
-    "@react-three/postprocessing": "^3.1.1",
+    "@react-three/postprocessing": "^3.2.2",
     "gsap": "^3.13.0",
     "lenis": "^1.3.0",
     "lygia": "^1.4.1",
     "motion": "^13.4.0",
-    "next": "^15.3.0",
+    "next": "^16.4.6",
     "opentype.js": "^2.0.0",
-    "postprocessing": "^6.39.5",
+    "postprocessing": "^6.39.6",
     "react": "~19.2.0",
     "react-dom": "~19.2.0",
-    "three": "^0.176.0"
+    "three": "^0.187.0"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
@@ -38,11 +39,12 @@
     "@types/node": "^22.0.0",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
-    "@types/three": "^0.176.0",
+    "@types/three": "^0.187.0",
     "@vitejs/plugin-react": "^6.1.1",
     "fontaine": "^0.8.2",
     "jsdom": "^30.1.0",
     "knip": "^6.37.0",
+    "oxlint": "^1.95.0",
     "pixelmatch": "^7.2.0",
     "playwright": "^1.63.0",
     "pngjs": "^7.0.0",
@@ -51,7 +53,7 @@
     "stylelint": "^16.26.1",
     "stylelint-config-standard": "^39.0.1",
     "stylelint-plugin-logical-css": "^1.3.0",
-    "typescript": "^5.8.0",
+    "typescript": "^7.0.2",
     "vitest": "^5.0.1"
   },
   "allowScripts": {
