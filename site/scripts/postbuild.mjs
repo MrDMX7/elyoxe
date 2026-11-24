@@ -1,8 +1,8 @@
 // Runs after `next build`. Makes the static export drop into S3 + CloudFront:
-//  · out/404.html from the /404/ route (the distribution's custom error page)
+//  · out/404.html and out/404/ from the /notfound/ route (the distribution's custom error page)
 //  · sitemap.xml with hreflang pairs, robots.txt
 //  · a check that every /en/ page really carries lang="en" dir="ltr"
-import { readFileSync, writeFileSync, existsSync, readdirSync, statSync, copyFileSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync, readdirSync, statSync, copyFileSync, cpSync, rmSync, renameSync } from "node:fs";
 import { join, sep } from "node:path";
 
 const out = "out";
@@ -16,11 +16,41 @@ const walk = (dir, acc = []) => {
   }
   return acc;
 };
-const pages = walk(out);
+// Next 16.4 on Windows writes each page's prefetch segments as nested folders
+// (__next.!KGFyKQ/about/__PAGE__.txt) while the client asks for the dotted name
+// (__next.!KGFyKQ.about.__PAGE__.txt): the export joins a path.relative() result, which carries
+// backslashes there. Every prefetch then 404s. Flatten them to the dotted names; on Linux (CI)
+// they are already flat and this finds nothing.
+const flatten = (dir) => {
+  for (const f of readdirSync(dir)) {
+    const p = join(dir, f);
+    if (!statSync(p).isDirectory()) continue;
+    if (!f.startsWith("__next.")) { flatten(p); continue; }
+    const lift = (d, prefix) => {
+      for (const g of readdirSync(d)) {
+        const q = join(d, g);
+        if (statSync(q).isDirectory()) lift(q, `${prefix}.${g}`); else renameSync(q, join(dir, `${prefix}.${g}`));
+      }
+    };
+    lift(p, f);
+    rmSync(p, { recursive: true, force: true });
+  }
+};
+flatten(out);
 
-// 404
+// 404 — Next 16 writes its own bare English page to /404/ and /_not-found/ (two root layouts, so no
+// shared not-found), which overwrote the Arabic route of the same name. The page now lives at
+// /notfound/ and is moved over Next's copy here, before anything below reads the tree.
+const nfSrc = join(out, "notfound");
+if (existsSync(nfSrc)) {
+  cpSync(nfSrc, join(out, "404"), { recursive: true, force: true });
+  rmSync(nfSrc, { recursive: true, force: true });
+}
+rmSync(join(out, "_not-found"), { recursive: true, force: true });
 const nf = join(out, "404", "index.html");
 if (existsSync(nf)) copyFileSync(nf, join(out, "404.html"));
+
+const pages = walk(out);
 
 // html lang/dir sanity — the two root layouts must not leak into each other
 let bad = 0;

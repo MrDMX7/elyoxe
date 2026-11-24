@@ -2,7 +2,9 @@
 
 خريطة **نيّة → أداة → نمط شغّال** لمشاريع الويب. المقابل لها في المحرّك: `studio/Remotion_Studio/RECIPES.md`.
 
-**الأساس هنا:** Next 15.3 · React 19.2 · fiber v9 · three 0.176 · GSAP · Lenis.
+**الأساس هنا:** Next 16.4 (Turbopack) · React 19.2 · TypeScript 7 · fiber v9 · three 0.187 · GSAP · Lenis · oxlint (`npm run lint`).
+
+**فخّان من ترقية 2026-11-24 (Next 15 ← 16):** (1) مسار `/404` صار محجوزاً — Next يكتب فوقه صفحته الإنجليزية العارية، فصفحة العربية انتقلت إلى `app/(ar)/notfound/` و`postbuild.mjs` ينقلها إلى `out/404/` و`out/404.html`. (2) على ويندوز فقط: التصدير يكتب ملفات الـprefetch مجلدات متداخلة (`__next.!KGFyKQ/about/__PAGE__.txt`) والمتصفح يطلبها بالنقط، فكل prefetch يرجع 404؛ `postbuild.mjs` يسطّحها (على لينكس لا يجد شيئاً).
 
 ---
 
